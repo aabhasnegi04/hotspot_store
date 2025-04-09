@@ -1,0 +1,46 @@
+{
+    "laptops": [
+        {
+            "id": 1,
+            "name": "MacBook Pro M3",
+            "price": "₹1,99,999",
+            "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp-spacegray-select-202206?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1664497359481",
+            "specs": "M3 Chip, 14-inch"
+        },
+        {
+            "id": 2,
+            "name": "Dell XPS 15",
+            "price": "₹1,89,999",
+            "image": "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-15-9530/media-gallery/touch-black/notebook-xps-15-9530-t-black-gallery-1.psd?fmt=png-alpha&pscan=auto&scl=1&wid=3778&hei=2323&qlt=100,1&resMode=sharp2&size=3778,2323&chrss=full&imwidth=5000",
+            "specs": "Intel i7, 15.6-inch"
+        },
+        {
+            "id": 3,
+            "name": "HP Spectre x360",
+            "price": "₹1,79,999",
+            "image": "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08873658.png",
+            "specs": "Intel i7, 13.3-inch"
+        },
+        {
+            "id": 4,
+            "name": "Lenovo ThinkPad X1",
+            "price": "₹1,69,999",
+            "image": "https://m.media-amazon.com/images/I/41AW34vZZdL.jpg",
+            "specs": "Intel i7, 14-inch"
+        },
+        {
+            "id": 5,
+            "name": "ASUS ROG Zephyrus",
+            "price": "₹2,49,999",
+            "image": "https://m.media-amazon.com/images/I/61F6OKnKaML._SL1500_.jpg",
+            "specs": "RTX 4070, 16-inch"
+        },
+        {
+            "id": 6,
+            "name": "MacBook Air M2",
+            "price": "₹1,49,999",
+            "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-midnight-config-20220606?wid=820&hei=498&fmt=jpeg&qlt=90&.v=1654122880566",
+            "specs": "M2 Chip, 13.3-inch"
+        }
+    ]
+} 

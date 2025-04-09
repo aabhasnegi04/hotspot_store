@@ -1,0 +1,76 @@
+{
+    "phones": [
+        {
+            "id": 1,
+            "phone_name": "iPhone 15 Pro Max",
+            "desc": "The iPhone 15 Pro Max features a titanium design, A17 Pro chip",
+            "brand": "Apple",
+            "image": "https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-15-pro-max.jpg",
+            "release_date": "2023",
+            "price": "₹1,19,900"
+        },
+        {
+            "id": 2,
+            "phone_name": "OPPO Find X7 Ultra",
+            "desc": "OPPO's flagship with Hasselblad cameras and advanced AI features.",
+            "brand": "OPPO",
+            "image": "https://fdn2.gsmarena.com/vv/bigpic/oppo-find-x7-ultra.jpg",
+            "release_date": "2024",
+            "price": "₹69,999"
+        },
+        {
+            "id": 3,
+            "phone_name": "Google Pixel 8 Pro",
+            "desc": "Google's latest flagship with advanced AI and camera capabilities.",
+            "brand": "Google",
+            "image": "https://fdn2.gsmarena.com/vv/bigpic/google-pixel-8-pro.jpg",
+            "release_date": "2023",
+            "price": "₹79,999"
+        },
+        {
+            "id": 4,
+            "phone_name": "OnePlus 12",
+            "desc": "OnePlus flagship with Hasselblad cameras and fast charging.",
+            "brand": "OnePlus",
+            "image": "https://fdn2.gsmarena.com/vv/bigpic/oneplus-12.jpg",
+            "release_date": "2024",
+            "price": "₹59,999"
+        },
+        {
+            "id": 5,
+            "phone_name": "Xiaomi 14 Pro",
+            "desc": "Xiaomi's premium device with Leica optics and powerful performance.",
+            "brand": "Xiaomi",
+            "image": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-14-pro.jpg",
+            "release_date": "2023",
+            "price": "₹29,999"
+        },
+        {
+            "id": 6,
+            "phone_name": "iPhone 15",
+            "desc": "Apple's latest standard iPhone with A16 chip and dual cameras.",
+            "brand": "Apple",
+            "image": "https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-15.jpg",
+            "release_date": "2023",
+            "price": "₹79,999"
+        },
+        {
+            "id": 7,
+            "phone_name": "Motorola Edge 40 Pro",
+            "desc": "Motorola's premium device with curved display and powerful specs.",
+            "brand": "Motorola",
+            "image": "https://fdn2.gsmarena.com/vv/bigpic/motorola-edge-40-pro.jpg",
+            "release_date": "2023",
+            "price": "₹79,999"
+        },
+        {
+            "id": 8,
+            "phone_name": "Vivo X100 Pro",
+            "desc": "Vivo's flagship with Zeiss optics and advanced imaging.",
+            "brand": "Vivo",
+            "image": "https://fdn2.gsmarena.com/vv/bigpic/vivo-x100-pro.jpg",
+            "release_date": "2023",
+            "price": "₹39,999"
+        }
+    ]
+} 

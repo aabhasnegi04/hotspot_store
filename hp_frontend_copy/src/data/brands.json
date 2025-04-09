@@ -1,0 +1,76 @@
+{
+    "brands": [
+        {
+            "id": 1,
+            "name": "Apple",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
+            "link": "#"
+        },
+        {
+            "id": 2,
+            "name": "Samsung",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/2560px-Samsung_Logo.svg.png",
+            "link": "#"
+        },
+        {
+            "id": 3,
+            "name": "OnePlus",
+            "image": "https://1000logos.net/wp-content/uploads/2022/11/OnePlus-Logo.png",
+            "link": "#"
+        },
+        {
+            "id": 4,
+            "name": "Xiaomi",           
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Xiaomi_logo_%282021-%29.svg/2048px-Xiaomi_logo_%282021-%29.svg.png",
+            "link": "#"
+        },
+        {
+            "id": 5,
+            "name": "Oppo",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/OPPO_LOGO_2019.svg/2560px-OPPO_LOGO_2019.svg.png",
+            "link": "#"
+        },
+        {
+            "id": 6,
+            "name": "Vivo",
+            "image": "https://1000logos.net/wp-content/uploads/2022/02/Vivo-Logo.png",
+            "link": "#"
+        },
+        {
+            "id": 7,
+            "name": "Motorola",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Motorola_M_symbol_blue.svg/1200px-Motorola_M_symbol_blue.svg.png",
+            "link": "#"
+        },
+        {
+            "id": 8,
+            "name": "Google",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png",
+            "link": "#"
+        },
+        {
+            "id": 9,
+            "name": "Sony",
+            "image": "https://1000logos.net/wp-content/uploads/2021/05/Sony-logo.png",
+            "link": "#"
+        },
+        {
+            "id": 10,
+            "name": "Huawei",
+            "image": "https://1000logos.net/wp-content/uploads/2018/08/Huawei-Logo.png",
+            "link": "#"
+        },
+        {
+            "id": 11,
+            "name": "Nokia",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Nokia_wordmark.svg/2560px-Nokia_wordmark.svg.png",
+            "link": "#"
+        },
+        {
+            "id": 12,
+            "name": "Asus",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/ASUS_Logo.svg/2560px-ASUS_Logo.svg.png",
+            "link": "#"
+        }
+    ]
+} 
