@@ -17,7 +17,7 @@ router.get('/:priceRange', async (req, res) => {
         const result = await pool.request()
             .input('minprice1', sql.Numeric(28, 0), minPrice)
             .input('maxprice1', sql.Numeric(28, 0), maxPrice)
-            .execute('proc_getdefaultproducts_byprice');
+            .execute('proc_getdefaultproducts_bypriceHS');
 
         // Send the results
         res.json(result.recordset);
