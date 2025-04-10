@@ -22,7 +22,7 @@ import {
     Add as AddIcon,
     Remove as RemoveIcon,
 } from '@mui/icons-material';
-import fakeProductAPI from '../../services/fakeProductAPI';
+import { API_BASE_URL } from '../../config';
 import LuxuryLoader from '../common/LuxuryLoader';
 
 const ProductDetail = () => {
@@ -40,70 +40,47 @@ const ProductDetail = () => {
         const fetchProduct = async () => {
             setLoading(true);
             try {
-                // Get all products from all categories
-                const [smartphones, tablets, laptops, smartwatches, accessories] = await Promise.all([
-                    fakeProductAPI.getProductsByCategory('smartphones'),
-                    fakeProductAPI.getProductsByCategory('tablets'),
-                    fakeProductAPI.getProductsByCategory('laptops'),
-                    fakeProductAPI.getProductsByCategory('smartwatches'),
-                    fakeProductAPI.getProductsByCategory('accessories')
-                ]);
-
-                // Combine all products
-                const allProducts = [
-                    ...smartphones,
-                    ...tablets,
-                    ...laptops,
-                    ...smartwatches,
-                    ...accessories
-                ];
-                
-                // Find the specific product by ID
-                const foundProduct = allProducts.find(p => p.id === parseInt(productId));
-                
-                if (!foundProduct) {
+                const response = await fetch(`${API_BASE_URL}/api/product/${productId}`);
+                if (!response.ok) {
                     throw new Error('Product not found');
                 }
-
-                // Enhance the product data with additional details
+                const data = await response.json();
+                
+                // Transform the API response to match our component's data structure
                 const enhancedProduct = {
-                    ...foundProduct,
-                    discount: 100,
-                    reviewCount: 245,
-                    stock: 50,
-                    description: `Experience the ultimate ${foundProduct.name} with revolutionary features and exceptional performance.`,
+                    id: data.productDetails.ItemCode,
+                    name: data.productDetails.ItemName,
+                    price: parseFloat(data.productDetails.SalePrice),
+                    rating: 4.5, // You might want to add this to your API
+                    discount: parseFloat(data.productDetails.DiscountValue),
+                    reviewCount: 245, // You might want to add this to your API
+                    stock: parseInt(data.productDetails.QUANTITY),
+                    description: data.descriptions?.DESCRIPTIONS || data.descriptions?.DESCRIPTION_NEW || 
+                               `Experience the ultimate ${data.productDetails.ItemName} with revolutionary features and exceptional performance.`,
                     images: [
-                        foundProduct.image,
-                        foundProduct.image,
-                        foundProduct.image,
-                        foundProduct.image
-                    ],
+                        data.productDetails.imgname11,
+                        data.productDetails.imgname22,
+                        data.productDetails.imgname33,
+                        data.productDetails.imgname44,
+                        data.productDetails.imgname55,
+                    ].filter(Boolean), // Filter out any null/undefined images
+                    brand: data.productDetails.Brand,
+                    category: data.productDetails.Category || 'Electronics',
+                    type: data.productDetails.MODEL,
                     highlights: [
-                        foundProduct.storage ? `Storage: ${foundProduct.storage}` : '',
-                        foundProduct.ram ? `RAM: ${foundProduct.ram}` : '',
-                        foundProduct.processor ? `Processor: ${foundProduct.processor}` : '',
-                        foundProduct.display ? `Display: ${foundProduct.display}` : '',
-                        foundProduct.battery ? `Battery: ${foundProduct.battery}` : '',
-                        foundProduct.features ? `Features: ${foundProduct.features}` : '',
-                        `Brand: ${foundProduct.brand}`,
-                        `Category: ${foundProduct.category}`,
-                        `Type: ${foundProduct.type}`
+                        `Brand: ${data.productDetails.Brand}`,
+                        `Model: ${data.productDetails.MODEL}`,
+                        `Category: ${data.productDetails.Category || 'Electronics'}`,
+                        // Add any other relevant details from your API response
                     ].filter(Boolean),
                     specifications: {
-                        ...(foundProduct.storage && { "Storage": foundProduct.storage }),
-                        ...(foundProduct.ram && { "RAM": foundProduct.ram }),
-                        ...(foundProduct.processor && { "Processor": foundProduct.processor }),
-                        ...(foundProduct.display && { "Display": foundProduct.display }),
-                        ...(foundProduct.battery && { "Battery": foundProduct.battery }),
-                        ...(foundProduct.features && { "Features": foundProduct.features }),
-                        "Brand": foundProduct.brand,
-                        "Category": foundProduct.category,
-                        "Type": foundProduct.type
+                        "Brand": data.productDetails.Brand,
+                        "Model": data.productDetails.MODEL,
+                        "Category": data.productDetails.Category || 'Electronics',
+                        // Add any other specifications from your API response
                     },
-                    colors: ["Black", "Silver", "Gold", "Blue"],
-                    storage: foundProduct.category === 'laptops' ? 
-                        ["256GB", "512GB", "1TB", "2TB"] : 
-                        ["128GB", "256GB", "512GB", "1TB"]
+                    colors: ["Black", "Silver", "Gold", "Blue"], // Add if available in your API
+                    storage: ["128GB", "256GB", "512GB", "1TB"], // Add if available in your API
                 };
 
                 setProduct(enhancedProduct);
@@ -372,17 +349,21 @@ const ProductDetail = () => {
                                 )}
                             </Box>
 
-                            <Typography 
-                                variant="body1" 
-                                sx={{ 
-                                    mb: 4,
-                                    color: '#666',
-                                    lineHeight: 1.8,
-                                    fontWeight: 400
-                                }}
-                            >
-                                {product.description}
-                            </Typography>
+                            <Box sx={{ 
+                                mb: 4,
+                                p: 2,
+                                borderRadius: '12px',
+                                backgroundColor: 'rgba(255, 215, 0, 0.05)',
+                                border: '1px solid rgba(255, 215, 0, 0.1)',
+                                maxWidth: '90%'
+                            }}>
+                                <Typography variant="subtitle1" sx={{ mb: 1.5, fontWeight: 600, color: '#B7950B', fontSize: '1rem' }}>
+                                    Key Features
+                                </Typography>
+                                <Typography variant="body2" sx={{ color: '#666', lineHeight: 1, fontWeight: 400, whiteSpace: 'pre-line', fontSize: '1rem' }}>
+                                    {product.description.split('•').map((part, index) => index === 0 ? part : `•${part}`).join('\n')}
+                                </Typography>
+                            </Box>
 
                             {/* Color Selection */}
                             <Typography 
