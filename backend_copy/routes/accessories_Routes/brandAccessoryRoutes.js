@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { sql, poolPromise } = require('../config/db');
+const { sql, poolPromise } = require('../../config/db');
 
 // @route   GET api/brand-accessories/:brand
 // @desc    Get accessories by brand

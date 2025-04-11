@@ -9,12 +9,12 @@ import HeadphonesIcon from '@mui/icons-material/Headphones';
 import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
 
 const categories = [
-    { id: 1, name: 'Smartphones', icon: PhoneAndroidIcon, path: '/products/smartphones' },
+    { id: 1, name: 'Smartphones', icon: PhoneAndroidIcon, path: '/smartphones' },
     { id: 2, name: 'Laptops', icon: LaptopIcon, path: '/products/laptops' },
     { id: 3, name: 'Tablets', icon: TabletIcon, path: '/products/tablets' },
-    { id: 4, name: 'Accessories', icon: DevicesOtherIcon, path: '/products/accessories' },
-    { id: 5, name: 'Smart Watches', icon: WatchIcon, path: '/products/smartwatches' },
-    { id: 6, name: 'Wearables', icon: HeadphonesIcon, path: '/products/accessories' },
+    { id: 4, name: 'Accessories', icon: DevicesOtherIcon, path: '/accessories' },
+    { id: 5, name: 'Wearables', icon: WatchIcon, path: '/products/smartwatches' },
+    { id: 6, name: 'Audio', icon: HeadphonesIcon, path: '/products/accessories' },
 ];
 
 const CategoryCarousel = () => {

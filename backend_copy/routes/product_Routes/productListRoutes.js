@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {sql, poolPromise} = require('../config/db');
+const {sql, poolPromise} = require('../../config/db');
 
 // Get paginated product list
 router.get('/', async (req, res) => {

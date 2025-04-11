@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Paper, Fade, Typography, Popper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { accessoriesDropdownContent } from './dropdownAccessories';
+import { wearablesDropdownContent } from './dropdownWearables';
 
 const dropdownStyle = {
     paper: {
@@ -142,129 +144,6 @@ export const dropdownContent = {
                 ]
             }
         ]
-    },
-    accessories: {
-        mainCategories: ['Popular Brands', 'Mobile Accessories', 'Audio', 'Wearables', 'Power Solutions', 'Protection and Others'],
-        categoryMapping: {
-            'Popular Brands': ['Popular Brands'],
-            'Mobile Accessories': ['Storage & Memory', 'Network Devices', 'Tablets & Accessories'],
-            'Audio': ['Audio Devices'],
-            'Wearables': ['Smart Wearables'],
-            'Power Solutions': ['Power Solutions'],
-            'Protection and Others': ['Protection & Cases', 'Other Accessories']
-        },
-        sections: [
-            {
-                title: 'Popular Brands',
-                items: [
-                    'Apple',
-                    'Samsung',
-                    'OnePlus',
-                    'VIVO',
-                    'OPPO',
-                    'Realme',
-                    'Xiaomi',
-                    'RIVERSONG',
-                    'Gionee',
-                    'Sandisk',
-                    'ITEL'
-                ]
-            },
-            {
-                title: 'Power Solutions',
-                items: [
-                    'Power Bank',
-                    'Car Charger',
-                    'Travel Charger',
-                    'Power Adapter',
-                    'Adapter',
-                    'Adapter with SR',
-                    'Adapter with SR17',
-                    'Wireless Charger',
-                    'Charging Stand'
-                ]
-            },
-            {
-                title: 'Audio Devices',
-                items: [
-                    'Airpod',
-                    'BT Speaker',
-                    'BT Headset',
-                    'Buds',
-                    'Ear Bud (20)',
-                    'Ear Buds',
-                    'Ear Buds (11)',
-                    'Earphone',
-                    'Headphone',
-                    'NeckBand',
-                    'NeckBand-Enco',
-                    'Mono Bluetooth'
-                ]
-            },
-            {
-                title: 'Smart Wearables',
-                items: [
-                    'Apple Watch',
-                    'Smart watch',
-                    'Smart-Watch',
-                    'Fitness Band',
-                    'Band',
-                    'Redmi Watch',
-                    'Health'
-                ]
-            },
-            {
-                title: 'Protection & Cases',
-                items: [
-                    'Back Cover',
-                    'Case',
-                    'Canvas Film Mobile Skin',
-                    'Wallet Case',
-                    'Smart Folio',
-                    'UV Sterilizer',
-                    'Mobile Cleaner'
-                ]
-            },
-            {
-                title: 'Tablets & Accessories',
-                items: [
-                    'iPad',
-                    'Tablet',
-                    'Apple Pencil',
-                    'S Pen',
-                    'Smart Keyboard',
-                    'OppoPad'
-                ]
-            },
-            {
-                title: 'Storage & Memory',
-                items: [
-                    'Memory Card',
-                    'Pen Drive'
-                ]
-            },
-            {
-                title: 'Network Devices',
-                items: [
-                    'Router',
-                    'Repeater',
-                    'Cable'
-                ]
-            },
-            {
-                title: 'Other Accessories',
-                items: [
-                    'Airtag',
-                    'Television',
-                    'Feature Phone',
-                    'Night Light',
-                    'Heat Gun',
-                    'iFilmCutter',
-                    'Insurance',
-                    'Scheme-Watch'
-                ]
-            }
-        ]
     }
 };
 
@@ -272,13 +151,19 @@ const NavDropdown = ({
     open, 
     anchorEl, 
     category,
-    content, 
     onMouseEnter, 
     onMouseLeave, 
     onItemClick 
 }) => {
     const navigate = useNavigate();
     const [selectedCategory, setSelectedCategory] = useState('Popular Brands');
+
+    // Get the appropriate content based on category
+    const content = category === 'accessories' 
+        ? accessoriesDropdownContent 
+        : category === 'wearables'
+            ? wearablesDropdownContent
+            : dropdownContent.smartphones;
 
     const handleMainCategoryHover = (mainCat) => {
         setSelectedCategory(mainCat);
@@ -288,37 +173,71 @@ const NavDropdown = ({
         if (section.title === 'Popular Brands') {
             if (category === 'smartphones') {
                 navigate(`/brand-handsets/${item.toUpperCase()}`);
+            } else if (category === 'wearables') {
+                navigate(`/brand-wearables/${item.toLowerCase()}`);
             } else {
                 navigate(`/brand-accessories/${item.toLowerCase()}`);
             }
         } else if (section.title === 'Price Range') {
-            // Convert price range text to price range format
-            let range;
-            switch (item) {
-                case 'Under ₹15,000':
-                    range = '10000-15000';
-                    break;
-                case 'Under ₹20,000':
-                    range = '15000-20000';
-                    break;
-                case 'Under ₹30,000':
-                    range = '20000-30000';
-                    break;
-                case 'Under ₹40,000':
-                    range = '30000-40000';
-                    break;
-                case 'Under ₹50,000':
-                    range = '40000-50000';
-                    break;
-                case 'Above ₹50,000':
-                    range = '50000-100000';
-                    break;
-                default:
-                    range = '0-100000';
+            if (category === 'wearables') {
+                // Handle wearables price range differently
+                let range;
+                switch (item) {
+                    case 'Under ₹2,000':
+                        range = '0-2000';
+                        break;
+                    case 'Under ₹5,000':
+                        range = '2000-5000';
+                        break;
+                    case 'Under ₹10,000':
+                        range = '5000-10000';
+                        break;
+                    case 'Under ₹20,000':
+                        range = '10000-20000';
+                        break;
+                    case 'Under ₹30,000':
+                        range = '20000-30000';
+                        break;
+                    case 'Above ₹30,000':
+                        range = '30000-100000';
+                        break;
+                    default:
+                        range = '0-100000';
+                }
+                navigate(`/wearables-price-range/${range}`);
+            } else if (category === 'smartphones') {
+                // Existing smartphone price range logic
+                let range;
+                switch (item) {
+                    case 'Under ₹15,000':
+                        range = '10000-15000';
+                        break;
+                    case 'Under ₹20,000':
+                        range = '15000-20000';
+                        break;
+                    case 'Under ₹30,000':
+                        range = '20000-30000';
+                        break;
+                    case 'Under ₹40,000':
+                        range = '30000-40000';
+                        break;
+                    case 'Under ₹50,000':
+                        range = '40000-50000';
+                        break;
+                    case 'Above ₹50,000':
+                        range = '50000-100000';
+                        break;
+                    default:
+                        range = '0-100000';
+                }
+                navigate(`/price-range/${range}`);
             }
-            navigate(`/price-range/${range}`);
         } else {
-            navigate(`/category-accessories/${item}`);
+            if (category === 'wearables') {
+                navigate(`/category-wearables/${item}`);
+            } else {
+                navigate(`/category-accessories/${item}`);
+            }
         }
         onMouseLeave && onMouseLeave();
     };

@@ -10,8 +10,8 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import LuxuryLoader from '../common/LuxuryLoader';
-import { API_BASE_URL } from '../../config';
+import LuxuryLoader from '../../common/LuxuryLoader';
+import { API_BASE_URL } from '../../../config';
 
 const BestSeller = () => {
     

@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
-import NavDropdown, { dropdownContent } from './NavDropdown';
+import NavDropdown, { dropdownContent } from './dropdown_subheader/NavDropdown';
 
 const SubHeader = () => {
     const navigate = useNavigate();
@@ -41,7 +41,7 @@ const SubHeader = () => {
     const categories = [
         { name: 'Smartphones', path: '/smartphones', hasDropdown: true },
         { name: 'Accessories', path: '/accessories', hasDropdown: true },
-        { name: 'Smartwatches', path: '/products/smartwatches' },
+        { name: 'Wearables', path: '/products/smartwatches', hasDropdown: true },
         { name: 'Tablets', path: '/products/tablets' },
         { name: 'Best Sellers', path: '/bestsellers' },
         { name: 'Shop by Brand', path: '/brands' },

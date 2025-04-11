@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { poolPromise, sql } = require("../config/db");
+const { poolPromise, sql } = require("../../config/db");
 
-// GET all products using stored procedure
+// GET all smartwatch products using stored procedure
 router.get("/", async (req, res) => {
     try {
         const pool = await poolPromise;
         const result = await pool.request()
-            .execute("proc_getdefaultproducts_hsbestseller");
+            .execute("proc_getdefaultproducts_SMARTWATCH");
 
         // Map the results to a simpler format
         const products = result.recordset.map(({
@@ -38,17 +38,18 @@ router.get("/", async (req, res) => {
 
         res.json(products);
     } catch (err) {
+        console.error('Error in smartwatch route:', err);
         res.status(500).json({ error: err.message });
     }
 });
 
-// GET a single product by ItemCode
+// GET a single smartwatch by ItemCode
 router.get("/:itemCode", async (req, res) => {
     try {
         const { itemCode } = req.params;
         const pool = await poolPromise;
         const result = await pool.request()
-            .execute("proc_getdefaultproducts_hsbestseller");
+            .execute("proc_getdefaultproducts_SMARTWATCH");
 
         const product = result.recordset.find(({ ItemCode }) => ItemCode === itemCode);
 
@@ -85,6 +86,7 @@ router.get("/:itemCode", async (req, res) => {
             discountValue: DiscountValue
         });
     } catch (err) {
+        console.error('Error in single smartwatch route:', err);
         res.status(500).json({ error: err.message });
     }
 });

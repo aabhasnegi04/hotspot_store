@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { sql, poolPromise } = require('../config/db');
+const { sql, poolPromise } = require('../../config/db');
 
 // GET /api/product/:itemId
 router.get('/:itemId', async (req, res) => {
     try {
         const { itemId } = req.params;
-        console.log('Fetching details for item:', itemId);
         
         const pool = await poolPromise;
         
@@ -57,14 +56,6 @@ router.get('/:itemId', async (req, res) => {
                 DESCRIPTION_NEW: descriptions.DESCRIPTION_NEW || ''
             } : null
         };
-
-        // Log success
-        console.log('Successfully fetched product details:', {
-            itemCode: response.productDetails.ItemCode,
-            itemName: response.productDetails.ItemName,
-            brand: response.productDetails.Brand,
-            hasDescriptions: !!response.descriptions
-        });
 
         res.json(response);
 

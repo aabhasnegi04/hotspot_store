@@ -4,8 +4,8 @@ import {
     Alert, FormControlLabel, Checkbox, Divider, Paper 
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import LuxuryLoader from '../common/LuxuryLoader';
-import { API_BASE_URL } from '../../config';
+import LuxuryLoader from '../../common/LuxuryLoader';
+import { API_BASE_URL } from '../../../config';
 
 const styles = {
     gradientBg: {

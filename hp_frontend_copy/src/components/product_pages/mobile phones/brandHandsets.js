@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { 
     Box, Container, Grid, Card, CardMedia, CardContent, Typography, 
-    Alert, FormControlLabel, Checkbox, Divider, Paper 
+    Alert, FormControlLabel, Checkbox, Divider, Paper
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import LuxuryLoader from '../common/LuxuryLoader';
-import { API_BASE_URL } from '../../config';
+import LuxuryLoader from '../../common/LuxuryLoader';
+import { API_BASE_URL } from '../../../config';
 
 const styles = {
     gradientBg: {

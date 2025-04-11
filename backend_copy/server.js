@@ -16,7 +16,7 @@ app.use(express.json());
 app.use('/api', require('./routes/authRoutes'));
 
 // bestSellerRoutes
-app.use('/api/bestsellers', require('./routes/bestSellerRoutes'));
+app.use('/api/bestsellers', require('./routes/smartphones_Routes/bestSellerRoutes'));
 
 // contactRoutes
 app.use('/api/contact', require('./routes/ContactRoutes'));
@@ -28,25 +28,40 @@ app.use('/api/pincode', require('./routes/pincodeRoutes'));
 app.use('/api/search', require('./routes/searchSuggestionsRoutes'));
 
 // Add brand accessories routes
-app.use('/api/brand-accessories', require('./routes/brandAccessoryRoutes'));
+app.use('/api/brand-accessories', require('./routes/accessories_Routes/brandAccessoryRoutes'));
 
 // Add new category accessories route
-app.use('/api/category-accessories', require('./routes/categoryAccessoryRoutes'));
+app.use('/api/category-accessories', require('./routes/accessories_Routes/categoryAccessoryRoutes'));
+
+// Add price range accessories route
+app.use('/api/price-range-accessories', require('./routes/accessories_Routes/priceRangeAccessoryRoutes'));
 
 // Add price range routes
-app.use('/api/price-range', require('./routes/priceRangeRoutes'));
+app.use('/api/price-range', require('./routes/smartphones_Routes/priceRangeRoutesHandset'));
 
 // Add brand handset routes
-app.use('/api/brand-handsets', require('./routes/brandHandsetRoutes'));
+app.use('/api/brand-handsets', require('./routes/smartphones_Routes/brandHandsetRoutes'));
 
 // Add product details routes
-app.use('/api/product', require('./routes/productDetailsRoutes'));
+app.use('/api/product', require('./routes/product_Routes/productDetailsRoutes'));
 
 // Add product list routes
-app.use('/api/products', require('./routes/productListRoutes'));
+app.use('/api/products', require('./routes/product_Routes/productListRoutes'));
 
 // Add hot products routes
-app.use('/api/hot-products', require('./routes/HotProductsRoutes'));
+app.use('/api/hot-products', require('./routes/smartphones_Routes/HotProductsRoutes'));
+
+// Add smartwatch routes
+app.use('/api/smartwatches', require('./routes/wearables_Routes/allWearablesRoutes'));
+
+// Add brand smartwatch routes
+app.use('/api/brand-smartwatches', require('./routes/wearables_Routes/brandWearablesRoutes'));
+
+// Add best-selling smartwatch routes
+app.use('/api/bestseller-smartwatches', require('./routes/wearables_Routes/bestSellerWearablesRoutes'));
+
+// Add price range smartwatch routes
+app.use('/api/price-range-smartwatches', require('./routes/wearables_Routes/priceRangeWearablesRoutes'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

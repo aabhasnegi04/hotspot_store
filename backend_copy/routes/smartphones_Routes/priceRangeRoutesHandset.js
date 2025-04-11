@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { sql, poolPromise } = require('../config/db');
+const { sql, poolPromise } = require('../../config/db');
 
 // Route to get products by price range
 router.get('/:priceRange', async (req, res) => {

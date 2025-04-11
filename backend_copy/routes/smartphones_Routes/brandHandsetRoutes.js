@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { sql, poolPromise } = require('../config/db');
+const { poolPromise, sql } = require('../../config/db');
 
 // GET products by brand
 router.get('/:brand', async (req, res) => {
