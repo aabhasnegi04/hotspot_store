@@ -18,7 +18,7 @@ const Header = () => {
     const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
 
     const [anchorEl, setAnchorEl] = useState(null);
-    const [cartCount] = useState(0);
+    const [cartCount, setCartCount] = useState(() => parseInt(localStorage.getItem('cartCount') || '0'));
     const [userName, setUserName] = useState('');
     const [userLocation, setUserLocation] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +26,22 @@ const Header = () => {
         return localStorage.getItem('isAuthenticated') === 'true';
     });
     const [locationDialogOpen, setLocationDialogOpen] = useState(false);
+
+    useEffect(() => {
+        // Listen for cart updates
+        const handleCartUpdate = () => {
+            setCartCount(parseInt(localStorage.getItem('cartCount') || '0'));
+        };
+
+        window.addEventListener('cartUpdated', handleCartUpdate);
+        
+        // Initial cart count
+        setCartCount(parseInt(localStorage.getItem('cartCount') || '0'));
+
+        return () => {
+            window.removeEventListener('cartUpdated', handleCartUpdate);
+        };
+    }, []);
 
     useEffect(() => {
         const checkAuth = () => {

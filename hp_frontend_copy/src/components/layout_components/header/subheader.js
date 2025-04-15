@@ -41,7 +41,7 @@ const SubHeader = () => {
     const categories = [
         { name: 'Smartphones', path: '/smartphones', hasDropdown: true },
         { name: 'Accessories', path: '/accessories', hasDropdown: true },
-        { name: 'Wearables', path: '/products/smartwatches', hasDropdown: true },
+        { name: 'Wearables', path: '/wearables', hasDropdown: true },
         { name: 'Tablets', path: '/products/tablets' },
         { name: 'Best Sellers', path: '/bestsellers' },
         { name: 'Shop by Brand', path: '/brands' },

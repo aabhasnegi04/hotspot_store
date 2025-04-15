@@ -83,7 +83,7 @@ const ProductBanner = ({ product, handleProductClick }) => (
                         fontSize: '1.6rem',
                         textShadow: '0 0 1px rgba(255, 215, 0, 0.3)'
                     }}>
-                        {product.model || 'Premium Accessory'}
+                        {product.model || 'Premium Wearable'}
                     </span>
                 </Typography>
 
@@ -141,7 +141,7 @@ const ProductBanner = ({ product, handleProductClick }) => (
                 </Box>
 
                 <Typography variant="body1" sx={{ color: '#666', mb: 3, fontSize: '1.1rem', lineHeight: 1.6 }}>
-                    Elevate your mobile experience with our premium accessories collection.
+                    Elevate your lifestyle with our premium wearables collection.
                 </Typography>
             </Grid>
 
@@ -170,14 +170,14 @@ const ProductBanner = ({ product, handleProductClick }) => (
     </Card>
 );
 
-const AccessoriesBigBanner = ({ navigate }) => {
+const WearablesBigBanner = ({ navigate }) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/api/bestseller-accessories`);
+                const response = await axios.get(`${API_BASE_URL}/api/bestseller-smartwatches`);
                 // Get one product per brand
                 const uniqueBrandProducts = response.data.reduce((acc, product) => {
                     if (!acc[product.brand]) {
@@ -188,7 +188,7 @@ const AccessoriesBigBanner = ({ navigate }) => {
                 setProducts(Object.values(uniqueBrandProducts));
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching best seller accessories:', error);
+                console.error('Error fetching best seller wearables:', error);
                 setLoading(false);
             }
         };
@@ -225,4 +225,4 @@ const AccessoriesBigBanner = ({ navigate }) => {
     );
 };
 
-export default AccessoriesBigBanner; 
+export default WearablesBigBanner; 

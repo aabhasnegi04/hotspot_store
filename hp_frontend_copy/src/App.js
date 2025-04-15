@@ -24,13 +24,16 @@ import PrivacyPolicy from './components/layout_components/footer/PrivacyPolicy';
 import TermsOfService from './components/layout_components/footer/TermsOfService';
 import CookiePolicy from './components/layout_components/footer/CookiePolicy';
 import BestSeller from './components/product_pages/mobile phones/bestSellerHandsets';
+import BestSellerAccessories from './components/product_pages/accessories/bestSellerAccessories';
 import BrandAccessories from './components/product_pages/accessories/brandAccessories';
 import CategoryAccessory from './components/product_pages/accessories/categoryAccessory';
 import PriceRange from './components/product_pages/mobile phones/priceRangeHandsets';
+import PriceRangeAccessories from './components/product_pages/accessories/priceRangeAccessories';
 import BrandHandsets from './components/product_pages/mobile phones/brandHandsets';
 import AllProducts from './components/product_pages/allProducts';
 import MobilesHomepage from './components/product_pages/mobile phones/mobilesHomepage';
 import AccessoriesHomepage from './components/product_pages/accessories/accessoriesHomepage';
+import WearablesHomepage from './components/product_pages/wearables/wearablesHomepage';
 import './App.css';
 
 // Define the application's theme configuration
@@ -75,6 +78,7 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/cart" element={<ShoppingCart />} />
               <Route path="/bestsellers" element={<BestSeller />} />
+              <Route path="/bestseller-accessories" element={<BestSellerAccessories />} />
               <Route path="/" element={
                 <main className="main-content">
                   <Hero />
@@ -95,10 +99,12 @@ function App() {
               <Route path="/brand-accessories/:brand" element={<BrandAccessories />} />
               <Route path="/category-accessories/:category" element={<CategoryAccessory />} />
               <Route path="/price-range/:range" element={<PriceRange />} />
+              <Route path="/accessories/price-range/:range" element={<PriceRangeAccessories />} />
               <Route path="/brand-handsets/:brand" element={<BrandHandsets />} />
               <Route path="/products" element={<AllProducts />} />
               <Route path="/smartphones" element={<MobilesHomepage />} />
               <Route path="/accessories" element={<AccessoriesHomepage />} />
+              <Route path="/wearables" element={<WearablesHomepage />} />
             </Routes>
           </Box>
           <Footer />

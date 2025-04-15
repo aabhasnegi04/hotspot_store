@@ -12,6 +12,8 @@ import {
     Tab,
     IconButton,
     Chip,
+    Snackbar,
+    Alert,
 } from '@mui/material';
 import {
     ShoppingCart as CartIcon,
@@ -24,6 +26,7 @@ import {
 } from '@mui/icons-material';
 import { API_BASE_URL } from '../../config';
 import LuxuryLoader from '../common/LuxuryLoader';
+import axios from 'axios';
 
 const ProductDetail = () => {
     const { productId } = useParams();
@@ -34,7 +37,74 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null);
     const [isZoomed, setIsZoomed] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [cartLoading, setCartLoading] = useState(false);
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: '',
+        severity: 'success'
+    });
     const imageRef = useRef(null);
+
+    // Generate or retrieve session ID
+    const getSessionId = () => {
+        let sessionId = localStorage.getItem('sessionId');
+        if (!sessionId) {
+            sessionId = 'session_' + Math.random().toString(36).substring(2, 15);
+            localStorage.setItem('sessionId', sessionId);
+        }
+        return sessionId;
+    };
+
+    const handleAddToCart = async () => {
+        if (!product) return;
+        
+        setCartLoading(true);
+        try {
+            const sessionId = getSessionId();
+            console.log('Adding to cart:', {
+                itemCode: product.id,
+                salePrice: product.price,
+                sessionId: sessionId
+            });
+            
+            const response = await axios.post(`${API_BASE_URL}/api/cart/add-to-cart`, {
+                itemCode: product.id,
+                salePrice: product.price,
+                sessionId: sessionId
+            });
+
+            console.log('Cart response:', response.data);
+
+            if (response.data.success) {
+                // Update cart count in localStorage
+                const currentCount = parseInt(localStorage.getItem('cartCount') || '0');
+                localStorage.setItem('cartCount', (currentCount + quantity).toString());
+                // Dispatch a custom event to notify header component
+                window.dispatchEvent(new Event('cartUpdated'));
+
+                setSnackbar({
+                    open: true,
+                    message: 'Item added to cart successfully!',
+                    severity: 'success'
+                });
+            } else {
+                throw new Error(response.data.message || 'Failed to add item to cart');
+            }
+        } catch (error) {
+            console.error('Error adding to cart:', {
+                error: error.message,
+                response: error.response?.data,
+                status: error.response?.status
+            });
+            setSnackbar({
+                open: true,
+                message: error.response?.data?.message || 'Failed to add item to cart. Please try again.',
+                severity: 'error'
+            });
+        } finally {
+            setCartLoading(false);
+        }
+    };
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -503,6 +573,8 @@ const ProductDetail = () => {
                                     variant="contained"
                                     size="large"
                                     startIcon={<CartIcon />}
+                                    onClick={handleAddToCart}
+                                    disabled={cartLoading || !product}
                                     sx={{
                                         flex: 2,
                                         py: '1.5%',
@@ -516,10 +588,14 @@ const ProductDetail = () => {
                                             background: 'linear-gradient(45deg, #FFA500 30%, #FFD700 90%)',
                                             transform: 'translateY(-2%)',
                                             boxShadow: '0 6% 25% rgba(255, 215, 0, 0.35)'
+                                        },
+                                        '&.Mui-disabled': {
+                                            background: 'rgba(0, 0, 0, 0.12)',
+                                            color: 'rgba(0, 0, 0, 0.26)'
                                         }
                                     }}
                                 >
-                                    Add to Cart
+                                    {cartLoading ? 'Adding...' : 'Add to Cart'}
                                 </Button>
                                 <IconButton 
                                     sx={{ 
@@ -736,6 +812,31 @@ const ProductDetail = () => {
                     </Grid>
                 </Paper>
             </Container>
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={3000}
+                onClose={() => setSnackbar({ ...snackbar, open: false })}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                TransitionProps={{ timeout: 500 }}
+                sx={{
+                    '& .MuiSnackbar-root': {
+                        transition: 'all 0.3s ease-in-out'
+                    }
+                }}
+            >
+                <Alert
+                    onClose={() => setSnackbar({ ...snackbar, open: false })}
+                    severity={snackbar.severity}
+                    sx={{ 
+                        width: '100%',
+                        '& .MuiAlert-message': {
+                            fontWeight: 500
+                        }
+                    }}
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };

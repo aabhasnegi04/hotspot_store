@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Typography} from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import LuxuryLoader from '../../common/LuxuryLoader';
@@ -7,13 +7,13 @@ import { API_BASE_URL } from '../../../config';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 
 // Import components
-import SmartphonesBigBanner from './smartphonesBigBanner_1';
-import SmartphonesAd2 from './smartphones_ad_2';
-import PopularSmartphonesAd from './popularSmartphonesAd';
-import HotSmartphonesCarousel from './HotSmartphonesCarousel';
-import ChooseYourTypeSmartphone from './chooseYourTypeSmarphone';
-import ForYourBudget from './forYourBudget';
-import SmartphoneBrands from './smartphoneBrands';
+import WearablesBigBanner from './wearablesBigBanner';
+import WearablesAd2 from './wearables_ad_2';
+import PopularWearablesAd from './popularWearablesAd';
+import HotWearablesCarousel from './HotWearablesCarousel';
+import ChooseYourTypeWearable from './chooseYourTypeWearable';
+import ForYourBudgetWearables from './forYourBudgetWearables';
+import WearableBrands from './brandWearables';
 
 const AnimatedSection = ({ children }) => {
     const [ref, isVisible] = useScrollAnimation(0.2);
@@ -24,10 +24,10 @@ const AnimatedSection = ({ children }) => {
             sx={{
                 transform: isVisible 
                     ? 'scale(1) translateY(0)' 
-                    : 'scale(0.9) translateY(50px)',
+                    : 'scale(0.9) translateY(40px)',
                 opacity: isVisible ? 1 : 0,
                 transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                mb: 4,
+                mb: 3,
                 willChange: 'transform, opacity'
             }}
         >
@@ -36,7 +36,7 @@ const AnimatedSection = ({ children }) => {
     );
 };
 
-const MobilesHomepage = () => {
+const WearablesHomepage = () => {
     const [bestSellers, setBestSellers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -49,7 +49,7 @@ const MobilesHomepage = () => {
     const fetchBestSellers = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`${API_BASE_URL}/api/bestsellers?category=New Handset`);
+            const response = await axios.get(`${API_BASE_URL}/api/bestsellers?category=Wearables`);
             setBestSellers(response.data);
             setLoading(false);
         } catch (err) {
@@ -58,7 +58,7 @@ const MobilesHomepage = () => {
         }
     };
 
-    if (loading) return <LuxuryLoader message="Loading Smartphones" />;
+    if (loading) return <LuxuryLoader message="Loading Wearables" />;
     if (error) return <div>{error}</div>;
 
     return (
@@ -66,98 +66,112 @@ const MobilesHomepage = () => {
             background: 'linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)',
             minHeight: '100vh',
             pt: 0,
-            pb: 6,
+            pb: { xs: 2, sm: 3, md: 4 },
             width: '100vw',
             overflowX: 'hidden',
         }}>
             <Container 
                 maxWidth={false}
                 sx={{ 
-                    pr: 0,
-                    pl: { xs: 2, sm: 3, md: 4 },
+                    pr: { xs: 0.5, sm: 1, md: 0 },
+                    pl: { xs: 0.5, sm: 1, md: 1.5 },
                 }}
             >
-                <AnimatedSection key="title">
-                    <Typography variant="h4" sx={{
-                        fontWeight: 700,
-                        mb: 3,
+                <AnimatedSection>
+                    <Typography variant="h4" sx={{ 
+                        fontWeight: 700, 
+                        mb: { xs: 1.5, sm: 2 },
                         textAlign: 'left',
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         fontFamily: "'Outfit', sans-serif",
-                        pl: 2,
+                        pl: '1.5%',
                         position: 'relative',
-                        top: '10px',
+                        top: '8px',
+                        fontSize: { xs: '1.3rem', sm: '1.8rem', md: '2.2rem' }
                     }}>
-                        Smartphones
+                        Wearables
                     </Typography>
                 </AnimatedSection>
 
-                <AnimatedSection key="bigBanner">
-                    <SmartphonesBigBanner bestSellers={bestSellers} navigate={navigate} />
+                <AnimatedSection>
+                    <WearablesBigBanner bestSellers={bestSellers} navigate={navigate} />
                 </AnimatedSection>
 
-                <AnimatedSection key="treatYourself">
+                <AnimatedSection>
                     <Typography variant="h4" sx={{
                         textAlign: 'left',
-                        mb: 2,
+                        mb: { xs: 0.5, sm: 0.8 },
                         fontWeight: 600,
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        pl: 2,
+                        pl: { xs: 0.5, sm: 1 },
+                        fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
                     }}>
-                        Treat yourself with a new phone
+                        Choose your type of wearable
                     </Typography>
+                    <ChooseYourTypeWearable />
                 </AnimatedSection>
 
-                <AnimatedSection key="ad2">
-                    <SmartphonesAd2 />
-                </AnimatedSection>
-
-                <AnimatedSection key="popularPhones">
+                <AnimatedSection>
                     <Typography variant="h4" sx={{
-                        mb: 3,
+                        textAlign: 'left',
+                        mb: { xs: 0.8, sm: 1.5 },
                         fontWeight: 600,
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
+                        pl: { xs: 0.5, sm: 1 },
+                        fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
                     }}>
-                        Most Popular Smartphones
+                        Enhance Your Lifestyle
                     </Typography>
-                    <PopularSmartphonesAd />
+                    <WearablesAd2 />
                 </AnimatedSection>
 
-                <AnimatedSection key="hotPhones">
+                <AnimatedSection>
                     <Typography variant="h4" sx={{
-                        mb: 3,
-                        mt: 6,
+                        mb: { xs: 0.8, sm: 1.5, md: 2 },
                         fontWeight: 600,
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        pl: 2,
+                        pl: { xs: 0.5, sm: 1 },
+                        fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
                     }}>
-                        Hot Smartphones right now
+                        Most Popular Wearables
                     </Typography>
-                    <HotSmartphonesCarousel bestSellers={bestSellers} navigate={navigate} />
+                    <PopularWearablesAd />
                 </AnimatedSection>
 
-                <AnimatedSection key="chooseType">
-                    <ChooseYourTypeSmartphone />
+                <AnimatedSection>
+                    <Typography variant="h4" sx={{
+                        mb: { xs: 0.8, sm: 1.5, md: 2 },
+                        mt: { xs: 2, sm: 3, md: 4 },
+                        fontWeight: 600,
+                        background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        pl: { xs: 0.5, sm: 1 },
+                        fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
+                    }}>
+                        Hot Wearables right now
+                    </Typography>
+                    <HotWearablesCarousel bestSellers={bestSellers} navigate={navigate} />
                 </AnimatedSection>
 
-                <AnimatedSection key="budget">
-                    <ForYourBudget />
+                <AnimatedSection>
+                    <ForYourBudgetWearables />
                 </AnimatedSection>
 
-                <AnimatedSection key="brands">
-                    <SmartphoneBrands />
+                <AnimatedSection>
+                    <WearableBrands />
                 </AnimatedSection>
             </Container>
         </Box>
     );
 };
 
-export default MobilesHomepage;
+export default WearablesHomepage;

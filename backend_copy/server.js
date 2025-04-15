@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const session = require('express-session');
 require('dotenv').config();
 
 // Fix Buffer deprecation warning by using the new methods
@@ -8,15 +9,36 @@ global.Buffer = Buffer;
 
 const app = express();
 
+// Session configuration
+app.use(session({
+    secret: '12345ABCDE', // Change this to a secure secret in production
+    resave: false,
+    saveUninitialized: true,
+    cookie: { 
+        secure: false, // Set to true if using HTTPS
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+}));
+
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 app.use(express.json());
 
 // authRoutes
 app.use('/api', require('./routes/authRoutes'));
 
+// cartRoutes
+app.use('/api/cart', require('./routes/cartRoutes/addToCartRoute'));
+app.use('/api/cart', require('./routes/cartRoutes/getCartItemsRoute'));
+
 // bestSellerRoutes
 app.use('/api/bestsellers', require('./routes/smartphones_Routes/bestSellerRoutes'));
+
+// best seller accessories routes
+app.use('/api/bestseller-accessories', require('./routes/accessories_Routes/bestSellerAccessoriesRoutes'));
 
 // contactRoutes
 app.use('/api/contact', require('./routes/ContactRoutes'));

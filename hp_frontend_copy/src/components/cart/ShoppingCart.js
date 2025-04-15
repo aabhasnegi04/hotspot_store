@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { API_BASE_URL } from '../../config';
 import {
     Container,
     Paper,
@@ -8,7 +10,9 @@ import {
     Grid,
     IconButton,
     Box,
-    Divider
+    Divider,
+    CircularProgress,
+    Alert
 } from '@mui/material';
 import {
     Delete as DeleteIcon,
@@ -19,26 +23,66 @@ import {
 
 const ShoppingCart = () => {
     const navigate = useNavigate();
-    
-    // Sample cart data - replace with actual cart state management
-    const [cartItems, setCartItems] = React.useState([
-        {
-            id: 1,
-            name: 'Product 1',
-            price: 29.99,
-            quantity: 2,
-            image: 'https://via.placeholder.com/100'
-        },
-        {
-            id: 2,
-            name: 'Product 2',
-            price: 39.99,
-            quantity: 1,
-            image: 'https://via.placeholder.com/100'
-        }
-    ]);
+    const [cartItems, setCartItems] = React.useState([]);
+    const [orderSummary, setOrderSummary] = React.useState(null);
+    const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState(null);
 
-    const handleQuantityChange = (id, change) => {
+    useEffect(() => {
+        fetchCartItems();
+    }, []);
+
+    const fetchCartItems = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const response = await axios.get(`${API_BASE_URL}/api/cart/get-cart-items`, {
+                params: {
+                    sessionId: localStorage.getItem('sessionId')
+                },
+                withCredentials: true
+            });
+
+            if (response.data.success) {
+                console.log('API Response:', response.data.data); // Debug log
+                console.log('Cart Items:', response.data.data.cartItems); // Debug cart items
+
+                // Validate and transform the cart items data
+                const validatedCartItems = (response.data.data.cartItems || []).map(item => ({
+                    ...item,
+                    price: typeof item.SalePrice === 'number' ? item.SalePrice : 0,
+                    quantity: typeof item.UNIT === 'number' ? item.UNIT : 0,
+                    total: (item.SalePrice || 0) * (item.UNIT || 0), // Calculate total from SalePrice and UNIT
+                    product_name: item.ItemName || 'Unknown Product',
+                    image_url: item.Imagepath || 'https://via.placeholder.com/100'
+                }));
+
+                console.log('Validated Cart Items:', validatedCartItems); // Debug validated items
+
+                // Validate order summary
+                const validatedOrderSummary = response.data.data.orderSummary?.[0] ? {
+                    ...response.data.data.orderSummary[0],
+                    total: typeof response.data.data.orderSummary[0].total === 'number' 
+                        ? response.data.data.orderSummary[0].total 
+                        : 0
+                } : { total: 0 };
+
+                setCartItems(validatedCartItems);
+                setOrderSummary(validatedOrderSummary);
+            } else {
+                setError('Failed to fetch cart items');
+            }
+        } catch (error) {
+            console.error('Cart fetch error:', error);
+            setError(error.message || 'An error occurred while fetching cart items');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleQuantityChange = async (id, change) => {
+        // You'll need to implement the API call to update quantity
+        // For now, we'll just update the UI
         setCartItems(prevItems =>
             prevItems.map(item =>
                 item.id === id
@@ -48,17 +92,24 @@ const ShoppingCart = () => {
         );
     };
 
-    const handleRemoveItem = (id) => {
+    const handleRemoveItem = async (id) => {
+        // You'll need to implement the API call to remove item
+        // For now, we'll just update the UI
         setCartItems(prevItems => prevItems.filter(item => item.id !== id));
     };
 
     const calculateSubtotal = () => {
-        return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+        if (!cartItems || cartItems.length === 0) return 0;
+        return cartItems.reduce((sum, item) => sum + ((item.SalePrice || 0) * (item.UNIT || 0)), 0);
     };
 
     const handleCheckout = () => {
         // Add checkout logic here
         navigate('/checkout');
+    };
+
+    const formatPrice = (price) => {
+        return `₹${Math.round(price || 0).toLocaleString('en-IN')}`;
     };
 
     const paperStyle = {
@@ -88,8 +139,16 @@ const ShoppingCart = () => {
         }
     };
 
+    if (loading) {
+        return (
+            <Container maxWidth="md" sx={{ mt: 0, mb: 8, textAlign: 'center' }}>
+                <CircularProgress sx={{ color: '#FFD700' }} />
+            </Container>
+        );
+    }
+
     return (
-        <Container maxWidth="md" sx={{ mt: 16, mb: 8 }}>
+        <Container maxWidth="md" sx={{ mt: 0, mb: 8 }}>
             <Paper elevation={3} sx={paperStyle}>
                 <Typography 
                     variant="h4" 
@@ -108,7 +167,13 @@ const ShoppingCart = () => {
                     Shopping Cart
                 </Typography>
 
-                {cartItems.length === 0 ? (
+                {error && (
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                        {error}
+                    </Alert>
+                )}
+
+                {(!cartItems || cartItems.length === 0) ? (
                     <Box sx={{ textAlign: 'center', py: 4 }}>
                         <ShoppingCartIcon sx={{ fontSize: 64, color: '#FFD700', mb: 2 }} />
                         <Typography variant="h6" sx={{ mb: 2 }}>
@@ -130,8 +195,8 @@ const ShoppingCart = () => {
                                     <Grid item xs={12}>
                                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                                             <img
-                                                src={item.image}
-                                                alt={item.name}
+                                                src={item.image_url || 'https://via.placeholder.com/100'} // Use actual image URL from API
+                                                alt={item.product_name}
                                                 style={{
                                                     width: '100px',
                                                     height: '100px',
@@ -141,10 +206,13 @@ const ShoppingCart = () => {
                                             />
                                             <Box sx={{ flex: 1 }}>
                                                 <Typography variant="h6" sx={{ mb: 1 }}>
-                                                    {item.name}
+                                                    {item.ItemName}
                                                 </Typography>
                                                 <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-                                                    ${item.price.toFixed(2)}
+                                                    Price: {formatPrice(item.SalePrice)}
+                                                </Typography>
+                                                <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+                                                    Total: {formatPrice((item.SalePrice || 0) * (item.UNIT || 0))}
                                                 </Typography>
                                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                                     <IconButton
@@ -154,7 +222,7 @@ const ShoppingCart = () => {
                                                     >
                                                         <RemoveIcon />
                                                     </IconButton>
-                                                    <Typography sx={{ mx: 1 }}>{item.quantity}</Typography>
+                                                    <Typography sx={{ mx: 1 }}>{item.UNIT}</Typography>
                                                     <IconButton
                                                         size="small"
                                                         onClick={() => handleQuantityChange(item.id, 1)}
@@ -180,24 +248,26 @@ const ShoppingCart = () => {
                             ))}
                         </Grid>
 
-                        <Box sx={{ mt: 4 }}>
-                            <Grid container justifyContent="space-between" alignItems="center">
-                                <Grid item>
-                                    <Typography variant="h6">
-                                        Subtotal: ${calculateSubtotal().toFixed(2)}
-                                    </Typography>
+                        {orderSummary && (
+                            <Box sx={{ mt: 4 }}>
+                                <Grid container justifyContent="space-between" alignItems="center">
+                                    <Grid item>
+                                        <Typography variant="h6">
+                                            Subtotal: {formatPrice(calculateSubtotal())}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button
+                                            variant="contained"
+                                            onClick={handleCheckout}
+                                            sx={buttonStyle}
+                                        >
+                                            Proceed to Checkout
+                                        </Button>
+                                    </Grid>
                                 </Grid>
-                                <Grid item>
-                                    <Button
-                                        variant="contained"
-                                        onClick={handleCheckout}
-                                        sx={buttonStyle}
-                                    >
-                                        Proceed to Checkout
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                        </Box>
+                            </Box>
+                        )}
                     </>
                 )}
             </Paper>
