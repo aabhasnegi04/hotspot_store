@@ -16,7 +16,7 @@ const ChooseYourTypeSmartphone = () => {
         },
         {
             image: 'https://static.thenounproject.com/png/3376213-200.png',
-            path: '/smartphones/featured'
+            path: '/featured-phones'
         }
     ];
 

@@ -34,6 +34,7 @@ import AllProducts from './components/product_pages/allProducts';
 import MobilesHomepage from './components/product_pages/mobile phones/mobilesHomepage';
 import AccessoriesHomepage from './components/product_pages/accessories/accessoriesHomepage';
 import WearablesHomepage from './components/product_pages/wearables/wearablesHomepage';
+import FeaturedPhones from './components/product_pages/mobile phones/FeaturedPhones';
 import './App.css';
 
 // Define the application's theme configuration
@@ -79,6 +80,7 @@ function App() {
               <Route path="/cart" element={<ShoppingCart />} />
               <Route path="/bestsellers" element={<BestSeller />} />
               <Route path="/bestseller-accessories" element={<BestSellerAccessories />} />
+              <Route path="/featured-phones" element={<FeaturedPhones />} />
               <Route path="/" element={
                 <main className="main-content">
                   <Hero />
