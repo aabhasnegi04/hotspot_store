@@ -22,10 +22,21 @@ app.use(session({
 
 // Middleware
 app.use(cors({
-    origin: true,
-    credentials: true
+  origin: [
+    'http://veneersoft.in',
+    'http://localhost:8001',
+    'http://api.veneersoft.in:8001',
+    'http://localhost:3000',
+    'http://localhost:5173'
+  ],
+  credentials: true
 }));
 app.use(express.json());
+
+// Root route for a friendly message
+app.get('/', (req, res) => {
+    res.send('Welcome to the Veneersoft API! The server is running successfully.');
+});
 
 // authRoutes
 app.use('/api', require('./routes/authRoutes'));
@@ -33,6 +44,7 @@ app.use('/api', require('./routes/authRoutes'));
 // cartRoutes
 app.use('/api/cart', require('./routes/cartRoutes/addToCartRoute'));
 app.use('/api/cart', require('./routes/cartRoutes/getCartItemsRoute'));
+app.use('/api/cart', require('./routes/cartRoutes/deleteCartItemRoute.js'));
 
 // bestSellerRoutes
 app.use('/api/bestsellers', require('./routes/smartphones_Routes/bestSellerRoutes'));
@@ -73,6 +85,9 @@ app.use('/api/products', require('./routes/product_Routes/productListRoutes'));
 // Add hot products routes
 app.use('/api/hot-products', require('./routes/smartphones_Routes/HotProductsRoutes'));
 
+// Add featured phones routes
+app.use('/api/featured-phones', require('./routes/smartphones_Routes/featuredPhonesRoutes'));
+
 // Add smartwatch routes
 app.use('/api/smartwatches', require('./routes/wearables_Routes/allWearablesRoutes'));
 
@@ -96,8 +111,9 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port http://localhost:${PORT}`);
+  console.log(`Server is accessible at http://api.veneersoft.in:${PORT}`);
 });
 
 // Handle uncaught exceptions

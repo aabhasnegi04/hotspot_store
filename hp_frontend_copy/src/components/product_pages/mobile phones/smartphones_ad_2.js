@@ -21,41 +21,33 @@ const SmartphonesAd2 = () => {
                         transform: 'translateY(-5px)'
                     }
                 }}>
-                    <Box sx={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: 3,
-                        background: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7))'
-                    }}>
-                        <Typography variant="h5" sx={{
-                            background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            textAlign: 'center',
-                            mb: 2
-                        }}>
-                            Best Selling phones ad #1
-                        </Typography>
-                        <Typography variant="body1" sx={{ 
-                            color: '#666',
-                            textAlign: 'center'
-                        }}>
-                            Advertisement Space
-                        </Typography>
-                    </Box>
+                    <Box
+                        component="img"
+                        src="/Image/banner/handset_banner/S24 Ultra Web Banner 1920x500 Px.jpg"
+                        alt="Samsung S24 Ultra Banner"
+                        sx={{
+                            width: '130%',
+                            height: '110%',
+                            objectFit: 'contain',
+                            objectPosition: 'center',
+                            display: 'block'
+                        }}
+                    />
                 </Card>
             </Grid>
 
             {/* Secondary Ads */}
-            {[2, 3].map((num) => (
-                <Grid item xs={12} md={6} key={num}>
+            {[
+                {
+                    src: "/Image/banner/handset_banner/Galaxy Buds3 Pro 900x400 px.jpg",
+                    alt: "Galaxy Buds3 Pro"
+                },
+                {
+                    src: "/Image/banner/handset_banner/Galaxy S24 FE 900x400 Px.jpg",
+                    alt: "Galaxy S24 FE"
+                }
+            ].map((ad, index) => (
+                <Grid item xs={12} md={6} key={index}>
                     <Card sx={{ 
                         height: 400,
                         background: 'rgba(255, 255, 255, 0.8)',
@@ -71,35 +63,19 @@ const SmartphonesAd2 = () => {
                             transform: 'translateY(-5px)'
                         }
                     }}>
-                        <Box sx={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: 3,
-                            background: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7))'
-                        }}>
-                            <Typography variant="h6" sx={{
-                                background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                textAlign: 'center',
-                                mb: 2
-                            }}>
-                                Advertisement #{num}
-                            </Typography>
-                            <Typography variant="body1" sx={{ 
-                                color: '#666',
-                                textAlign: 'center'
-                            }}>
-                                Ad Space {num}
-                            </Typography>
-                        </Box>
+                        <Box
+                            component="img"
+                            src={ad.src}
+                            alt={ad.alt}
+                            sx={{
+                                width: '125%',
+                                height: '125%',
+                                objectFit: 'contain',
+                                objectPosition: 'center',
+                                display: 'block',
+                                transform: 'translateX(4%)'
+                            }}
+                        />
                     </Card>
                 </Grid>
             ))}
@@ -121,35 +97,19 @@ const SmartphonesAd2 = () => {
                         transform: 'translateY(-5px)'
                     }
                 }}>
-                    <Box sx={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: 3,
-                        background: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7))'
-                    }}>
-                        <Typography variant="h5" sx={{
-                            background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            textAlign: 'center',
-                            mb: 2
-                        }}>
-                            Advertisement #4
-                        </Typography>
-                        <Typography variant="body1" sx={{ 
-                            color: '#666',
-                            textAlign: 'center'
-                        }}>
-                            Wide Advertisement Space
-                        </Typography>
-                    </Box>
+                    <Box
+                        component="img"
+                        src="/Image/banner/handset_banner/xiomi 14 Web Banner 1920x500 Px.jpg"
+                        alt="Xiaomi 14 Banner"
+                        sx={{
+                            width: '130%',
+                            height: '130%',
+                            objectFit: 'contain',
+                            objectPosition: 'center',
+                            display: 'block',
+                            transform: 'translateX(10%)'
+                        }}
+                    />
                 </Card>
             </Grid>
         </Grid>
