@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Grid, Card, CardMedia, Typography } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
+import axios from 'axios';
+import { API_BASE_URL } from '../../../config';
 
 const styles = {
     carouselNav: {
@@ -14,12 +16,34 @@ const styles = {
     }
 };
 
-const HotAccessoriesCarousel = ({ bestSellers, navigate }) => {
+const HotAccessoriesCarousel = ({ navigate }) => {
+    const [bestSellers, setBestSellers] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchBestSellers = async () => {
+            try {
+                const response = await axios.get(`${API_BASE_URL}/api/bestseller-accessories`);
+                setBestSellers(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching best seller accessories:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchBestSellers();
+    }, []);
+
+    if (loading || bestSellers.length === 0) return null;
+
     return (
         <Box sx={{ 
             mb: 6,
             borderRadius: '20px',
             overflow: 'hidden',
+            maxWidth: '98%',
+            ml: '0%'
         }}>
             <Carousel
                 animation="slide"
@@ -31,13 +55,13 @@ const HotAccessoriesCarousel = ({ bestSellers, navigate }) => {
             >
                 {/* Group products into chunks of 4 */}
                 {Array.from({ length: Math.ceil(bestSellers.length / 4) }, (_, index) => (
-                    <Grid container spacing={2} key={index}>
+                    <Grid container spacing={2} key={index} sx={{ px: 1 }}>
                         {bestSellers.slice(index * 4, (index + 1) * 4).map((product) => (
-                            <Grid item xs={12} sm={6} md={3} key={product.itemcode}>
+                            <Grid item xs={12} sm={6} md={3} key={product.itemCode}>
                                 <Card 
-                                    onClick={() => navigate(`/product/${product.itemcode}`)}
+                                    onClick={() => navigate(`/product/${product.itemCode}`)}
                                     sx={{
-                                        height: '400px',
+                                        height: '350px',
                                         background: 'rgba(255, 255, 255, 0.8)',
                                         borderRadius: '20px',
                                         display: 'flex',
@@ -45,17 +69,17 @@ const HotAccessoriesCarousel = ({ bestSellers, navigate }) => {
                                         border: '1px solid rgba(255, 215, 0, 0.1)',
                                         cursor: 'pointer',
                                         position: 'relative',
-                                        p: 2,
+                                        p: 1.5,
                                     }}
                                 >
                                     <CardMedia
                                         component="img"
                                         image={product.image || 'https://via.placeholder.com/300'}
-                                        alt={product.ItemName}
+                                        alt={product.itemName}
                                         sx={{
-                                            height: '200px',
+                                            height: '160px',
                                             objectFit: 'contain',
-                                            mb: 2,
+                                            mb: 1.5,
                                             transition: 'transform 0.3s ease',
                                             '&:hover': {
                                                 transform: 'scale(1.1)'
@@ -68,9 +92,9 @@ const HotAccessoriesCarousel = ({ bestSellers, navigate }) => {
                                             variant="h6" 
                                             sx={{
                                                 fontWeight: 600,
-                                                mb: 1,
+                                                mb: 0.8,
                                                 color: '#b7950b',
-                                                fontSize: '1rem',
+                                                fontSize: '0.95rem',
                                                 height: '2.4em',
                                                 overflow: 'hidden',
                                                 textOverflow: 'ellipsis',
@@ -79,7 +103,7 @@ const HotAccessoriesCarousel = ({ bestSellers, navigate }) => {
                                                 WebkitBoxOrient: 'vertical',
                                             }}
                                         >
-                                            {product.ItemName}
+                                            {product.itemName}
                                         </Typography>
 
                                         <Typography sx={{ 
@@ -107,7 +131,7 @@ const HotAccessoriesCarousel = ({ bestSellers, navigate }) => {
                                                 fontWeight: 700,
                                                 fontSize: '1.1rem'
                                             }}>
-                                                {product.category || 'Accessory'}
+                                                Accessory
                                             </span>
                                         </Typography>
 

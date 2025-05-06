@@ -51,12 +51,11 @@ const ForYourBudgetAccessories = () => {
                 background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                pl: 2,
             }}>
                 For Your Budget
             </Typography>
 
-            <Grid container spacing={3} sx={{ px: 2 }}>
+            <Grid container spacing={3} sx={{ px: 1, ml: '-2%', maxWidth: '101%' }}>
                 {priceRanges.map((range, index) => (
                     <Grid item xs={12} sm={6} md={2.4} key={index}>
                         <Card 

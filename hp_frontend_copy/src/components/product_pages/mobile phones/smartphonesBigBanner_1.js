@@ -160,6 +160,7 @@ const SmartphonesBigBanner = ({ bestSellers, navigate }) => {
             mb: 3,
             borderRadius: '20px',
             overflow: 'hidden',
+            ml: { xs: 0, md: '-1%' }
         }}>
             <Carousel
                 animation="slide"

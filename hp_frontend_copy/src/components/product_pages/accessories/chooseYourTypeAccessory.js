@@ -115,13 +115,14 @@ const ChooseYourTypeAccessory = () => {
                 gap: 3,
                 position: 'relative',
                 minHeight: '450px',
-                px: 5
+                px: 3,
+                ml: '-1%'
             }}>
                 <IconButton 
                     onClick={handlePrev}
                     sx={{
                         position: 'absolute',
-                        left: 0,
+                        left: '2%',
                         top: '50%',
                         transform: 'translateY(-50%)',
                         backgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -203,7 +204,7 @@ const ChooseYourTypeAccessory = () => {
                     onClick={handleNext}
                     sx={{
                         position: 'absolute',
-                        right: 0,
+                        right: '2%',
                         top: '50%',
                         transform: 'translateY(-50%)',
                         backgroundColor: 'rgba(255, 255, 255, 0.8)',

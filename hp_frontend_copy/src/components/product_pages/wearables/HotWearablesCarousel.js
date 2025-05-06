@@ -20,6 +20,8 @@ const HotWearablesCarousel = ({ bestSellers, navigate }) => {
             mb: 6,
             borderRadius: '20px',
             overflow: 'hidden',
+            maxWidth: '95%',
+            mx: 'auto'
         }}>
             <Carousel
                 animation="slide"
@@ -45,25 +47,25 @@ const HotWearablesCarousel = ({ bestSellers, navigate }) => {
                                     <Card 
                                         onClick={() => navigate(`/product/${product.itemcode || product.ItemCode}`)}
                                         sx={{
-                                            height: '400px',
+                                            height: '320px',
                                             background: 'rgba(255, 255, 255, 0.8)',
-                                            borderRadius: '20px',
+                                            borderRadius: '16px',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             border: '1px solid rgba(255, 215, 0, 0.1)',
                                             cursor: 'pointer',
                                             position: 'relative',
-                                            p: 2,
+                                            p: 1.5,
                                         }}
                                     >
                                         <CardMedia
                                             component="img"
                                             image={product.image || 'https://via.placeholder.com/300'}
-                                            alt={product.ItemName}
+                                            alt={product.itemName}
                                             sx={{
-                                                height: '200px',
+                                                height: '140px',
                                                 objectFit: 'contain',
-                                                mb: 2,
+                                                mb: 1.5,
                                                 transition: 'transform 0.3s ease',
                                                 '&:hover': {
                                                     transform: 'scale(1.1)'
@@ -87,7 +89,7 @@ const HotWearablesCarousel = ({ bestSellers, navigate }) => {
                                                     WebkitBoxOrient: 'vertical',
                                                 }}
                                             >
-                                                {product.ItemName}
+                                                {product.itemName}
                                             </Typography>
 
                                             <Typography sx={{ 
@@ -115,7 +117,7 @@ const HotWearablesCarousel = ({ bestSellers, navigate }) => {
                                                     fontWeight: 700,
                                                     fontSize: '1.1rem'
                                                 }}>
-                                                    {product.category || 'Wearable'}
+                                                    {product.model || 'Smartwatch'}
                                                 </span>
                                             </Typography>
 
@@ -124,24 +126,24 @@ const HotWearablesCarousel = ({ bestSellers, navigate }) => {
                                                 fontWeight: 700,
                                                 fontSize: '1.2rem'
                                             }}>
-                                                ₹{product.salePrice.toLocaleString('en-IN')}
+                                                ₹{Number(product.salePrice).toLocaleString('en-IN')}
                                             </Typography>
 
-                                            {product.currentMRP > product.salePrice && (
+                                            {Number(product.currentMRP) > Number(product.salePrice) && (
                                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                                     <Typography sx={{ 
                                                         textDecoration: 'line-through',
                                                         color: '#666',
                                                         fontSize: '0.9rem'
                                                     }}>
-                                                        ₹{product.currentMRP.toLocaleString('en-IN')}
+                                                        ₹{Number(product.currentMRP).toLocaleString('en-IN')}
                                                     </Typography>
                                                     <Typography sx={{ 
                                                         color: '#4CAF50',
                                                         fontWeight: 600,
                                                         fontSize: '0.9rem'
                                                     }}>
-                                                        {Math.round(((product.currentMRP - product.salePrice) / product.currentMRP) * 100)}% OFF
+                                                        {Math.round(((Number(product.currentMRP) - Number(product.salePrice)) / Number(product.currentMRP)) * 100)}% OFF
                                                     </Typography>
                                                 </Box>
                                             )}

@@ -17,7 +17,17 @@ const ForYourBudgetWearables = () => {
 
     const priceRanges = [
         {
-            range: '0-5000',
+            range: '0-1000',
+            image: '/Image/price range/wearables/under-1000.png',
+            label: 'Under ₹1,000'
+        },
+        {
+            range: '1000-2000',
+            image: '/Image/price range/wearables/under-2000.png',
+            label: 'Under ₹2,000'
+        },
+        {
+            range: '2000-5000',
             image: '/Image/price range/wearables/under-5000.png',
             label: 'Under ₹5,000'
         },
@@ -27,19 +37,9 @@ const ForYourBudgetWearables = () => {
             label: 'Under ₹10,000'
         },
         {
-            range: '10000-20000',
-            image: '/Image/price range/wearables/under-20000.png',
-            label: 'Under ₹20,000'
-        },
-        {
-            range: '20000-50000',
-            image: '/Image/price range/wearables/under-50000.png',
-            label: 'Under ₹50,000'
-        },
-        {
-            range: '50000-999999',
-            image: '/Image/price range/wearables/above-50000.png',
-            label: 'Above ₹50,000'
+            range: '10000-999999',
+            image: '/Image/price range/wearables/above-10000.png',
+            label: 'Above ₹10,000'
         }
     ];
 
@@ -51,18 +51,18 @@ const ForYourBudgetWearables = () => {
                 background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                pl: 2,
+                pl: 1,
             }}>
                 For Your Budget
             </Typography>
 
-            <Grid container spacing={3} sx={{ px: 2 }}>
+            <Grid container spacing={1} sx={{ px: 0.5, ml: '0.5%', maxWidth: '99%' }}>
                 {priceRanges.map((range, index) => (
-                    <Grid item xs={12} sm={6} md={2.4} key={index}>
+                    <Grid item xs={12} sm={6} md={2.35} key={index}>
                         <Card 
                             onClick={() => handleClick(range.range)}
                             sx={{
-                                height: 200,
+                                height: 180,
                                 background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
                                 borderRadius: '20px',
                                 display: 'flex',

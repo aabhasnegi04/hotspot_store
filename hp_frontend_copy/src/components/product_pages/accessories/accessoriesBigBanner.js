@@ -203,8 +203,8 @@ const AccessoriesBigBanner = ({ navigate }) => {
             mb: 3,
             borderRadius: '20px',
             overflow: 'hidden',
-            maxWidth: '97%',
-            mx: 'auto'
+            ml: { xs: '1%', md: '0' },
+            maxWidth: '98%'
         }}>
             <Carousel
                 animation="slide"

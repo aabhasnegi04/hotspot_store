@@ -29,6 +29,7 @@ import BrandAccessories from './components/product_pages/accessories/brandAccess
 import CategoryAccessory from './components/product_pages/accessories/categoryAccessory';
 import PriceRange from './components/product_pages/mobile phones/priceRangeHandsets';
 import PriceRangeAccessories from './components/product_pages/accessories/priceRangeAccessories';
+import PriceRangeWearables from './components/product_pages/wearables/priceRangeWearables';
 import BrandHandsets from './components/product_pages/mobile phones/brandHandsets';
 import AllProducts from './components/product_pages/allProducts';
 import MobilesHomepage from './components/product_pages/mobile phones/mobilesHomepage';
@@ -102,6 +103,7 @@ function App() {
               <Route path="/category-accessories/:category" element={<CategoryAccessory />} />
               <Route path="/price-range/:range" element={<PriceRange />} />
               <Route path="/accessories/price-range/:range" element={<PriceRangeAccessories />} />
+              <Route path="/wearables/price-range/:range" element={<PriceRangeWearables />} />
               <Route path="/brand-handsets/:brand" element={<BrandHandsets />} />
               <Route path="/products" element={<AllProducts />} />
               <Route path="/smartphones" element={<MobilesHomepage />} />

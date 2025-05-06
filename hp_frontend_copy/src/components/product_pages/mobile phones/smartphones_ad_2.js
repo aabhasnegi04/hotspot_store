@@ -1,9 +1,13 @@
 import React from 'react';
-import { Grid, Card, Typography, Box } from '@mui/material';
+import { Grid, Card, Box } from '@mui/material';
 
 const SmartphonesAd2 = () => {
     return (
-        <Grid container spacing={3} sx={{ mb: 6 }}>
+        <Grid container spacing={3} sx={{ 
+            mb: 6,
+            maxWidth: '99%',
+            ml: { xs: 0, md: '-1%' }
+        }}>
             {/* Main Ad */}
             <Grid item xs={12}>
                 <Card sx={{ 
@@ -23,7 +27,7 @@ const SmartphonesAd2 = () => {
                 }}>
                     <Box
                         component="img"
-                        src="/Image/banner/handset_banner/S24 Ultra Web Banner 1920x500 Px.jpg"
+                        src="/Image/banner/handset_banner/hsbanner3_8806095296241.jpg"
                         alt="Samsung S24 Ultra Banner"
                         sx={{
                             width: '130%',
@@ -39,11 +43,11 @@ const SmartphonesAd2 = () => {
             {/* Secondary Ads */}
             {[
                 {
-                    src: "/Image/banner/handset_banner/Galaxy Buds3 Pro 900x400 px.jpg",
+                    src: "/Image/banner/handset_banner/hsbanner1_8806095701950.jpg",
                     alt: "Galaxy Buds3 Pro"
                 },
                 {
-                    src: "/Image/banner/handset_banner/Galaxy S24 FE 900x400 Px.jpg",
+                    src: "/Image/banner/handset_banner/hsbanner2_8806095743592.jpg",
                     alt: "Galaxy S24 FE"
                 }
             ].map((ad, index) => (

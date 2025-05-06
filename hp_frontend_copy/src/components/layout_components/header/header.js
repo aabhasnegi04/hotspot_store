@@ -277,11 +277,19 @@ const Header = () => {
                     boxShadow: '0 4px 8px rgba(0,0,0,0.15)',
                     height: { xs: '110px', sm: '60px', md: '64px' },
                     backdropFilter: 'blur(8px)',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.2)'
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+                    width: '100%'
                 }}
                 elevation={1}
             >
-                <Container maxWidth={false} sx={{ px: { xs: 1.5, sm: 3, md: 6 } }}>
+                <Container 
+                    maxWidth="xl" 
+                    sx={{ 
+                        px: { xs: 1, sm: 2, md: 3 },
+                        mx: 'auto',
+                        width: '100%'
+                    }}
+                >
                     <Toolbar 
                         disableGutters 
                         sx={{ 

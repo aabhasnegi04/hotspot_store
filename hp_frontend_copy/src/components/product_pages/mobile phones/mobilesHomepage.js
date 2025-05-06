@@ -74,7 +74,7 @@ const MobilesHomepage = () => {
                 maxWidth={false}
                 sx={{ 
                     pr: 0,
-                    pl: { xs: 2, sm: 3, md: 4 },
+                    pl: { xs: 1, sm: 2, md: 3 },
                 }}
             >
                 <AnimatedSection key="title">
@@ -86,7 +86,7 @@ const MobilesHomepage = () => {
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         fontFamily: "'Outfit', sans-serif",
-                        pl: 2,
+                        pl: 1,
                         position: 'relative',
                         top: '10px',
                     }}>

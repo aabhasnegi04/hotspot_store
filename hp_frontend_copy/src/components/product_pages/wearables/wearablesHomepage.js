@@ -8,12 +8,9 @@ import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 
 // Import components
 import WearablesBigBanner from './wearablesBigBanner';
-import WearablesAd2 from './wearables_ad_2';
 import PopularWearablesAd from './popularWearablesAd';
 import HotWearablesCarousel from './HotWearablesCarousel';
-import ChooseYourTypeWearable from './chooseYourTypeWearable';
 import ForYourBudgetWearables from './forYourBudgetWearables';
-import WearableBrands from './brandWearables';
 
 const AnimatedSection = ({ children }) => {
     const [ref, isVisible] = useScrollAnimation(0.2);
@@ -49,7 +46,7 @@ const WearablesHomepage = () => {
     const fetchBestSellers = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`${API_BASE_URL}/api/bestsellers?category=Wearables`);
+            const response = await axios.get(`${API_BASE_URL}/api/bestseller-smartwatches`);
             setBestSellers(response.data);
             setLoading(false);
         } catch (err) {
@@ -74,7 +71,7 @@ const WearablesHomepage = () => {
                 maxWidth={false}
                 sx={{ 
                     pr: { xs: 0.5, sm: 1, md: 0 },
-                    pl: { xs: 0.5, sm: 1, md: 1.5 },
+                    pl: { xs: 0.5, sm: 1, md: 0 },
                 }}
             >
                 <AnimatedSection>
@@ -101,44 +98,12 @@ const WearablesHomepage = () => {
 
                 <AnimatedSection>
                     <Typography variant="h4" sx={{
-                        textAlign: 'left',
-                        mb: { xs: 0.5, sm: 0.8 },
-                        fontWeight: 600,
-                        background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        pl: { xs: 0.5, sm: 1 },
-                        fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
-                    }}>
-                        Choose your type of wearable
-                    </Typography>
-                    <ChooseYourTypeWearable />
-                </AnimatedSection>
-
-                <AnimatedSection>
-                    <Typography variant="h4" sx={{
-                        textAlign: 'left',
-                        mb: { xs: 0.8, sm: 1.5 },
-                        fontWeight: 600,
-                        background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        pl: { xs: 0.5, sm: 1 },
-                        fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
-                    }}>
-                        Enhance Your Lifestyle
-                    </Typography>
-                    <WearablesAd2 />
-                </AnimatedSection>
-
-                <AnimatedSection>
-                    <Typography variant="h4" sx={{
                         mb: { xs: 0.8, sm: 1.5, md: 2 },
                         fontWeight: 600,
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        pl: { xs: 0.5, sm: 1 },
+                        pl: { xs: 1, sm: 1.5, md: 2 },
                         fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
                     }}>
                         Most Popular Wearables
@@ -154,7 +119,7 @@ const WearablesHomepage = () => {
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        pl: { xs: 0.5, sm: 1 },
+                        pl: { xs: 1, sm: 3, md: 4 },
                         fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
                     }}>
                         Hot Wearables right now
@@ -166,9 +131,6 @@ const WearablesHomepage = () => {
                     <ForYourBudgetWearables />
                 </AnimatedSection>
 
-                <AnimatedSection>
-                    <WearableBrands />
-                </AnimatedSection>
             </Container>
         </Box>
     );

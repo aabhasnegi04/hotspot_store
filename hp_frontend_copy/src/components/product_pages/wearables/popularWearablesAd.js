@@ -18,27 +18,27 @@ const PopularWearablesAd = () => {
     const brands = [
         {
             brand: 'apple',
-            image: '/Image/wearables/apple.png',
+            image: '/Image/img/brands/hs/apple.png',
             title: 'Apple Wearables',
             description: 'Experience the seamless integration of Apple ecosystem'
         },
         {
             brand: 'samsung',
-            image: '/Image/wearables/samsung.png',
+            image: '/Image/img/brands/hs/samsung.png',
             title: 'Samsung Wearables',
             description: 'Innovative technology for your daily life'
         },
         {
             brand: 'sony',
-            image: '/Image/wearables/sony.png',
+            image: 'https://1000logos.net/wp-content/uploads/2021/05/Sony-logo.png',
             title: 'Sony Wearables',
             description: 'Premium audio and gaming experience'
         }
     ];
 
     return (
-        <Box sx={{ mb: 6 }}>
-            <Grid container spacing={3}>
+        <Box sx={{ mb: 4, maxWidth: '97%', mx: 'auto' }}>
+            <Grid container spacing={2}>
                 {brands.map((brand, index) => (
                     <Grid item xs={12} md={4} key={index}>
                         <Card 
@@ -46,7 +46,7 @@ const PopularWearablesAd = () => {
                             sx={{
                                 height: '100%',
                                 background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
-                                borderRadius: '20px',
+                                borderRadius: '16px',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 border: '2px solid rgba(183, 149, 11, 0.1)',
@@ -68,27 +68,31 @@ const PopularWearablesAd = () => {
                                 alt={brand.title}
                                 sx={{
                                     width: '100%',
-                                    height: '200px',
-                                    objectFit: 'cover'
+                                    height: '160px',
+                                    objectFit: 'contain',
+                                    p: 2
                                 }}
                             />
-                            <Box sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                            <Box sx={{ p: 2, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                                 <Typography variant="h5" sx={{ 
-                                    mb: 2,
+                                    mb: 1,
                                     fontWeight: 600,
-                                    color: '#b7950b'
+                                    color: '#b7950b',
+                                    fontSize: '1.2rem'
                                 }}>
                                     {brand.title}
                                 </Typography>
                                 <Typography variant="body1" sx={{ 
-                                    mb: 3,
+                                    mb: 2,
                                     color: '#666',
-                                    flexGrow: 1
+                                    flexGrow: 1,
+                                    fontSize: '0.9rem'
                                 }}>
                                     {brand.description}
                                 </Typography>
                                 <Button
                                     variant="contained"
+                                    size="small"
                                     sx={{
                                         backgroundColor: '#b7950b',
                                         color: 'white',

@@ -14,7 +14,12 @@ const PopularAccessoriesAd = () => {
     return (
         <>
             {/* First row - 2 large ads */}
-            <Grid container spacing={3} sx={{ mb: 3, px: 2 }}>
+            <Grid container spacing={3} sx={{ 
+                mb: 3, 
+                px: 1,
+                ml: '-2.2%',
+                maxWidth: '101%'
+            }}>
                 {accessoryTypes.slice(0, 2).map((item, index) => (
                     <Grid item xs={12} sm={6} key={index}>
                         <Card sx={{ 
@@ -48,7 +53,11 @@ const PopularAccessoriesAd = () => {
             </Grid>
 
             {/* Second row - 4 smaller ads */}
-            <Grid container spacing={3} sx={{ px: 2 }}>
+            <Grid container spacing={3} sx={{ 
+                px: 1,
+                ml: '-2.2%',
+                maxWidth: '101%'
+            }}>
                 {accessoryTypes.slice(2).map((item, index) => (
                     <Grid item xs={12} sm={6} md={3} key={index}>
                         <Card sx={{ 

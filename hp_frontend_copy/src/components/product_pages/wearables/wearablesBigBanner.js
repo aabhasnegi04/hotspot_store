@@ -204,7 +204,8 @@ const WearablesBigBanner = ({ navigate }) => {
             borderRadius: '20px',
             overflow: 'hidden',
             maxWidth: '97%',
-            mx: 'auto'
+            mx: { xs: 'auto', md: '0' },
+            ml: { xs: 'auto', md: '1%' }
         }}>
             <Carousel
                 animation="slide"
