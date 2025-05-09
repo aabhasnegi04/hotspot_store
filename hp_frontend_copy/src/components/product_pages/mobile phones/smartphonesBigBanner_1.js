@@ -30,6 +30,12 @@ const styles = {
     }
 };
 
+const normalizeProduct = (product) => ({
+    ...product,
+    salePrice: Number(product.salePrice || product.SalePrice || product.price || 0),
+    currentMRP: Number(product.currentMRP || product.MRP || product.mrp || 0),
+});
+
 const ProductBanner = ({ product, handleProductClick }) => (
     <Card onClick={() => handleProductClick(product.itemcode)} sx={styles.card}>
         <Grid container sx={{ height: '100%' }}>
@@ -92,7 +98,7 @@ const ProductBanner = ({ product, handleProductClick }) => (
                         alignItems: 'baseline',
                         gap: 1
                     }}>
-                        ₹{product.salePrice.toLocaleString('en-IN')}
+                        ₹{typeof product.salePrice === 'number' ? product.salePrice.toLocaleString('en-IN') : ''}
                         <Typography 
                             component="span" 
                             sx={{ 
@@ -106,7 +112,7 @@ const ProductBanner = ({ product, handleProductClick }) => (
                         </Typography>
                     </Typography>
                     
-                    {product.currentMRP > product.salePrice && (
+                    {typeof product.currentMRP === 'number' && typeof product.salePrice === 'number' && product.currentMRP > product.salePrice && (
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <Typography variant="h6" sx={{ 
                                 textDecoration: 'line-through', 
@@ -155,6 +161,9 @@ const ProductBanner = ({ product, handleProductClick }) => (
 );
 
 const SmartphonesBigBanner = ({ bestSellers, navigate }) => {
+    const safeBestSellers = Array.isArray(bestSellers)
+        ? bestSellers.map(normalizeProduct)
+        : [];
     return (
         <Box sx={{ 
             mb: 3,
@@ -169,7 +178,7 @@ const SmartphonesBigBanner = ({ bestSellers, navigate }) => {
                 interval={5000}
                 sx={styles.carouselNav}
             >
-                {bestSellers.map((product) => (
+                {safeBestSellers.map((product) => (
                     <ProductBanner 
                         key={product.itemcode} 
                         product={product} 

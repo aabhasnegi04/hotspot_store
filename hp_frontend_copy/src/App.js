@@ -23,7 +23,6 @@ import Contact from './components/layout_components/footer/Contact';
 import PrivacyPolicy from './components/layout_components/footer/PrivacyPolicy';
 import TermsOfService from './components/layout_components/footer/TermsOfService';
 import CookiePolicy from './components/layout_components/footer/CookiePolicy';
-import BestSeller from './components/product_pages/mobile phones/bestSellerHandsets';
 import BestSellerAccessories from './components/product_pages/accessories/bestSellerAccessories';
 import BrandAccessories from './components/product_pages/accessories/brandAccessories';
 import CategoryAccessory from './components/product_pages/accessories/categoryAccessory';
@@ -35,8 +34,12 @@ import AllProducts from './components/product_pages/allProducts';
 import MobilesHomepage from './components/product_pages/mobile phones/mobilesHomepage';
 import AccessoriesHomepage from './components/product_pages/accessories/accessoriesHomepage';
 import WearablesHomepage from './components/product_pages/wearables/wearablesHomepage';
+import BrandWearables from './components/product_pages/wearables/brandWearables';
 import FeaturedPhones from './components/product_pages/mobile phones/FeaturedPhones';
+import BestsellersHomepage from './components/product_pages/bestsellers/bestsellersHomepage';
 import './App.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 // Define the application's theme configuration
 // This creates a consistent color scheme and styling across the app
@@ -79,7 +82,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/cart" element={<ShoppingCart />} />
-              <Route path="/bestsellers" element={<BestSeller />} />
+              <Route path="/bestsellers" element={<BestsellersHomepage />} />
               <Route path="/bestseller-accessories" element={<BestSellerAccessories />} />
               <Route path="/featured-phones" element={<FeaturedPhones />} />
               <Route path="/" element={
@@ -105,6 +108,7 @@ function App() {
               <Route path="/accessories/price-range/:range" element={<PriceRangeAccessories />} />
               <Route path="/wearables/price-range/:range" element={<PriceRangeWearables />} />
               <Route path="/brand-handsets/:brand" element={<BrandHandsets />} />
+              <Route path="/brand-wearables/:brand" element={<BrandWearables />} />
               <Route path="/products" element={<AllProducts />} />
               <Route path="/smartphones" element={<MobilesHomepage />} />
               <Route path="/accessories" element={<AccessoriesHomepage />} />

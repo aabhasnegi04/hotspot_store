@@ -47,7 +47,7 @@ app.use('/api/cart', require('./routes/cartRoutes/getCartItemsRoute'));
 app.use('/api/cart', require('./routes/cartRoutes/deleteCartItemRoute.js'));
 
 // bestSellerRoutes
-app.use('/api/bestsellers', require('./routes/smartphones_Routes/bestSellerRoutes'));
+app.use('/api/bestsellers', require('./routes/bestSeller_Routes/bestsellerRoutes'));
 
 // best seller accessories routes
 app.use('/api/bestseller-accessories', require('./routes/accessories_Routes/bestSellerAccessoriesRoutes'));

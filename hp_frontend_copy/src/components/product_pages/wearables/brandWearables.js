@@ -91,34 +91,34 @@ const ProductCard = ({ wearable, onClick }) => (
         <Box sx={{ position: 'relative', paddingTop: '100%' }}>
             <CardMedia
                 component="img"
-                image={wearable.imgname11}
-                alt={wearable.ItemName}
+                image={wearable.image}
+                alt={wearable.itemName}
                 sx={{ position: 'absolute', top: 0, height: '100%', width: '100%', objectFit: 'contain', padding: '20px' }}
             />
         </Box>
         <CardContent sx={{ flexGrow: 1, p: 3 }}>
-            <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>{wearable.ItemName}</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>{wearable.itemName}</Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                {wearable.Brand} - {wearable.MODEL}
+                {wearable.brand} - {wearable.model}
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box>
                     <Typography variant="h6" sx={{ fontWeight: 700, color: '#b7950b' }}>
-                        ₹{Number(wearable.SalePrice).toLocaleString('en-IN')}
+                        ₹{Number(wearable.salePrice).toLocaleString('en-IN')}
                     </Typography>
-                    {wearable.DiscountValue > 0 && (
+                    {wearable.discountValue > 0 && (
                         <Typography variant="body2" sx={{ textDecoration: 'line-through', color: '#666' }}>
-                            ₹{Number(wearable.CurrentMRP).toLocaleString('en-IN')}
+                            ₹{Number(wearable.currentMRP).toLocaleString('en-IN')}
                         </Typography>
                     )}
                 </Box>
                 <Box sx={{ textAlign: 'right' }}>
-                    <Typography variant="body2" sx={{ color: wearable.QUANTITY > 0 ? '#4caf50' : '#f44336', fontWeight: 600 }}>
-                        {wearable.QUANTITY > 0 ? 'In Stock' : 'Out of Stock'}
+                    <Typography variant="body2" sx={{ color: wearable.quantity > 0 ? '#4caf50' : '#f44336', fontWeight: 600 }}>
+                        {wearable.quantity > 0 ? 'In Stock' : 'Out of Stock'}
                     </Typography>
-                    {wearable.QUANTITY > 0 && (
+                    {wearable.quantity > 0 && (
                         <Typography variant="caption" sx={{ color: '#666', display: 'block', mt: 0.5 }}>
-                            {wearable.QUANTITY} units left
+                            {wearable.quantity} units left
                         </Typography>
                     )}
                 </Box>
@@ -145,9 +145,11 @@ const BrandWearables = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
+                console.log('Fetching wearables for brand:', brand); // Debug log
                 const response = await fetch(`${API_BASE_URL}/api/brand-smartwatches/${brand}`);
                 if (!response.ok) throw new Error(`Failed to fetch wearables (${response.status})`);
                 const data = await response.json();
+                console.log('Received data:', data); // Debug log
                 setWearables(data);
                 setFilteredWearables(data);
                 // Reset to page 1 when new data is loaded
@@ -165,7 +167,7 @@ const BrandWearables = () => {
     // Set price boundaries
     useEffect(() => {
         if (wearables.length) {
-            const prices = wearables.map(item => Number(item.SalePrice) || 0);
+            const prices = wearables.map(item => Number(item.salePrice) || 0);
             const min = Math.min(...prices);
             const max = Math.max(...prices);
             setPriceBoundaries({ min, max });
@@ -177,9 +179,9 @@ const BrandWearables = () => {
     useEffect(() => {
         if (!priceRange) return;
         const filtered = wearables.filter(item => {
-            const price = Number(item.SalePrice);
+            const price = Number(item.salePrice);
             const inPriceRange = price >= priceRange[0] && price <= priceRange[1];
-            return inPriceRange && (!inStockOnly || item.QUANTITY > 0);
+            return inPriceRange && (!inStockOnly || item.quantity > 0);
         });
         setFilteredWearables(filtered);
     }, [wearables, priceRange, inStockOnly]);

@@ -43,7 +43,7 @@ const SubHeader = () => {
         { name: 'Accessories', path: '/accessories', hasDropdown: true },
         { name: 'Wearables', path: '/wearables', hasDropdown: true },
         { name: 'Tablets', path: '/products/tablets' },
-        { name: 'Best Sellers', path: '/bestsellers' },
+        { name: 'Best Sellers', path: '/bestsellers', hasDropdown: false },
         { name: 'Shop by Brand', path: '/brands' },
         { name: 'Offers', path: '/offers' },
         { name: 'About', path: '/about' }
@@ -85,6 +85,10 @@ const SubHeader = () => {
                 // Handle accessories brand navigation
                 const brandPath = item.toLowerCase().replace(/ /g, '-');
                 navigate(`/products/accessories/brand/${brandPath}`);
+            } else if (category === 'wearables') {
+                // Handle wearables brand navigation
+                const brandPath = item.toLowerCase().replace(/ /g, '-');
+                navigate(`/brand-wearables/${brandPath}`);
             } else {
                 // Handle smartphone brand navigation
                 navigate(`/products/smartphones/${item.toLowerCase()}`);

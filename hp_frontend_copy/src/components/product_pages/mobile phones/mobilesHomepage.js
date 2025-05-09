@@ -49,8 +49,8 @@ const MobilesHomepage = () => {
     const fetchBestSellers = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`${API_BASE_URL}/api/bestsellers?category=New Handset`);
-            setBestSellers(response.data);
+            const response = await axios.get(`${API_BASE_URL}/api/hot-products`);
+            setBestSellers(Array.isArray(response.data) ? response.data : []);
             setLoading(false);
         } catch (err) {
             setError('Failed to fetch products');

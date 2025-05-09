@@ -204,7 +204,7 @@ const NavDropdown = ({
                     default:
                         range = '0-100000';
                 }
-                navigate(`/wearables-price-range/${range}`);
+                navigate(`/wearables/price-range/${range}`);
             } else if (category === 'smartphones') {
                 // Existing smartphone price range logic
                 let range;
