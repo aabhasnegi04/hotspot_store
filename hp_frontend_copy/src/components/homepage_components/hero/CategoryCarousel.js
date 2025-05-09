@@ -28,7 +28,7 @@ const CategoryCarousel = () => {
         <Box
             sx={{
                 width: '100%',
-                py: { xs: 4, md: 2 },
+                py: { xs: 6, md: 4 },
                 px: { xs: 2, sm: 4, md: 6 },
                 backgroundColor: '#ffffff',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.05)',

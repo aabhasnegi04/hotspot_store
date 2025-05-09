@@ -11,6 +11,7 @@ import WearablesBigBanner from './wearablesBigBanner';
 import PopularWearablesAd from './popularWearablesAd';
 import HotWearablesCarousel from './HotWearablesCarousel';
 import ForYourBudgetWearables from './forYourBudgetWearables';
+import WearablesAd2 from './wearables_ad_2';
 
 const AnimatedSection = ({ children }) => {
     const [ref, isVisible] = useScrollAnimation(0.2);
@@ -94,6 +95,10 @@ const WearablesHomepage = () => {
 
                 <AnimatedSection>
                     <WearablesBigBanner bestSellers={bestSellers} navigate={navigate} />
+                </AnimatedSection>
+
+                <AnimatedSection>
+                    <WearablesAd2 />
                 </AnimatedSection>
 
                 <AnimatedSection>

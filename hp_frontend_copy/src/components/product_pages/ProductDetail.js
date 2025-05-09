@@ -45,6 +45,11 @@ const ProductDetail = () => {
     });
     const imageRef = useRef(null);
 
+    // Scroll to top when component mounts
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     // Generate or retrieve session ID
     const getSessionId = () => {
         let sessionId = localStorage.getItem('sessionId');
@@ -188,11 +193,11 @@ const ProductDetail = () => {
 
     const mainImageStyle = {
         width: '100%',
-        height: '70vh',
+        height: { xs: '50vh', sm: '60vh', md: '70vh' },
         objectFit: 'contain',
         borderRadius: '2%',
         backgroundColor: 'rgba(255, 215, 0, 0.02)',
-        padding: '2%',
+        padding: { xs: '1%', sm: '2%' },
         transition: 'transform 0.3s ease',
         cursor: 'zoom-in',
         position: 'relative',
@@ -219,7 +224,7 @@ const ProductDetail = () => {
         borderRadius: '1.2%',
         cursor: 'pointer',
         border: '2px solid transparent',
-        padding: '0.8%',
+        padding: { xs: '0.4%', sm: '0.8%' },
         backgroundColor: 'rgba(255, 215, 0, 0.02)',
         transition: 'all 0.3s ease',
         '&:hover': {
@@ -241,8 +246,8 @@ const ProductDetail = () => {
         <Box sx={{ 
             background: 'linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)',
             minHeight: '100vh',
-            pt: { xs: 2, sm: 3, md: 4 },
-            pb: 8,
+            pt: { xs: 1, sm: 2, md: 4 },
+            pb: { xs: 4, sm: 6, md: 8 },
             position: 'relative',
             zIndex: 0
         }}>
@@ -250,25 +255,30 @@ const ProductDetail = () => {
                 <Paper
                     elevation={0}
                     sx={{
-                        p: '2%',
+                        p: { xs: '4%', sm: '3%', md: '2%' },
                         borderRadius: '0%',
                         backgroundColor: 'rgba(255, 255, 255, 0.9)',
                         backdropFilter: 'blur(20px)',
                         border: '1px solid rgba(255, 215, 0, 0.2)',
                         boxShadow: '0 4% 30% rgba(0, 0, 0, 0.05)',
-                        margin: '-3% -17% -6% -17%'
+                        margin: { xs: '-2% -4% -4% -4%', sm: '-3% -10% -6% -10%', md: '-3% -17% -6% -17%' }
                     }}
                 >
-                    <Grid container spacing={4}>
+                    <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
                         {/* Product Images Section */}
                         <Grid item xs={12} md={6}>
-                            <Box sx={{ display: 'flex', gap: 2 }}>
+                            <Box sx={{ 
+                                display: 'flex', 
+                                flexDirection: { xs: 'column', sm: 'row' },
+                                gap: { xs: 1, sm: 2 }
+                            }}>
                                 {/* Thumbnails */}
                                 <Box sx={{ 
                                     display: 'flex', 
-                                    flexDirection: 'column',
-                                    gap: 2,
-                                    width: '15%'
+                                    flexDirection: { xs: 'row', sm: 'column' },
+                                    gap: { xs: 1, sm: 2 },
+                                    width: { xs: '100%', sm: '15%' },
+                                    order: { xs: 2, sm: 1 }
                                 }}>
                                     {product.images.map((img, index) => (
                                         <Box
@@ -278,6 +288,7 @@ const ProductDetail = () => {
                                             alt={`${product.name}-${index}`}
                                             sx={{
                                                 ...thumbnailStyle,
+                                                width: { xs: '20%', sm: '100%' },
                                                 border: selectedImage === index ? '2px solid #FFD700' : '2px solid transparent',
                                                 boxShadow: selectedImage === index ? '0 4px 12px rgba(255, 215, 0, 0.15)' : 'none'
                                             }}
@@ -287,7 +298,10 @@ const ProductDetail = () => {
                                 </Box>
 
                                 {/* Main Image */}
-                                <Box sx={{ width: '85%', position: 'relative' }}>
+                                <Box sx={{ 
+                                    width: { xs: '100%', sm: '85%' },
+                                    order: { xs: 1, sm: 2 }
+                                }}>
                                     <Box
                                         ref={imageRef}
                                         sx={{
@@ -334,7 +348,8 @@ const ProductDetail = () => {
                                     WebkitBackgroundClip: 'text',
                                     WebkitTextFillColor: 'transparent',
                                     letterSpacing: '-0.5px',
-                                    mb: 2
+                                    mb: 2,
+                                    fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' }
                                 }}
                             >
                                 {product.name}
@@ -376,15 +391,18 @@ const ProductDetail = () => {
                                 alignItems: 'baseline', 
                                 mb: 3,
                                 background: 'rgba(255, 215, 0, 0.05)',
-                                p: 3,
-                                borderRadius: '15px'
+                                p: { xs: 2, sm: 3 },
+                                borderRadius: '15px',
+                                flexWrap: 'wrap',
+                                gap: 1
                             }}>
                                 <Typography 
                                     variant="h4" 
                                     component="span" 
                                     sx={{
                                         fontWeight: 700,
-                                        color: '#B7950B'
+                                        color: '#B7950B',
+                                        fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' }
                                     }}
                                 >
                                     ₹{product.price.toLocaleString('en-IN')}
@@ -395,10 +413,11 @@ const ProductDetail = () => {
                                             variant="h6" 
                                             component="span" 
                                             sx={{ 
-                                                ml: 2, 
+                                                ml: { xs: 1, sm: 2 }, 
                                                 textDecoration: 'line-through', 
                                                 color: 'text.secondary',
-                                                opacity: 0.7
+                                                opacity: 0.7,
+                                                fontSize: { xs: '1rem', sm: '1.25rem' }
                                             }}
                                         >
                                             ₹{(product.price + product.discount).toLocaleString('en-IN')}
@@ -408,11 +427,12 @@ const ProductDetail = () => {
                                             color="error" 
                                             size="small" 
                                             sx={{ 
-                                                ml: 2,
+                                                ml: { xs: 1, sm: 2 },
                                                 background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
                                                 color: '#000',
                                                 fontWeight: 600,
-                                                border: 'none'
+                                                border: 'none',
+                                                fontSize: { xs: '0.75rem', sm: '0.875rem' }
                                             }} 
                                         />
                                     </>
@@ -441,12 +461,18 @@ const ProductDetail = () => {
                                 sx={{ 
                                     mb: 2,
                                     fontWeight: 600,
-                                    color: '#333'
+                                    color: '#333',
+                                    fontSize: { xs: '0.875rem', sm: '1rem' }
                                 }}
                             >
                                 Color
                             </Typography>
-                            <Box sx={{ display: 'flex', gap: 1.5, mb: 4 }}>
+                            <Box sx={{ 
+                                display: 'flex', 
+                                gap: 1,
+                                mb: 4,
+                                flexWrap: 'wrap'
+                            }}>
                                 {product.colors.map((color) => (
                                     <Chip 
                                         key={color} 
@@ -455,9 +481,10 @@ const ProductDetail = () => {
                                         onClick={() => {}}
                                         sx={{ 
                                             borderRadius: '1.2%',
-                                            padding: '2% 1.2%',
+                                            padding: { xs: '1% 0.8%', sm: '2% 1.2%' },
                                             border: '2px solid rgba(255, 215, 0, 0.2)',
                                             transition: 'all 0.3s ease',
+                                            fontSize: { xs: '0.75rem', sm: '0.875rem' },
                                             '&:hover': {
                                                 borderColor: '#FFD700',
                                                 background: 'rgba(255, 215, 0, 0.05)',
@@ -474,12 +501,18 @@ const ProductDetail = () => {
                                 sx={{ 
                                     mb: 2,
                                     fontWeight: 600,
-                                    color: '#333'
+                                    color: '#333',
+                                    fontSize: { xs: '0.875rem', sm: '1rem' }
                                 }}
                             >
                                 Storage
                             </Typography>
-                            <Box sx={{ display: 'flex', gap: 1.5, mb: 4 }}>
+                            <Box sx={{ 
+                                display: 'flex', 
+                                gap: 1,
+                                mb: 4,
+                                flexWrap: 'wrap'
+                            }}>
                                 {product.storage.map((size) => (
                                     <Chip 
                                         key={size} 
@@ -488,9 +521,10 @@ const ProductDetail = () => {
                                         onClick={() => {}}
                                         sx={{ 
                                             borderRadius: '12px',
-                                            padding: '20px 12px',
+                                            padding: { xs: '12px 8px', sm: '20px 12px' },
                                             border: '2px solid rgba(255, 215, 0, 0.2)',
                                             transition: 'all 0.3s ease',
+                                            fontSize: { xs: '0.75rem', sm: '0.875rem' },
                                             '&:hover': {
                                                 borderColor: '#FFD700',
                                                 background: 'rgba(255, 215, 0, 0.05)',
@@ -507,60 +541,67 @@ const ProductDetail = () => {
                                 alignItems: 'center', 
                                 mb: 4,
                                 background: 'rgba(255, 215, 0, 0.05)',
-                                p: 2,
-                                borderRadius: '15px'
+                                p: { xs: 1.5, sm: 2 },
+                                borderRadius: '15px',
+                                flexWrap: 'wrap',
+                                gap: 1
                             }}>
                                 <Typography 
                                     variant="subtitle1" 
                                     sx={{ 
-                                        mr: 2,
+                                        mr: { xs: 1, sm: 2 },
                                         fontWeight: 600,
-                                        color: '#333'
+                                        color: '#333',
+                                        fontSize: { xs: '0.875rem', sm: '1rem' }
                                     }}
                                 >
                                     Quantity
                                 </Typography>
-                                <IconButton 
-                                    size="small" 
-                                    onClick={() => handleQuantityChange('subtract')}
-                                    disabled={quantity <= 1}
-                                    sx={{
-                                        border: '2px solid rgba(255, 215, 0, 0.2)',
-                                        '&:hover': {
-                                            background: 'rgba(255, 215, 0, 0.1)'
-                                        }
-                                    }}
-                                >
-                                    <RemoveIcon />
-                                </IconButton>
-                                <Typography 
-                                    sx={{ 
-                                        mx: 3,
-                                        fontWeight: 600,
-                                        color: '#B7950B'
-                                    }}
-                                >
-                                    {quantity}
-                                </Typography>
-                                <IconButton 
-                                    size="small" 
-                                    onClick={() => handleQuantityChange('add')}
-                                    disabled={quantity >= product.stock}
-                                    sx={{
-                                        border: '2px solid rgba(255, 215, 0, 0.2)',
-                                        '&:hover': {
-                                            background: 'rgba(255, 215, 0, 0.1)'
-                                        }
-                                    }}
-                                >
-                                    <AddIcon />
-                                </IconButton>
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <IconButton 
+                                        size="small" 
+                                        onClick={() => handleQuantityChange('subtract')}
+                                        disabled={quantity <= 1}
+                                        sx={{
+                                            border: '2px solid rgba(255, 215, 0, 0.2)',
+                                            '&:hover': {
+                                                background: 'rgba(255, 215, 0, 0.1)'
+                                            }
+                                        }}
+                                    >
+                                        <RemoveIcon />
+                                    </IconButton>
+                                    <Typography 
+                                        sx={{ 
+                                            mx: { xs: 2, sm: 3 },
+                                            fontWeight: 600,
+                                            color: '#B7950B',
+                                            fontSize: { xs: '0.875rem', sm: '1rem' }
+                                        }}
+                                    >
+                                        {quantity}
+                                    </Typography>
+                                    <IconButton 
+                                        size="small" 
+                                        onClick={() => handleQuantityChange('add')}
+                                        disabled={quantity >= product.stock}
+                                        sx={{
+                                            border: '2px solid rgba(255, 215, 0, 0.2)',
+                                            '&:hover': {
+                                                background: 'rgba(255, 215, 0, 0.1)'
+                                            }
+                                        }}
+                                    >
+                                        <AddIcon />
+                                    </IconButton>
+                                </Box>
                                 <Typography 
                                     variant="body2" 
                                     sx={{ 
-                                        ml: 2,
+                                        ml: { xs: 1, sm: 2 },
                                         color: product.stock > 10 ? '#4CAF50' : '#f44336',
-                                        fontWeight: 500
+                                        fontWeight: 500,
+                                        fontSize: { xs: '0.75rem', sm: '0.875rem' }
                                     }}
                                 >
                                     {product.stock} items available
@@ -568,7 +609,12 @@ const ProductDetail = () => {
                             </Box>
 
                             {/* Action Buttons */}
-                            <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
+                            <Box sx={{ 
+                                display: 'flex', 
+                                gap: { xs: 1, sm: 2 }, 
+                                mb: 4,
+                                flexDirection: { xs: 'column', sm: 'row' }
+                            }}>
                                 <Button
                                     variant="contained"
                                     size="large"
@@ -577,13 +623,14 @@ const ProductDetail = () => {
                                     disabled={cartLoading || !product}
                                     sx={{
                                         flex: 2,
-                                        py: '1.5%',
+                                        py: { xs: '3%', sm: '1.5%' },
                                         background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
                                         color: '#000000',
                                         fontWeight: 600,
                                         borderRadius: '1.2%',
                                         boxShadow: '0 4% 20% rgba(255, 215, 0, 0.25)',
                                         transition: 'all 0.3s ease',
+                                        fontSize: { xs: '0.875rem', sm: '1rem' },
                                         '&:hover': {
                                             background: 'linear-gradient(45deg, #FFA500 30%, #FFD700 90%)',
                                             transform: 'translateY(-2%)',
@@ -597,54 +644,72 @@ const ProductDetail = () => {
                                 >
                                     {cartLoading ? 'Adding...' : 'Add to Cart'}
                                 </Button>
-                                <IconButton 
-                                    sx={{ 
-                                        border: '2px solid rgba(255, 215, 0, 0.2)',
-                                        borderRadius: '12px',
-                                        p: 2,
-                                        transition: 'all 0.3s ease',
-                                        '&:hover': {
-                                            background: 'rgba(255, 215, 0, 0.05)',
-                                            transform: 'translateY(-2px)'
-                                        }
-                                    }}
-                                >
-                                    <FavoriteIcon sx={{ color: '#B7950B' }} />
-                                </IconButton>
-                                <IconButton 
-                                    sx={{ 
-                                        border: '2px solid rgba(255, 215, 0, 0.2)',
-                                        borderRadius: '12px',
-                                        p: 2,
-                                        transition: 'all 0.3s ease',
-                                        '&:hover': {
-                                            background: 'rgba(255, 215, 0, 0.05)',
-                                            transform: 'translateY(-2px)'
-                                        }
-                                    }}
-                                >
-                                    <ShareIcon sx={{ color: '#B7950B' }} />
-                                </IconButton>
+                                <Box sx={{ 
+                                    display: 'flex', 
+                                    gap: { xs: 1, sm: 2 },
+                                    width: { xs: '100%', sm: 'auto' }
+                                }}>
+                                    <IconButton 
+                                        sx={{ 
+                                            border: '2px solid rgba(255, 215, 0, 0.2)',
+                                            borderRadius: '12px',
+                                            p: { xs: 1.5, sm: 2 },
+                                            flex: 1,
+                                            transition: 'all 0.3s ease',
+                                            '&:hover': {
+                                                background: 'rgba(255, 215, 0, 0.05)',
+                                                transform: 'translateY(-2px)'
+                                            }
+                                        }}
+                                    >
+                                        <FavoriteIcon sx={{ color: '#B7950B' }} />
+                                    </IconButton>
+                                    <IconButton 
+                                        sx={{ 
+                                            border: '2px solid rgba(255, 215, 0, 0.2)',
+                                            borderRadius: '12px',
+                                            p: { xs: 1.5, sm: 2 },
+                                            flex: 1,
+                                            transition: 'all 0.3s ease',
+                                            '&:hover': {
+                                                background: 'rgba(255, 215, 0, 0.05)',
+                                                transform: 'translateY(-2px)'
+                                            }
+                                        }}
+                                    >
+                                        <ShareIcon sx={{ color: '#B7950B' }} />
+                                    </IconButton>
+                                </Box>
                             </Box>
 
                             {/* Delivery & Security Info */}
-                            <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+                            <Box sx={{ 
+                                display: 'flex', 
+                                gap: { xs: 1, sm: 2 }, 
+                                mb: 3,
+                                flexDirection: { xs: 'column', sm: 'row' }
+                            }}>
                                 <Paper 
                                     sx={{ 
                                         flex: 1, 
-                                        p: 2, 
+                                        p: { xs: 1.5, sm: 2 }, 
                                         textAlign: 'center',
                                         background: 'rgba(255, 215, 0, 0.05)',
                                         border: '1px solid rgba(255, 215, 0, 0.1)',
                                         borderRadius: '15px'
                                     }}
                                 >
-                                    <ShippingIcon sx={{ color: '#FFD700', mb: 1 }} />
+                                    <ShippingIcon sx={{ 
+                                        color: '#FFD700', 
+                                        mb: 1,
+                                        fontSize: { xs: '1.5rem', sm: '2rem' }
+                                    }} />
                                     <Typography 
                                         variant="body2"
                                         sx={{ 
                                             color: '#B7950B',
-                                            fontWeight: 500
+                                            fontWeight: 500,
+                                            fontSize: { xs: '0.75rem', sm: '0.875rem' }
                                         }}
                                     >
                                         Free Delivery
@@ -653,19 +718,24 @@ const ProductDetail = () => {
                                 <Paper 
                                     sx={{ 
                                         flex: 1, 
-                                        p: 2, 
+                                        p: { xs: 1.5, sm: 2 }, 
                                         textAlign: 'center',
                                         background: 'rgba(255, 215, 0, 0.05)',
                                         border: '1px solid rgba(255, 215, 0, 0.1)',
                                         borderRadius: '15px'
                                     }}
                                 >
-                                    <SecurityIcon sx={{ color: '#FFD700', mb: 1 }} />
+                                    <SecurityIcon sx={{ 
+                                        color: '#FFD700', 
+                                        mb: 1,
+                                        fontSize: { xs: '1.5rem', sm: '2rem' }
+                                    }} />
                                     <Typography 
                                         variant="body2"
                                         sx={{ 
                                             color: '#B7950B',
-                                            fontWeight: 500
+                                            fontWeight: 500,
+                                            fontSize: { xs: '0.75rem', sm: '0.875rem' }
                                         }}
                                     >
                                         Secure Payment
@@ -679,17 +749,21 @@ const ProductDetail = () => {
                             <Box sx={{ 
                                 borderBottom: 1, 
                                 borderColor: 'rgba(255, 215, 0, 0.2)',
-                                mb: 3
+                                mb: 3,
+                                overflowX: 'auto'
                             }}>
                                 <Tabs 
                                     value={selectedTab} 
                                     onChange={handleTabChange}
+                                    variant="scrollable"
+                                    scrollButtons="auto"
                                     sx={{
                                         '& .MuiTab-root': {
                                             textTransform: 'none',
-                                            fontSize: '1rem',
+                                            fontSize: { xs: '0.875rem', sm: '1rem' },
                                             fontWeight: 500,
                                             color: '#666',
+                                            minWidth: { xs: 'auto', sm: '160px' },
                                             '&.Mui-selected': {
                                                 color: '#B7950B',
                                                 fontWeight: 600
@@ -708,13 +782,13 @@ const ProductDetail = () => {
 
                             {/* Highlights Tab */}
                             {selectedTab === 0 && (
-                                <Box sx={{ py: 3 }}>
-                                    <Grid container spacing={2}>
+                                <Box sx={{ py: { xs: 2, sm: 3 } }}>
+                                    <Grid container spacing={{ xs: 1, sm: 2 }}>
                                         {product.highlights.map((highlight, index) => (
                                             <Grid item xs={12} sm={6} md={4} key={index}>
                                                 <Paper 
                                                     sx={{ 
-                                                        p: 3, 
+                                                        p: { xs: 2, sm: 3 }, 
                                                         height: '100%',
                                                         background: 'rgba(255, 215, 0, 0.02)',
                                                         border: '1px solid rgba(255, 215, 0, 0.1)',
@@ -730,6 +804,7 @@ const ProductDetail = () => {
                                                         variant="body1"
                                                         sx={{
                                                             color: '#666',
+                                                            fontSize: { xs: '0.875rem', sm: '1rem' },
                                                             '&::before': {
                                                                 content: '"•"',
                                                                 color: '#FFD700',
@@ -749,13 +824,13 @@ const ProductDetail = () => {
 
                             {/* Specifications Tab */}
                             {selectedTab === 1 && (
-                                <Box sx={{ py: 3 }}>
-                                    <Grid container spacing={2}>
+                                <Box sx={{ py: { xs: 2, sm: 3 } }}>
+                                    <Grid container spacing={{ xs: 1, sm: 2 }}>
                                         {Object.entries(product.specifications).map(([key, value]) => (
                                             <Grid item xs={12} sm={6} key={key}>
                                                 <Paper 
                                                     sx={{ 
-                                                        p: 3,
+                                                        p: { xs: 2, sm: 3 },
                                                         background: 'rgba(255, 215, 0, 0.02)',
                                                         border: '1px solid rgba(255, 215, 0, 0.1)',
                                                         borderRadius: '15px',
@@ -771,7 +846,8 @@ const ProductDetail = () => {
                                                         sx={{
                                                             color: '#B7950B',
                                                             fontWeight: 600,
-                                                            mb: 1
+                                                            mb: 1,
+                                                            fontSize: { xs: '0.75rem', sm: '0.875rem' }
                                                         }}
                                                     >
                                                         {key}
@@ -780,7 +856,8 @@ const ProductDetail = () => {
                                                         variant="body1"
                                                         sx={{
                                                             color: '#666',
-                                                            fontWeight: 500
+                                                            fontWeight: 500,
+                                                            fontSize: { xs: '0.875rem', sm: '1rem' }
                                                         }}
                                                     >
                                                         {value}
@@ -794,13 +871,14 @@ const ProductDetail = () => {
 
                             {/* Reviews Tab */}
                             {selectedTab === 2 && (
-                                <Box sx={{ py: 3 }}>
+                                <Box sx={{ py: { xs: 2, sm: 3 } }}>
                                     <Typography 
                                         variant="h6" 
                                         gutterBottom
                                         sx={{
                                             color: '#B7950B',
-                                            fontWeight: 600
+                                            fontWeight: 600,
+                                            fontSize: { xs: '1rem', sm: '1.25rem' }
                                         }}
                                     >
                                         Customer Reviews
@@ -830,7 +908,8 @@ const ProductDetail = () => {
                     sx={{ 
                         width: '100%',
                         '& .MuiAlert-message': {
-                            fontWeight: 500
+                            fontWeight: 500,
+                            fontSize: { xs: '0.875rem', sm: '1rem' }
                         }
                     }}
                 >
