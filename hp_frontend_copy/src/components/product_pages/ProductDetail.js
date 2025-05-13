@@ -21,8 +21,10 @@ import {
     Share as ShareIcon,
     LocalShipping as ShippingIcon,
     Security as SecurityIcon,
-    Add as AddIcon,
-    Remove as RemoveIcon,
+    LocalOffer as OfferIcon,
+    CreditCard as CreditCardIcon,
+    CardGiftcard as GiftIcon,
+    Discount as DiscountIcon,
 } from '@mui/icons-material';
 import { API_BASE_URL } from '../../config';
 import LuxuryLoader from '../common/LuxuryLoader';
@@ -31,7 +33,6 @@ import axios from 'axios';
 const ProductDetail = () => {
     const { productId } = useParams();
     const [selectedTab, setSelectedTab] = useState(0);
-    const [quantity, setQuantity] = useState(1);
     const [selectedImage, setSelectedImage] = useState(0);
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState(null);
@@ -83,7 +84,7 @@ const ProductDetail = () => {
             if (response.data.success) {
                 // Update cart count in localStorage
                 const currentCount = parseInt(localStorage.getItem('cartCount') || '0');
-                localStorage.setItem('cartCount', (currentCount + quantity).toString());
+                localStorage.setItem('cartCount', (currentCount + 1).toString());
                 // Dispatch a custom event to notify header component
                 window.dispatchEvent(new Event('cartUpdated'));
 
@@ -171,14 +172,6 @@ const ProductDetail = () => {
 
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
-    };
-
-    const handleQuantityChange = (operation) => {
-        if (operation === 'add' && quantity < (product?.stock || 0)) {
-            setQuantity(prev => prev + 1);
-        } else if (operation === 'subtract' && quantity > 1) {
-            setQuantity(prev => prev - 1);
-        }
     };
 
     const handleMouseMove = (e) => {
@@ -439,173 +432,165 @@ const ProductDetail = () => {
                                 )}
                             </Box>
 
+                            {/* Offers Section */}
                             <Box sx={{ 
-                                mb: 4,
-                                p: 2,
-                                borderRadius: '12px',
-                                backgroundColor: 'rgba(255, 215, 0, 0.05)',
-                                border: '1px solid rgba(255, 215, 0, 0.1)',
-                                maxWidth: '90%'
+                                mb: 1.4,
+                                p: 1.5,
+                                borderRadius: '9px',
+                                background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.065) 0%, rgba(255, 215, 0, 0.022) 100%)',
+                                border: '1px solid rgba(255, 215, 0, 0.16)',
+                                maxWidth: '94%',
+                                boxShadow: '0 2.5px 12px rgba(255, 215, 0, 0.065)'
                             }}>
-                                <Typography variant="subtitle1" sx={{ mb: 1.5, fontWeight: 600, color: '#B7950B', fontSize: '1rem' }}>
-                                    Key Features
-                                </Typography>
-                                <Typography variant="body2" sx={{ color: '#666', lineHeight: 1, fontWeight: 400, whiteSpace: 'pre-line', fontSize: '1rem' }}>
-                                    {product.description.split('•').map((part, index) => index === 0 ? part : `•${part}`).join('\n')}
-                                </Typography>
-                            </Box>
-
-                            {/* Color Selection */}
-                            <Typography 
-                                variant="subtitle1" 
-                                sx={{ 
-                                    mb: 2,
-                                    fontWeight: 600,
-                                    color: '#333',
-                                    fontSize: { xs: '0.875rem', sm: '1rem' }
-                                }}
-                            >
-                                Color
-                            </Typography>
-                            <Box sx={{ 
-                                display: 'flex', 
-                                gap: 1,
-                                mb: 4,
-                                flexWrap: 'wrap'
-                            }}>
-                                {product.colors.map((color) => (
-                                    <Chip 
-                                        key={color} 
-                                        label={color} 
-                                        variant="outlined"
-                                        onClick={() => {}}
-                                        sx={{ 
-                                            borderRadius: '1.2%',
-                                            padding: { xs: '1% 0.8%', sm: '2% 1.2%' },
-                                            border: '2px solid rgba(255, 215, 0, 0.2)',
-                                            transition: 'all 0.3s ease',
-                                            fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                                            '&:hover': {
-                                                borderColor: '#FFD700',
-                                                background: 'rgba(255, 215, 0, 0.05)',
-                                                transform: 'translateY(-2%)'
-                                            }
-                                        }}
-                                    />
-                                ))}
-                            </Box>
-
-                            {/* Storage Selection */}
-                            <Typography 
-                                variant="subtitle1" 
-                                sx={{ 
-                                    mb: 2,
-                                    fontWeight: 600,
-                                    color: '#333',
-                                    fontSize: { xs: '0.875rem', sm: '1rem' }
-                                }}
-                            >
-                                Storage
-                            </Typography>
-                            <Box sx={{ 
-                                display: 'flex', 
-                                gap: 1,
-                                mb: 4,
-                                flexWrap: 'wrap'
-                            }}>
-                                {product.storage.map((size) => (
-                                    <Chip 
-                                        key={size} 
-                                        label={size} 
-                                        variant="outlined"
-                                        onClick={() => {}}
-                                        sx={{ 
-                                            borderRadius: '12px',
-                                            padding: { xs: '12px 8px', sm: '20px 12px' },
-                                            border: '2px solid rgba(255, 215, 0, 0.2)',
-                                            transition: 'all 0.3s ease',
-                                            fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                                            '&:hover': {
-                                                borderColor: '#FFD700',
-                                                background: 'rgba(255, 215, 0, 0.05)',
-                                                transform: 'translateY(-2px)'
-                                            }
-                                        }}
-                                    />
-                                ))}
-                            </Box>
-
-                            {/* Quantity Selection */}
-                            <Box sx={{ 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                mb: 4,
-                                background: 'rgba(255, 215, 0, 0.05)',
-                                p: { xs: 1.5, sm: 2 },
-                                borderRadius: '15px',
-                                flexWrap: 'wrap',
-                                gap: 1
-                            }}>
-                                <Typography 
-                                    variant="subtitle1" 
-                                    sx={{ 
-                                        mr: { xs: 1, sm: 2 },
-                                        fontWeight: 600,
-                                        color: '#333',
-                                        fontSize: { xs: '0.875rem', sm: '1rem' }
-                                    }}
-                                >
-                                    Quantity
-                                </Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <IconButton 
-                                        size="small" 
-                                        onClick={() => handleQuantityChange('subtract')}
-                                        disabled={quantity <= 1}
-                                        sx={{
-                                            border: '2px solid rgba(255, 215, 0, 0.2)',
-                                            '&:hover': {
-                                                background: 'rgba(255, 215, 0, 0.1)'
-                                            }
-                                        }}
-                                    >
-                                        <RemoveIcon />
-                                    </IconButton>
-                                    <Typography 
-                                        sx={{ 
-                                            mx: { xs: 2, sm: 3 },
-                                            fontWeight: 600,
-                                            color: '#B7950B',
-                                            fontSize: { xs: '0.875rem', sm: '1rem' }
-                                        }}
-                                    >
-                                        {quantity}
+                                <Box sx={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    gap: 1,
+                                    mb: 1.1
+                                }}>
+                                    <OfferIcon sx={{ 
+                                        color: '#B7950B',
+                                        fontSize: '1.08rem'
+                                    }} />
+                                    <Typography variant="subtitle2" sx={{ 
+                                        fontWeight: 600, 
+                                        color: '#B7950B', 
+                                        fontSize: '1.01rem',
+                                        background: 'linear-gradient(45deg, #B7950B 30%, #FFD700 90%)',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent'
+                                    }}>
+                                        Exciting Offers for You
                                     </Typography>
-                                    <IconButton 
-                                        size="small" 
-                                        onClick={() => handleQuantityChange('add')}
-                                        disabled={quantity >= product.stock}
-                                        sx={{
-                                            border: '2px solid rgba(255, 215, 0, 0.2)',
-                                            '&:hover': {
-                                                background: 'rgba(255, 215, 0, 0.1)'
-                                            }
-                                        }}
-                                    >
-                                        <AddIcon />
-                                    </IconButton>
                                 </Box>
-                                <Typography 
-                                    variant="body2" 
-                                    sx={{ 
-                                        ml: { xs: 1, sm: 2 },
-                                        color: product.stock > 10 ? '#4CAF50' : '#f44336',
-                                        fontWeight: 500,
-                                        fontSize: { xs: '0.75rem', sm: '0.875rem' }
-                                    }}
-                                >
-                                    {product.stock} items available
-                                </Typography>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                    <Box sx={{ 
+                                        display: 'flex', 
+                                        alignItems: 'flex-start',
+                                        gap: 1,
+                                        p: 1.15,
+                                        borderRadius: '7px',
+                                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.955) 0%, rgba(255, 255, 255, 0.83) 100%)',
+                                        border: '1px solid rgba(255, 215, 0, 0.16)',
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            transform: 'translateX(5px)',
+                                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.96) 100%)',
+                                            boxShadow: '0 2.5px 9px rgba(255, 215, 0, 0.11)'
+                                        }
+                                    }}>
+                                        <CreditCardIcon sx={{ 
+                                            color: '#B7950B',
+                                            fontSize: '1.08rem',
+                                            mt: 0.14
+                                        }} />
+                                        <Box>
+                                            <Chip 
+                                                label="Bank Offer" 
+                                                size="small"
+                                                sx={{ 
+                                                    background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
+                                                    color: '#000',
+                                                    fontWeight: 600,
+                                                    fontSize: '0.72rem',
+                                                    mb: 0.14,
+                                                    height: '19px'
+                                                }}
+                                            />
+                                            <Typography variant="body2" sx={{ 
+                                                color: '#666', 
+                                                fontSize: '0.81rem',
+                                                fontWeight: 500
+                                            }}>
+                                                Get 10% Instant Discount on HDFC Bank Credit Cards & EMI
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                    <Box sx={{ 
+                                        display: 'flex', 
+                                        alignItems: 'flex-start',
+                                        gap: 1,
+                                        p: 1.15,
+                                        borderRadius: '7px',
+                                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.955) 0%, rgba(255, 255, 255, 0.83) 100%)',
+                                        border: '1px solid rgba(255, 215, 0, 0.16)',
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            transform: 'translateX(5px)',
+                                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.96) 100%)',
+                                            boxShadow: '0 2.5px 9px rgba(255, 215, 0, 0.11)'
+                                        }
+                                    }}>
+                                        <DiscountIcon sx={{ 
+                                            color: '#B7950B',
+                                            fontSize: '1.08rem',
+                                            mt: 0.14
+                                        }} />
+                                        <Box>
+                                            <Chip 
+                                                label="Special Price" 
+                                                size="small"
+                                                sx={{ 
+                                                    background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
+                                                    color: '#000',
+                                                    fontWeight: 600,
+                                                    fontSize: '0.72rem',
+                                                    mb: 0.14,
+                                                    height: '19px'
+                                                }}
+                                            />
+                                            <Typography variant="body2" sx={{ 
+                                                color: '#666', 
+                                                fontSize: '0.81rem',
+                                                fontWeight: 500
+                                            }}>
+                                                Save ₹1,000 with our exclusive limited-time offer!
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                    <Box sx={{ 
+                                        display: 'flex', 
+                                        alignItems: 'flex-start',
+                                        gap: 1,
+                                        p: 1.15,
+                                        borderRadius: '7px',
+                                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.955) 0%, rgba(255, 255, 255, 0.83) 100%)',
+                                        border: '1px solid rgba(255, 215, 0, 0.16)',
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            transform: 'translateX(5px)',
+                                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.96) 100%)',
+                                            boxShadow: '0 2.5px 9px rgba(255, 215, 0, 0.11)'
+                                        }
+                                    }}>
+                                        <GiftIcon sx={{ 
+                                            color: '#B7950B',
+                                            fontSize: '1.08rem',
+                                            mt: 0.14
+                                        }} />
+                                        <Box>
+                                            <Chip 
+                                                label="Bundle Offer" 
+                                                size="small"
+                                                sx={{ 
+                                                    background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
+                                                    color: '#000',
+                                                    fontWeight: 600,
+                                                    fontSize: '0.72rem',
+                                                    mb: 0.14,
+                                                    height: '19px'
+                                                }}
+                                            />
+                                            <Typography variant="body2" sx={{ 
+                                                color: '#666', 
+                                                fontSize: '0.81rem',
+                                                fontWeight: 500
+                                            }}>
+                                                Get 3 months of Prime Video + 1 year of extended warranty free!
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                </Box>
                             </Box>
 
                             {/* Action Buttons */}
@@ -680,6 +665,23 @@ const ProductDetail = () => {
                                         <ShareIcon sx={{ color: '#B7950B' }} />
                                     </IconButton>
                                 </Box>
+                            </Box>
+
+                            {/* Key Features Section */}
+                            <Box sx={{ 
+                                mb: 4,
+                                p: 2,
+                                borderRadius: '12px',
+                                backgroundColor: 'rgba(255, 215, 0, 0.05)',
+                                border: '1px solid rgba(255, 215, 0, 0.1)',
+                                maxWidth: '90%'
+                            }}>
+                                <Typography variant="subtitle1" sx={{ mb: 1.5, fontWeight: 600, color: '#B7950B', fontSize: '1rem' }}>
+                                    Key Features
+                                </Typography>
+                                <Typography variant="body2" sx={{ color: '#666', lineHeight: 1, fontWeight: 400, whiteSpace: 'pre-line', fontSize: '1rem' }}>
+                                    {product.description.split('•').map((part, index) => index === 0 ? part : `•${part}`).join('\n')}
+                                </Typography>
                             </Box>
 
                             {/* Delivery & Security Info */}

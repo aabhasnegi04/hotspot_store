@@ -12,15 +12,17 @@ const styles = {
         background: 'linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)',
         minHeight: '100vh',
         mt: '-84px',
-        width: '100vw',
+        width: '100%',
         overflowX: 'hidden'
     },
     container: {
         py: 4,
         pt: '104px',
         px: { xs: 2, sm: 4, md: 6 },
-        width: 'calc(100% + 24px)',
-        marginRight: '-24px',
+        width: '100%',
+        maxWidth: '1600px',
+        margin: '0 auto',
+        pl: 3,
         background: 'linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)'
     },
     header: {
@@ -213,8 +215,8 @@ const PriceRange = () => {
                     </Typography>
                 </Box>
 
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={3}>
+                <Grid container spacing={3} alignItems="flex-start">
+                    <Grid item xs={12} md={2.5} sx={{ pr: 0 }}>
                         <FiltersSection 
                             brands={brands}
                             selectedBrands={selectedBrands}
@@ -225,7 +227,7 @@ const PriceRange = () => {
                             onStockChange={(e) => setInStockOnly(e.target.checked)}
                         />
                     </Grid>
-                    <Grid item xs={12} md={9}>
+                    <Grid item xs={12} md={9.5}>
                         <Grid container spacing={3}>
                             {filteredProducts.map((product) => (
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={product.ItemCode}>

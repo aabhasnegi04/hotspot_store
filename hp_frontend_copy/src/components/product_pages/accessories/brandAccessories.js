@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
     Box, Container, Grid, Card, CardMedia, CardContent, Typography, 
-    Alert, FormControlLabel, Checkbox, Slider, Divider, Paper,
+    Alert, FormControlLabel, Checkbox, Divider, Paper,
     Pagination, Stack 
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -14,14 +14,15 @@ const styles = {
         background: 'linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)',
         minHeight: '100vh',
         mt: '-20px',
-        width: '100vw',
+        width: '100%',
         overflowX: 'hidden'
     },
     container: {
         py: { xs: 3, sm: 4, md: 5 },
         px: { xs: 2, sm: 4, md: 6 },
-        width: 'calc(100% + 24px)',
-        marginRight: '-24px',
+        width: '100%',
+        maxWidth: '1600px',
+        margin: '0 auto',
         background: 'linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)'
     },
     gradientText: {
@@ -51,40 +52,63 @@ const styles = {
     }
 };
 
-const FiltersSection = ({ priceRange, priceBoundaries, inStockOnly, onPriceChange, onStockChange }) => (
-    <Paper elevation={0} sx={{ p: 3, borderRadius: '20px', background: 'rgba(255, 255, 255, 0.9)', border: '1px solid rgba(255, 215, 0, 0.1)' }}>
-        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>Filters</Typography>
-        
-        <Box sx={{ mb: 4 }}>
-            <Typography variant="subtitle2" sx={{ mb: 2 }}>Price Range</Typography>
-            <Slider
-                value={priceRange || [0, 100000]}
-                onChange={onPriceChange}
-                valueLabelDisplay="auto"
-                min={priceBoundaries?.min || 0}
-                max={priceBoundaries?.max || 100000}
-                sx={{ color: '#b7950b' }}
-            />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-                <Typography variant="body2">₹{(priceRange?.[0] || 0).toLocaleString('en-IN')}</Typography>
-                <Typography variant="body2">₹{(priceRange?.[1] || 100000).toLocaleString('en-IN')}</Typography>
+const FiltersSection = ({ priceRange, priceBoundaries, inStockOnly, onPriceChange, onStockChange }) => {
+    const priceRanges = [
+        { label: 'Under ₹1,000', range: [0, 1000] },
+        { label: '₹1,000 - ₹2,000', range: [1000, 2000] },
+        { label: '₹2,000 - ₹5,000', range: [2000, 5000] },
+        { label: '₹5,000 - ₹10,000', range: [5000, 10000] },
+        { label: 'Above ₹10,000', range: [10000, Infinity] }
+    ];
+
+    const handlePriceChange = (range) => {
+        const isSelected = priceRange.some(r => r[0] === range[0] && r[1] === range[1]);
+        if (isSelected) {
+            // Remove the range if it's already selected
+            onPriceChange(priceRange.filter(r => !(r[0] === range[0] && r[1] === range[1])));
+        } else {
+            // Add the new range
+            onPriceChange([...priceRange, range]);
+        }
+    };
+
+    return (
+        <Paper elevation={0} sx={{ p: 3, borderRadius: '20px', background: 'rgba(255, 255, 255, 0.9)', border: '1px solid rgba(255, 215, 0, 0.1)' }}>
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>Filters</Typography>
+            
+            <Box sx={{ mb: 4 }}>
+                <Typography variant="subtitle2" sx={{ mb: 2 }}>Price Range</Typography>
+                {priceRanges.map((range, index) => (
+                    <FormControlLabel
+                        key={index}
+                        control={
+                            <Checkbox 
+                                checked={priceRange.some(r => r[0] === range.range[0] && r[1] === range.range[1])}
+                                onChange={() => handlePriceChange(range.range)}
+                                sx={{ color: '#b7950b', '&.Mui-checked': { color: '#b7950b' } }}
+                            />
+                        }
+                        label={range.label}
+                        sx={{ display: 'block', mb: 1 }}
+                    />
+                ))}
             </Box>
-        </Box>
 
-        <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 2 }} />
 
-        <FormControlLabel
-            control={
-                <Checkbox 
-                    checked={inStockOnly}
-                    onChange={onStockChange}
-                    sx={{ color: '#b7950b', '&.Mui-checked': { color: '#b7950b' } }}
-                />
-            }
-            label="In Stock Only"
-        />
-    </Paper>
-);
+            <FormControlLabel
+                control={
+                    <Checkbox 
+                        checked={inStockOnly}
+                        onChange={onStockChange}
+                        sx={{ color: '#b7950b', '&.Mui-checked': { color: '#b7950b' } }}
+                    />
+                }
+                label="In Stock Only"
+            />
+        </Paper>
+    );
+};
 
 const ProductCard = ({ accessory, onClick }) => (
     <Card elevation={0} onClick={onClick} sx={styles.card}>
@@ -134,7 +158,7 @@ const BrandAccessories = () => {
     const [filteredAccessories, setFilteredAccessories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [priceRange, setPriceRange] = useState([0, 100000]);
+    const [priceRange, setPriceRange] = useState([]);
     const [inStockOnly, setInStockOnly] = useState(false);
     const [priceBoundaries, setPriceBoundaries] = useState({ min: 0, max: 100000 });
     const [page, setPage] = useState(1);
@@ -150,7 +174,6 @@ const BrandAccessories = () => {
                 const data = await response.json();
                 setAccessories(data);
                 setFilteredAccessories(data);
-                // Reset to page 1 when new data is loaded
                 setPage(1);
             } catch (error) {
                 console.error('Error:', error);
@@ -169,16 +192,17 @@ const BrandAccessories = () => {
             const min = Math.min(...prices);
             const max = Math.max(...prices);
             setPriceBoundaries({ min, max });
-            setPriceRange([min, max]);
+            setPriceRange([[0, 1000]]);
         }
     }, [accessories]);
 
     // Apply filters
     useEffect(() => {
-        if (!priceRange) return;
         const filtered = accessories.filter(item => {
             const price = Number(item.SalePrice);
-            const inPriceRange = price >= priceRange[0] && price <= priceRange[1];
+            const inPriceRange = priceRange.length === 0 || priceRange.some(range => 
+                price >= range[0] && (range[1] === Infinity ? true : price <= range[1])
+            );
             return inPriceRange && (!inStockOnly || item.QUANTITY > 0);
         });
         setFilteredAccessories(filtered);
@@ -246,17 +270,17 @@ const BrandAccessories = () => {
                     </Typography>
                 </Box>
 
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={3}>
+                <Grid container spacing={0}>
+                    <Grid item xs={12} md={2} sx={{ pr: 0 }}>
                         <FiltersSection 
                             priceRange={priceRange}
                             priceBoundaries={priceBoundaries}
                             inStockOnly={inStockOnly}
-                            onPriceChange={(_, value) => setPriceRange(value)}
+                            onPriceChange={(value) => setPriceRange(value)}
                             onStockChange={(e) => setInStockOnly(e.target.checked)}
                         />
                     </Grid>
-                    <Grid item xs={12} md={9}>
+                    <Grid item xs={12} md={10} sx={{ pl: 3 }}>
                         <Grid container spacing={3}>
                             {currentPageItems.map((accessory) => (
                                 <Grid item xs={12} sm={6} md={3} key={accessory.ItemCode}>
@@ -268,7 +292,6 @@ const BrandAccessories = () => {
                             ))}
                         </Grid>
                         
-                        {/* Pagination Controls */}
                         {totalPages > 1 && (
                             <Stack spacing={2} sx={{ mt: 4, mb: 2, alignItems: 'center' }}>
                                 <Pagination 

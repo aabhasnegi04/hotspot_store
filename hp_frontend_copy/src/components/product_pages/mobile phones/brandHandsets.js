@@ -183,6 +183,24 @@ const BrandHandsets = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [inStockOnly, setInStockOnly] = useState(false);
+    const [priceRange, setPriceRange] = useState([]);
+
+    const priceRanges = [
+        { label: 'Under ₹5,000', range: [0, 5000] },
+        { label: '₹5,000 - ₹10,000', range: [5000, 10000] },
+        { label: '₹10,000 - ₹20,000', range: [10000, 20000] },
+        { label: '₹20,000 - ₹40,000', range: [20000, 40000] },
+        { label: 'Above ₹40,000', range: [40000, Infinity] }
+    ];
+
+    const handlePriceChange = (range) => {
+        const isSelected = priceRange.some(r => r[0] === range[0] && r[1] === range[1]);
+        if (isSelected) {
+            setPriceRange(priceRange.filter(r => !(r[0] === range[0] && r[1] === range[1])));
+        } else {
+            setPriceRange([...priceRange, range]);
+        }
+    };
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -204,31 +222,50 @@ const BrandHandsets = () => {
     }, [brand]);
 
     useEffect(() => {
-        const filtered = products.filter(product => 
-            !inStockOnly || product.QUANTITY > 0
-        );
+        const filtered = products.filter(product => {
+            const price = Number(product.SalePrice) || 0;
+            const inPriceRange = priceRange.length === 0 || priceRange.some(range => 
+                price >= range[0] && (range[1] === Infinity ? true : price <= range[1])
+            );
+            return inPriceRange && (!inStockOnly || product.QUANTITY > 0);
+        });
         setFilteredProducts(filtered);
-    }, [products, inStockOnly]);
+    }, [products, priceRange, inStockOnly]);
 
     if (loading) return <LuxuryLoader message="Loading Products" />;
     if (error) return <Alert severity="error" sx={{ m: 2 }}>Error: {error}</Alert>;
 
     return (
         <Box sx={styles.gradientBg}>
-            <Container sx={styles.container}>
-                <Box sx={styles.header}>
-                    <Typography sx={styles.resultsText}>
-                        {brand} Handsets <span>({filteredProducts.length} products found)</span>
-                    </Typography>
-                </Box>
+            <Container sx={{ ...styles.container, pl: 3 }}>
+                <Typography sx={{ ...styles.resultsText, mb: 4 }}>
+                    {brand} Handsets <span>({filteredProducts.length} products found)</span>
+                </Typography>
 
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={3}>
-                        <Paper sx={styles.filterPaper}>
+                <Grid container spacing={3} alignItems="flex-start">
+                    <Grid item xs={12} md={2.5} sx={{ pr: 0 }}>
+                        <Paper sx={{ ...styles.filterPaper, mt: 0 }}>
                             <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
                                 Filters
                             </Typography>
                             <Divider sx={{ my: 2 }} />
+                            <Box sx={{ mb: 4 }}>
+                                <Typography variant="subtitle2" sx={{ mb: 2 }}>Price Range</Typography>
+                                {priceRanges.map((range, index) => (
+                                    <FormControlLabel
+                                        key={index}
+                                        control={
+                                            <Checkbox 
+                                                checked={priceRange.some(r => r[0] === range.range[0] && r[1] === range.range[1])}
+                                                onChange={() => handlePriceChange(range.range)}
+                                                sx={{ color: '#b7950b', '&.Mui-checked': { color: '#b7950b' } }}
+                                            />
+                                        }
+                                        label={range.label}
+                                        sx={{ display: 'block', mb: 1 }}
+                                    />
+                                ))}
+                            </Box>
                             <FormControlLabel
                                 control={
                                     <Checkbox 
@@ -245,7 +282,7 @@ const BrandHandsets = () => {
                             />
                         </Paper>
                     </Grid>
-                    <Grid item xs={12} md={9}>
+                    <Grid item xs={12} md={9.5}>
                         <Grid container spacing={2}>
                             {filteredProducts.map((product) => (
                                 <Grid item xs={12} sm={6} md={3} key={product.ItemCode}>

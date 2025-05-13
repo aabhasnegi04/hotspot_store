@@ -19,8 +19,9 @@ const styles = {
     container: {
         py: { xs: 3, sm: 4, md: 5 },
         px: { xs: 2, sm: 4, md: 6 },
-        width: 'calc(100% + 24px)',
-        marginRight: '-24px',
+        width: '100%',
+        maxWidth: '1600px',
+        margin: '0 auto',
         background: 'linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)'
     },
     gradientText: {
@@ -60,89 +61,112 @@ const FiltersSection = ({
     onPriceChange, 
     onStockChange,
     onBrandChange
-}) => (
-    <Paper elevation={0} sx={{ p: 3, borderRadius: '20px', background: 'rgba(255, 255, 255, 0.9)', border: '1px solid rgba(255, 215, 0, 0.1)' }}>
-        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>Filters</Typography>
-        
-        <Box sx={{ mb: 3 }}>
-            <Typography variant="subtitle2" sx={{ mb: 1 }}>Brands</Typography>
-            <Box sx={{ 
-                maxHeight: '120px', 
-                overflowY: 'auto',
-                pr: 1,
-                pl: 0.5,
-                ml: 0,
-                '&::-webkit-scrollbar': {
-                    width: '4px',
-                },
-                '&::-webkit-scrollbar-thumb': {
-                    backgroundColor: 'rgba(183, 149, 11, 0.3)',
-                    borderRadius: '2px',
-                }
-            }}>
-                {availableBrands.map((brand) => (
+}) => {
+    const priceRanges = [
+        { label: 'Under ₹1,000', range: [0, 1000] },
+        { label: '₹1,000 - ₹2,000', range: [1000, 2000] },
+        { label: '₹2,000 - ₹5,000', range: [2000, 5000] },
+        { label: '₹5,000 - ₹10,000', range: [5000, 10000] },
+        { label: 'Above ₹10,000', range: [10000, Infinity] }
+    ];
+
+    const handlePriceChange = (range) => {
+        const isSelected = priceRange.some(r => r[0] === range[0] && r[1] === range[1]);
+        if (isSelected) {
+            // Remove the range if it's already selected
+            onPriceChange(priceRange.filter(r => !(r[0] === range[0] && r[1] === range[1])));
+        } else {
+            // Add the new range
+            onPriceChange([...priceRange, range]);
+        }
+    };
+
+    return (
+        <Paper elevation={0} sx={{ p: 3, borderRadius: '20px', background: 'rgba(255, 255, 255, 0.9)', border: '1px solid rgba(255, 215, 0, 0.1)' }}>
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>Filters</Typography>
+            
+            <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle2" sx={{ mb: 1 }}>Brands</Typography>
+                <Box sx={{ 
+                    maxHeight: '120px', 
+                    overflowY: 'auto',
+                    pr: 1,
+                    pl: 0.5,
+                    ml: 0,
+                    '&::-webkit-scrollbar': {
+                        width: '4px',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: 'rgba(183, 149, 11, 0.3)',
+                        borderRadius: '2px',
+                    }
+                }}>
+                    {availableBrands.map((brand) => (
+                        <FormControlLabel
+                            key={brand}
+                            control={
+                                <Checkbox
+                                    checked={selectedBrands.includes(brand)}
+                                    onChange={(e) => onBrandChange(brand, e.target.checked)}
+                                    sx={{ 
+                                        color: '#b7950b',
+                                        '&.Mui-checked': { color: '#b7950b' },
+                                        padding: '4px',
+                                        ml: 0
+                                    }}
+                                    size="small"
+                                />
+                            }
+                            label={brand}
+                            sx={{ 
+                                display: 'block',
+                                mb: 0.5,
+                                ml: 0,
+                                '& .MuiFormControlLabel-label': {
+                                    fontSize: '0.85rem',
+                                    color: '#666'
+                                }
+                            }}
+                        />
+                    ))}
+                </Box>
+            </Box>
+
+            <Divider sx={{ my: 2 }} />
+
+            <Box sx={{ mb: 4 }}>
+                <Typography variant="subtitle2" sx={{ mb: 2 }}>Price Range</Typography>
+                {priceRanges.map((range, index) => (
                     <FormControlLabel
-                        key={brand}
+                        key={index}
                         control={
-                            <Checkbox
-                                checked={selectedBrands.includes(brand)}
-                                onChange={(e) => onBrandChange(brand, e.target.checked)}
-                                sx={{ 
-                                    color: '#b7950b',
-                                    '&.Mui-checked': { color: '#b7950b' },
-                                    padding: '4px',
-                                    ml: 0
-                                }}
-                                size="small"
+                            <Checkbox 
+                                checked={priceRange.some(r => r[0] === range.range[0] && r[1] === range.range[1])}
+                                onChange={() => handlePriceChange(range.range)}
+                                sx={{ color: '#b7950b', '&.Mui-checked': { color: '#b7950b' } }}
                             />
                         }
-                        label={brand}
-                        sx={{ 
-                            display: 'block',
-                            mb: 0.5,
-                            ml: 0,
-                            '& .MuiFormControlLabel-label': {
-                                fontSize: '0.85rem',
-                                color: '#666'
-                            }
-                        }}
+                        label={range.label}
+                        sx={{ display: 'block', mb: 1 }}
                     />
                 ))}
             </Box>
-        </Box>
 
-        <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 2 }} />
 
-        <Box sx={{ mb: 4 }}>
-            <Typography variant="subtitle2" sx={{ mb: 2 }}>Price Range</Typography>
-            <Slider
-                value={priceRange || [0, 100000]}
-                onChange={onPriceChange}
-                valueLabelDisplay="auto"
-                min={priceBoundaries?.min || 0}
-                max={priceBoundaries?.max || 100000}
-                sx={{ color: '#b7950b' }}
+            <FormControlLabel
+                control={
+                    <Checkbox 
+                        checked={inStockOnly}
+                        onChange={onStockChange}
+                        sx={{ color: '#b7950b', '&.Mui-checked': { color: '#b7950b' } }}
+                    />
+                }
+                label="In Stock Only"
             />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-                <Typography variant="body2">₹{(priceRange?.[0] || 0).toLocaleString('en-IN')}</Typography>
-                <Typography variant="body2">₹{(priceRange?.[1] || 100000).toLocaleString('en-IN')}</Typography>
-            </Box>
-        </Box>
-
-        <Divider sx={{ my: 2 }} />
-
-        <FormControlLabel
-            control={
-                <Checkbox 
-                    checked={inStockOnly}
-                    onChange={onStockChange}
-                    sx={{ color: '#b7950b', '&.Mui-checked': { color: '#b7950b' } }}
-                />
-            }
-            label="In Stock Only"
-        />
-    </Paper>
-);
+        </Paper>
+    );
+};
 
 // Reuse ProductCard from brandAccessories
 const ProductCard = ({ accessory, onClick }) => (
@@ -197,7 +221,7 @@ const CategoryAccessory = () => {
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [availableBrands, setAvailableBrands] = useState([]);
     const [priceBoundaries, setPriceBoundaries] = useState({ min: 0, max: 100000 });
-    const [priceRange, setPriceRange] = useState([0, 100000]);
+    const [priceRange, setPriceRange] = useState([]);
 
     // Fetch data
     useEffect(() => {
@@ -216,7 +240,6 @@ const CategoryAccessory = () => {
                     const minPrice = Math.floor(Math.min(...prices));
                     const maxPrice = Math.ceil(Math.max(...prices));
                     setPriceBoundaries({ min: minPrice, max: maxPrice });
-                    setPriceRange([minPrice, maxPrice]);
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -245,16 +268,13 @@ const CategoryAccessory = () => {
         );
     };
 
-    // Handle price range changes
-    const handlePriceChange = (event, newValue) => {
-        setPriceRange(newValue);
-    };
-
     // Update filter logic
     useEffect(() => {
         const filtered = accessories.filter(item => {
             const price = Number(item.SalePrice) || 0;
-            const inPriceRange = price >= priceRange[0] && price <= priceRange[1];
+            const inPriceRange = priceRange.length === 0 || priceRange.some(range => 
+                price >= range[0] && (range[1] === Infinity ? true : price <= range[1])
+            );
             const matchesBrand = selectedBrands.length === 0 || selectedBrands.includes(item.Brand);
             return inPriceRange && 
                    (!inStockOnly || item.QUANTITY > 0) && 
@@ -329,21 +349,21 @@ const CategoryAccessory = () => {
                     </Typography>
                 </Box>
 
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={3}>
+                <Grid container spacing={0}>
+                    <Grid item xs={12} md={2} sx={{ pr: 0 }}>
                         <FiltersSection 
                             priceRange={priceRange}
                             priceBoundaries={priceBoundaries}
                             inStockOnly={inStockOnly}
                             selectedBrands={selectedBrands}
                             availableBrands={availableBrands}
-                            onPriceChange={handlePriceChange}
+                            onPriceChange={setPriceRange}
                             onStockChange={(e) => setInStockOnly(e.target.checked)}
                             onBrandChange={handleBrandChange}
                         />
                     </Grid>
-                    <Grid item xs={12} md={9}>
-                        <Grid container spacing={3}>
+                    <Grid item xs={12} md={10} sx={{ pl: 3 }}>
+                        <Grid container spacing={2}>
                             {filteredAccessories.map((accessory) => (
                                 <Grid item xs={12} sm={6} md={3} key={accessory.ItemCode}>
                                     <ProductCard 

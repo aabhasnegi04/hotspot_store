@@ -1,7 +1,8 @@
 export const accessoriesDropdownContent = {
-    mainCategories: ['Popular Brands', 'Mobile Accessories', 'Audio', 'Wearables', 'Power Solutions', 'Protection and Others'],
+    mainCategories: ['Popular Brands', 'Price Range', 'Mobile Accessories', 'Audio', 'Wearables', 'Power Solutions', 'Protection and Others'],
     categoryMapping: {
         'Popular Brands': ['Popular Brands'],
+        'Price Range': ['Price Range'],
         'Mobile Accessories': ['Storage & Memory', 'Network Devices', 'Tablets & Accessories'],
         'Audio': ['Audio Devices'],
         'Wearables': ['Smart Wearables'],
@@ -23,6 +24,16 @@ export const accessoriesDropdownContent = {
                 'Gionee',
                 'Sandisk',
                 'ITEL'
+            ]
+        },
+        {
+            title: 'Price Range',
+            items: [
+                'Under ₹1,000',
+                'Under ₹2,000',
+                'Under ₹5,000',
+                'Under ₹10,000',
+                'Above ₹10,000'
             ]
         },
         {

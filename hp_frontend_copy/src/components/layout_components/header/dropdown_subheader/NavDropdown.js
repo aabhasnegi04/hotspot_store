@@ -205,6 +205,29 @@ const NavDropdown = ({
                         range = '0-100000';
                 }
                 navigate(`/wearables/price-range/${range}`);
+            } else if (category === 'accessories') {
+                // Handle accessories price range
+                let range;
+                switch (item) {
+                    case 'Under ₹1,000':
+                        range = '0-1000';
+                        break;
+                    case 'Under ₹2,000':
+                        range = '1000-2000';
+                        break;
+                    case 'Under ₹5,000':
+                        range = '2000-5000';
+                        break;
+                    case 'Under ₹10,000':
+                        range = '5000-10000';
+                        break;
+                    case 'Above ₹10,000':
+                        range = '10000-100000';
+                        break;
+                    default:
+                        range = '0-100000';
+                }
+                navigate(`/accessories/price-range/${range}`);
             } else if (category === 'smartphones') {
                 // Existing smartphone price range logic
                 let range;
