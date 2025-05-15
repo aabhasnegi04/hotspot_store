@@ -64,10 +64,11 @@ const styles = {
 const SignUp = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        username: '',
+        name: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        mobileno: ''
     });
     const [showPassword, setShowPassword] = useState({ password: false, confirm: false });
     const [errors, setErrors] = useState({});
@@ -89,8 +90,8 @@ const SignUp = () => {
 
     const validateForm = () => {
         const newErrors = {};
-        if (!formData.username) {
-            newErrors.username = 'Username is required';
+        if (!formData.name) {
+            newErrors.name = 'Name is required';
         }
         if (!formData.email) {
             newErrors.email = 'Email is required';
@@ -122,9 +123,10 @@ const SignUp = () => {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        username: formData.username,
+                        name: formData.name,
                         email: formData.email,
-                        password: formData.password
+                        password: formData.password,
+                        mobileno: formData.mobileno
                     }),
                 });
 
@@ -195,10 +197,11 @@ const SignUp = () => {
                                 </Typography>
                             </Grid>
                         )}
-                        {renderTextField('username', 'Username', 'text', <Person sx={{ color: '#FFD700' }} />)}
+                        {renderTextField('name', 'Name', 'text', <Person sx={{ color: '#FFD700' }} />)}
                         {renderTextField('email', 'Email', 'email', <Email sx={{ color: '#FFD700' }} />)}
                         {renderTextField('password', 'Password', 'password', <Lock sx={{ color: '#FFD700' }} />)}
                         {renderTextField('confirmPassword', 'Confirm Password', 'password', <Lock sx={{ color: '#FFD700' }} />)}
+                        {renderTextField('mobileno', 'Mobile Number', 'text', <Person sx={{ color: '#FFD700' }} />)}
                         <Grid item xs={12}>
                             <Button
                                 type="submit"

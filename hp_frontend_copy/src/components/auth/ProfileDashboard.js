@@ -189,7 +189,7 @@ const ProfileDashboard = () => {
                                         fontSize: '2.5rem'
                                     }}
                                 >
-                                    {userData.username[0]}
+                                    {userData.name[0]}
                                 </Avatar>
                             </Badge>
                             <Typography
@@ -199,7 +199,7 @@ const ProfileDashboard = () => {
                                     fontFamily: "'Outfit', sans-serif"
                                 }}
                             >
-                                {userData.username}
+                                {userData.name}
                             </Typography>
                             <Typography
                                 variant="body2"
@@ -345,9 +345,9 @@ const ProfileDashboard = () => {
                                     <Grid item xs={12}>
                                         <TextField
                                             fullWidth
-                                            label="Username"
-                                            name="username"
-                                            value={userData.username}
+                                            label="Name"
+                                            name="name"
+                                            value={userData.name}
                                             onChange={handleChange}
                                             disabled={!editMode}
                                             sx={{

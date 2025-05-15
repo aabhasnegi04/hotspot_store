@@ -38,67 +38,53 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Veneersoft API! The server is running successfully.');
 });
 
-// authRoutes
+// Authentication Routes
 app.use('/api', require('./routes/authRoutes'));
 
-// cartRoutes
+// Cart Routes
 app.use('/api/cart', require('./routes/cartRoutes/addToCartRoute'));
 app.use('/api/cart', require('./routes/cartRoutes/getCartItemsRoute'));
 app.use('/api/cart', require('./routes/cartRoutes/deleteCartItemRoute.js'));
 
-// bestSellerRoutes
-app.use('/api/bestsellers', require('./routes/bestSeller_Routes/bestsellerRoutes'));
-
-// best seller accessories routes
-app.use('/api/bestseller-accessories', require('./routes/accessories_Routes/bestSellerAccessoriesRoutes'));
-
-// contactRoutes
+// Contact Routes
 app.use('/api/contact', require('./routes/ContactRoutes'));
 
-// Add pincode routes
-app.use('/api/pincode', require('./routes/pincodeRoutes'));
-
-// Add search suggestions routes
+// Search Routes
 app.use('/api/search', require('./routes/searchSuggestionsRoutes'));
 
-// Add brand accessories routes
-app.use('/api/brand-accessories', require('./routes/accessories_Routes/brandAccessoryRoutes'));
+// Pincode Routes
+app.use('/api/pincode', require('./routes/pincodeRoutes'));
 
-// Add new category accessories route
-app.use('/api/category-accessories', require('./routes/accessories_Routes/categoryAccessoryRoutes'));
-
-// Add price range accessories route
-app.use('/api/price-range-accessories', require('./routes/accessories_Routes/priceRangeAccessoryRoutes'));
-
-// Add price range routes
-app.use('/api/price-range', require('./routes/smartphones_Routes/priceRangeRoutesHandset'));
-
-// Add brand handset routes
-app.use('/api/brand-handsets', require('./routes/smartphones_Routes/brandHandsetRoutes'));
-
-// Add product details routes
+// Product Routes
 app.use('/api/product', require('./routes/product_Routes/productDetailsRoutes'));
-
-// Add product list routes
 app.use('/api/products', require('./routes/product_Routes/productListRoutes'));
 
-// Add hot products routes
+// Smartphone Routes
+app.use('/api/brand-handsets', require('./routes/smartphones_Routes/brandHandsetRoutes'));
+app.use('/api/price-range', require('./routes/smartphones_Routes/priceRangeRoutesHandset'));
 app.use('/api/hot-products', require('./routes/smartphones_Routes/HotProductsRoutes'));
-
-// Add featured phones routes
 app.use('/api/featured-phones', require('./routes/smartphones_Routes/featuredPhonesRoutes'));
 
-// Add smartwatch routes
+// Tablet Routes
+app.use('/api', require('./routes/tablets_routes/bestSellerTabletsRoutes'));
+app.use('/api/brand-tablets', require('./routes/tablets_routes/brandTabletsRoutes'));
+app.use('/api/price-range-tablets', require('./routes/tablets_routes/priceRangeTabletsRoutes'));
+app.use('/api/all-tablets', require('./routes/tablets_routes/allProductsTabletsRoutes'));
+
+// Accessory Routes
+app.use('/api/brand-accessories', require('./routes/accessories_Routes/brandAccessoryRoutes'));
+app.use('/api/category-accessories', require('./routes/accessories_Routes/categoryAccessoryRoutes'));
+app.use('/api/price-range-accessories', require('./routes/accessories_Routes/priceRangeAccessoryRoutes'));
+app.use('/api/bestseller-accessories', require('./routes/accessories_Routes/bestSellerAccessoriesRoutes'));
+
+// Smartwatch/Wearable Routes
 app.use('/api/smartwatches', require('./routes/wearables_Routes/allWearablesRoutes'));
-
-// Add brand smartwatch routes
 app.use('/api/brand-smartwatches', require('./routes/wearables_Routes/brandWearablesRoutes'));
-
-// Add best-selling smartwatch routes
 app.use('/api/bestseller-smartwatches', require('./routes/wearables_Routes/bestSellerWearablesRoutes'));
-
-// Add price range smartwatch routes
 app.use('/api/price-range-smartwatches', require('./routes/wearables_Routes/priceRangeWearablesRoutes'));
+
+// Best Seller Routes
+app.use('/api/bestsellers', require('./routes/bestSeller_Routes/bestsellerRoutes'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

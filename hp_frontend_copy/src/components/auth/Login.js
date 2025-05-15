@@ -21,7 +21,7 @@ import {
 const Login = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        email: '',
+        identifier: '',
         password: ''
     });
     const [showPassword, setShowPassword] = useState(false);
@@ -43,10 +43,8 @@ const Login = () => {
 
     const validateForm = () => {
         const newErrors = {};
-        if (!formData.email) {
-            newErrors.email = 'Email is required';
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = 'Please enter a valid email address';
+        if (!formData.identifier) {
+            newErrors.identifier = 'Email or Mobile Number is required';
         }
         if (!formData.password) {
             newErrors.password = 'Password is required';
@@ -64,7 +62,7 @@ const Login = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(formData),
+                    body: JSON.stringify({ identifier: formData.identifier, password: formData.password }),
                 });
 
                 if (!response.ok) {
@@ -169,13 +167,13 @@ const Login = () => {
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
-                                label="Email"
-                                name="email"
-                                type="email"
-                                value={formData.email}
+                                label="Email or Mobile Number"
+                                name="identifier"
+                                type="text"
+                                value={formData.identifier}
                                 onChange={handleChange}
-                                error={!!errors.email}
-                                helperText={errors.email}
+                                error={!!errors.identifier}
+                                helperText={errors.identifier}
                                 variant="outlined"
                                 sx={inputStyle}
                                 InputProps={{

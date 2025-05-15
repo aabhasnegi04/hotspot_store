@@ -37,6 +37,7 @@ import WearablesHomepage from './components/product_pages/wearables/wearablesHom
 import BrandWearables from './components/product_pages/wearables/brandWearables';
 import FeaturedPhones from './components/product_pages/mobile phones/FeaturedPhones';
 import BestsellersHomepage from './components/product_pages/bestsellers/bestsellersHomepage';
+import AllTablets from './components/product_pages/tablets/allTablets';
 import './App.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -113,6 +114,7 @@ function App() {
               <Route path="/smartphones" element={<MobilesHomepage />} />
               <Route path="/accessories" element={<AccessoriesHomepage />} />
               <Route path="/wearables" element={<WearablesHomepage />} />
+              <Route path="/products/tablets" element={<AllTablets />} />
             </Routes>
           </Box>
           <Footer />

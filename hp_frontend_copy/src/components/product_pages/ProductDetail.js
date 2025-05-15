@@ -437,10 +437,20 @@ const ProductDetail = () => {
                                 mb: 1.4,
                                 p: 1.5,
                                 borderRadius: '9px',
-                                background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.065) 0%, rgba(255, 215, 0, 0.022) 100%)',
-                                border: '1px solid rgba(255, 215, 0, 0.16)',
+                                background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.08) 100%)',
+                                border: '1.5px solid rgba(255, 215, 0, 0.4)',
                                 maxWidth: '94%',
-                                boxShadow: '0 2.5px 12px rgba(255, 215, 0, 0.065)'
+                                boxShadow: '0 3px 15px rgba(255, 215, 0, 0.2)',
+                                position: 'relative',
+                                '&::before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    height: '3px',
+                                    background: 'linear-gradient(90deg, #FFD700, #FFA500)',
+                                }
                             }}>
                                 <Box sx={{ 
                                     display: 'flex', 
@@ -448,19 +458,32 @@ const ProductDetail = () => {
                                     gap: 1,
                                     mb: 1.1
                                 }}>
-                                    <OfferIcon sx={{ 
-                                        color: '#B7950B',
-                                        fontSize: '1.08rem'
-                                    }} />
+                                    <Box sx={{
+                                        width: 32,
+                                        height: 32,
+                                        borderRadius: '50%',
+                                        background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        boxShadow: '0 2px 6px rgba(255, 215, 0, 0.3)'
+                                    }}>
+                                        <OfferIcon sx={{ 
+                                            color: '#000',
+                                            fontSize: '1.2rem',
+                                            fontWeight: 'bold'
+                                        }} />
+                                    </Box>
                                     <Typography variant="subtitle2" sx={{ 
-                                        fontWeight: 600, 
-                                        color: '#B7950B', 
-                                        fontSize: '1.01rem',
+                                        fontWeight: 700, 
+                                        color: '#000',
+                                        fontSize: '1.1rem',
                                         background: 'linear-gradient(45deg, #B7950B 30%, #FFD700 90%)',
                                         WebkitBackgroundClip: 'text',
-                                        WebkitTextFillColor: 'transparent'
+                                        WebkitTextFillColor: 'transparent',
+                                        textShadow: '0 1px 2px rgba(0,0,0,0.1)'
                                     }}>
-                                        Exciting Offers for You
+                                        Exclusive Offers
                                     </Typography>
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -470,18 +493,18 @@ const ProductDetail = () => {
                                         gap: 1,
                                         p: 1.15,
                                         borderRadius: '7px',
-                                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.955) 0%, rgba(255, 255, 255, 0.83) 100%)',
-                                        border: '1px solid rgba(255, 215, 0, 0.16)',
+                                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.9) 100%)',
+                                        border: '1px solid rgba(255, 215, 0, 0.3)',
                                         transition: 'all 0.3s ease',
                                         '&:hover': {
                                             transform: 'translateX(5px)',
-                                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.96) 100%)',
-                                            boxShadow: '0 2.5px 9px rgba(255, 215, 0, 0.11)'
+                                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%)',
+                                            boxShadow: '0 3px 10px rgba(255, 215, 0, 0.2)'
                                         }
                                     }}>
                                         <CreditCardIcon sx={{ 
                                             color: '#B7950B',
-                                            fontSize: '1.08rem',
+                                            fontSize: '1.2rem',
                                             mt: 0.14
                                         }} />
                                         <Box>
@@ -491,16 +514,18 @@ const ProductDetail = () => {
                                                 sx={{ 
                                                     background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
                                                     color: '#000',
-                                                    fontWeight: 600,
-                                                    fontSize: '0.72rem',
-                                                    mb: 0.14,
-                                                    height: '19px'
+                                                    fontWeight: 700,
+                                                    fontSize: '0.75rem',
+                                                    mb: 0.3,
+                                                    height: '20px',
+                                                    boxShadow: '0 1px 3px rgba(255, 215, 0, 0.2)'
                                                 }}
                                             />
                                             <Typography variant="body2" sx={{ 
-                                                color: '#666', 
-                                                fontSize: '0.81rem',
-                                                fontWeight: 500
+                                                color: '#000', 
+                                                fontSize: '0.85rem',
+                                                fontWeight: 600,
+                                                lineHeight: 1.3
                                             }}>
                                                 Get 10% Instant Discount on HDFC Bank Credit Cards & EMI
                                             </Typography>
@@ -512,18 +537,18 @@ const ProductDetail = () => {
                                         gap: 1,
                                         p: 1.15,
                                         borderRadius: '7px',
-                                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.955) 0%, rgba(255, 255, 255, 0.83) 100%)',
-                                        border: '1px solid rgba(255, 215, 0, 0.16)',
+                                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.9) 100%)',
+                                        border: '1px solid rgba(255, 215, 0, 0.3)',
                                         transition: 'all 0.3s ease',
                                         '&:hover': {
                                             transform: 'translateX(5px)',
-                                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.96) 100%)',
-                                            boxShadow: '0 2.5px 9px rgba(255, 215, 0, 0.11)'
+                                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%)',
+                                            boxShadow: '0 3px 10px rgba(255, 215, 0, 0.2)'
                                         }
                                     }}>
                                         <DiscountIcon sx={{ 
                                             color: '#B7950B',
-                                            fontSize: '1.08rem',
+                                            fontSize: '1.2rem',
                                             mt: 0.14
                                         }} />
                                         <Box>
@@ -533,16 +558,18 @@ const ProductDetail = () => {
                                                 sx={{ 
                                                     background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
                                                     color: '#000',
-                                                    fontWeight: 600,
-                                                    fontSize: '0.72rem',
-                                                    mb: 0.14,
-                                                    height: '19px'
+                                                    fontWeight: 700,
+                                                    fontSize: '0.75rem',
+                                                    mb: 0.3,
+                                                    height: '20px',
+                                                    boxShadow: '0 1px 3px rgba(255, 215, 0, 0.2)'
                                                 }}
                                             />
                                             <Typography variant="body2" sx={{ 
-                                                color: '#666', 
-                                                fontSize: '0.81rem',
-                                                fontWeight: 500
+                                                color: '#000', 
+                                                fontSize: '0.85rem',
+                                                fontWeight: 600,
+                                                lineHeight: 1.3
                                             }}>
                                                 Save ₹1,000 with our exclusive limited-time offer!
                                             </Typography>
@@ -554,18 +581,18 @@ const ProductDetail = () => {
                                         gap: 1,
                                         p: 1.15,
                                         borderRadius: '7px',
-                                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.955) 0%, rgba(255, 255, 255, 0.83) 100%)',
-                                        border: '1px solid rgba(255, 215, 0, 0.16)',
+                                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.9) 100%)',
+                                        border: '1px solid rgba(255, 215, 0, 0.3)',
                                         transition: 'all 0.3s ease',
                                         '&:hover': {
                                             transform: 'translateX(5px)',
-                                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.96) 100%)',
-                                            boxShadow: '0 2.5px 9px rgba(255, 215, 0, 0.11)'
+                                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%)',
+                                            boxShadow: '0 3px 10px rgba(255, 215, 0, 0.2)'
                                         }
                                     }}>
                                         <GiftIcon sx={{ 
                                             color: '#B7950B',
-                                            fontSize: '1.08rem',
+                                            fontSize: '1.2rem',
                                             mt: 0.14
                                         }} />
                                         <Box>
@@ -575,16 +602,18 @@ const ProductDetail = () => {
                                                 sx={{ 
                                                     background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
                                                     color: '#000',
-                                                    fontWeight: 600,
-                                                    fontSize: '0.72rem',
-                                                    mb: 0.14,
-                                                    height: '19px'
+                                                    fontWeight: 700,
+                                                    fontSize: '0.75rem',
+                                                    mb: 0.3,
+                                                    height: '20px',
+                                                    boxShadow: '0 1px 3px rgba(255, 215, 0, 0.2)'
                                                 }}
                                             />
                                             <Typography variant="body2" sx={{ 
-                                                color: '#666', 
-                                                fontSize: '0.81rem',
-                                                fontWeight: 500
+                                                color: '#000', 
+                                                fontSize: '0.85rem',
+                                                fontWeight: 600,
+                                                lineHeight: 1.3
                                             }}>
                                                 Get 3 months of Prime Video + 1 year of extended warranty free!
                                             </Typography>

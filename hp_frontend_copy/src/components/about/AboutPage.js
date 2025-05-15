@@ -42,7 +42,7 @@ const AboutPage = () => {
         <Fade in={true} timeout={800}>
             <Box sx={{ 
                 minHeight: '100vh', 
-                pt: '112px',
+                pt: '5px',
                 pb: 8,
                 background: 'linear-gradient(180deg, #fff9c4 0%, rgba(255, 249, 196, 0.3) 100%)'
             }}>

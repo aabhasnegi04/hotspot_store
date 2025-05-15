@@ -15,18 +15,17 @@ import {
     Alert
 } from '@mui/material';
 import {
-    Delete as DeleteIcon,
     Add as AddIcon,
-    Remove as RemoveIcon,
     ShoppingCart as ShoppingCartIcon
 } from '@mui/icons-material';
+import ShippingCart from "./shippingCart";
 
 const ShoppingCart = () => {
     const navigate = useNavigate();
     const [cartItems, setCartItems] = useState([]);
-    const [orderSummary, setOrderSummary] = useState({ total: 0 });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [step, setStep] = useState('cart'); // 'cart' or 'shipping'
 
     // Helper function to update cart count and trigger header update
     const updateCartState = useCallback((items) => {
@@ -67,12 +66,7 @@ const ShoppingCart = () => {
                 image_url: item.Imagepath || 'https://via.placeholder.com/100'
             }));
 
-            const validatedOrderSummary = data.data.orderSummary?.[0] 
-                ? { total: Number(data.data.orderSummary[0].total) || 0 }
-                : { total: 0 };
-
             setCartItems(validatedCartItems);
-            setOrderSummary(validatedOrderSummary);
             updateCartState(validatedCartItems);
         } catch (error) {
             setError(error.message || 'An error occurred while fetching cart items');
@@ -103,6 +97,10 @@ const ShoppingCart = () => {
         }
     }, [fetchCartItems]);
 
+    const handleProductClick = (itemCode) => {
+        navigate(`/product/${itemCode}`);
+    };
+
     useEffect(() => {
         fetchCartItems();
     }, [fetchCartItems]);
@@ -112,6 +110,21 @@ const ShoppingCart = () => {
             <Container maxWidth="md" sx={{ mt: 0, mb: 8, textAlign: 'center' }}>
                 <CircularProgress sx={{ color: '#FFD700' }} />
             </Container>
+        );
+    }
+
+    if (step === 'shipping') {
+        return (
+            <>
+                <ShippingCart 
+                    cartItems={cartItems} 
+                    orderSummary={{
+                        itemCount: cartItems.length,
+                        subtotal: calculateSubtotal(),
+                    }}
+                    onBackToCart={() => setStep('cart')}
+                />
+            </>
         );
     }
 
@@ -167,87 +180,142 @@ const ShoppingCart = () => {
         </Box>
     );
 
-    const CartItem = ({ item }) => (
-        <Grid item xs={12}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <img
-                    src={item.image_url}
-                    alt={item.product_name}
-                    style={{
-                        width: '100px',
-                        height: '100px',
-                        objectFit: 'cover',
-                        borderRadius: '8px'
-                    }}
-                />
-                <Box sx={{ flex: 1 }}>
-                    <Typography variant="h6" sx={{ mb: 1 }}>
-                        {item.ItemName}
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-                        Price: {formatPrice(item.SalePrice)}
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-                        Total: {formatPrice(item.SalePrice * item.UNIT)}
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Typography sx={{ mx: 1 }}>{item.UNIT}</Typography>
-                        <IconButton
-                            size="small"
-                            onClick={() => handleRemoveItem(item.ORDERID, item.ITEMCODE)}
-                            sx={{ color: '#FFD700', ml: 'auto' }}
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    </Box>
-                </Box>
-            </Box>
-            <Divider sx={{ my: 2 }} />
-        </Grid>
-    );
-
     return (
-        <Container maxWidth="md" sx={{ mt: 0, mb: 8 }}>
-            <Paper elevation={3} sx={styles.paper}>
-                <Typography variant="h4" component="h1" gutterBottom align="center" sx={styles.title}>
-                    Shopping Cart
-                </Typography>
+        <Container maxWidth="lg" sx={{ mt: 0, mb: 8 }}>
+            <Grid container spacing={4} justifyContent="center">
+                {/* Left Column: Cart Items and Coupon */}
+                <Grid item xs={12} md={8}>
+                    <Paper elevation={3} sx={styles.paper}>
+                        <Typography variant="h4" component="h1" gutterBottom align="left" sx={{ ...styles.title, WebkitTextFillColor: 'black', color: 'black' }}>
+                            Your Cart
+                        </Typography>
 
-                {error && (
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                        {error}
-                    </Alert>
-                )}
+                        {/* Coupon Section */}
+                        <Paper elevation={1} sx={{ p: 2, mb: 4, borderRadius: '12px', display: 'flex', alignItems: 'center', background: '#fff', boxShadow: '0 2px 8px rgba(255, 215, 0, 0.05)' }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+                                <Box sx={{
+                                    width: 32, height: 32, borderRadius: '50%', background: '#FFD700', display: 'flex', alignItems: 'center', justifyContent: 'center', mr: 2
+                                }}>
+                                    <Typography sx={{ fontWeight: 700, color: '#fff' }}>%</Typography>
+                                </Box>
+                                <Typography variant="h6" sx={{ fontWeight: 600, color: '#000' }}>Apply Coupon</Typography>
+                            </Box>
+                            <Box sx={{ flex: 1 }} />
+                            <IconButton>
+                                <AddIcon sx={{ color: '#FFD700' }} />
+                            </IconButton>
+                        </Paper>
 
-                {!cartItems.length ? <EmptyCart /> : (
-                    <>
-                        <Grid container spacing={3}>
-                            {cartItems.map(item => (
-                                <CartItem key={`${item.ORDERID}-${item.ITEMCODE}`} item={item} />
-                            ))}
-                        </Grid>
+                        {error && (
+                            <Alert severity="error" sx={{ mb: 2 }}>
+                                {error}
+                            </Alert>
+                        )}
 
-                        <Box sx={{ mt: 4 }}>
-                            <Grid container justifyContent="space-between" alignItems="center">
-                                <Grid item>
-                                    <Typography variant="h6">
-                                        Subtotal: {formatPrice(calculateSubtotal())}
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Button
-                                        variant="contained"
-                                        onClick={() => navigate('/checkout')}
-                                        sx={styles.button}
-                                    >
-                                        Proceed to Checkout
-                                    </Button>
-                                </Grid>
-                            </Grid>
+                        {!cartItems.length ? <EmptyCart /> : (
+                            <>
+                                <Paper elevation={0} sx={{ p: 2, mb: 2, background: 'transparent', boxShadow: 'none' }}>
+                                    {cartItems.map(item => (
+                                        <Box key={`${item.ORDERID}-${item.ITEMCODE}`} sx={{ mb: 2 }}>
+                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                                <Box 
+                                                    component="img"
+                                                    src={item.image_url}
+                                                    alt={item.product_name}
+                                                    onClick={() => handleProductClick(item.ITEMCODE)}
+                                                    sx={{
+                                                        width: '100px',
+                                                        height: '100px',
+                                                        objectFit: 'cover',
+                                                        borderRadius: '8px',
+                                                        cursor: 'pointer',
+                                                        transition: 'transform 0.2s ease',
+                                                        '&:hover': {
+                                                            transform: 'scale(1.05)'
+                                                        }
+                                                    }}
+                                                />
+                                                <Box sx={{ flex: 1 }}>
+                                                    <Typography 
+                                                        variant="h6" 
+                                                        sx={{ 
+                                                            mb: 0.5,
+                                                            cursor: 'pointer',
+                                                            '&:hover': {
+                                                                color: '#B7950B'
+                                                            }
+                                                        }}
+                                                        onClick={() => handleProductClick(item.ITEMCODE)}
+                                                    >
+                                                        {item.ItemName}
+                                                    </Typography>
+                                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                                            {[1,2,3,4,5].map(i => (
+                                                                <span key={i} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>
+                                                            ))}
+                                                        </Box>
+                                                    </Box>
+                                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                                                        Standard Delivery in 2 days | Free
+                                                    </Typography>
+                                                    <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
+                                                        <Button variant="outlined" sx={{ borderRadius: '8px', fontWeight: 500, color: '#FFD700', borderColor: '#FFD700', textTransform: 'none', '&:hover': { borderColor: '#FFA500', color: '#FFA500' } }}>
+                                                            Move to Wishlist
+                                                        </Button>
+                                                        <Button variant="outlined" sx={{ borderRadius: '8px', fontWeight: 500, color: '#FF0000', borderColor: '#FF0000', textTransform: 'none', '&:hover': { borderColor: '#FFA500', color: '#FFA500' } }}
+                                                            onClick={() => handleRemoveItem(item.ORDERID, item.ITEMCODE)}
+                                                        >
+                                                            Remove
+                                                        </Button>
+                                                    </Box>
+                                                </Box>
+                                                <Box sx={{ minWidth: 140, textAlign: 'right' }}>
+                                                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#000' }}>{formatPrice(item.SalePrice)}</Typography>
+                                                    <Typography variant="body2" color="text.secondary">(Incl. all Taxes)</Typography>
+                                                    <Typography variant="body2" sx={{ textDecoration: 'line-through', color: '#888', mt: 1 }}>
+                                                        MRP ₹{(item.SalePrice + 6000).toLocaleString('en-IN')}
+                                                    </Typography>
+                                                    <Typography variant="caption" color="success.main">Save ₹6,000.00</Typography>
+                                                    <Typography variant="body2" sx={{ mt: 1, fontWeight: 600, color: '#000' }}>₹1695/mo*</Typography>
+                                                    <Typography variant="caption" color="primary" sx={{ cursor: 'pointer', textDecoration: 'underline' }}>EMI Options</Typography>
+                                                </Box>
+                                            </Box>
+                                            <Divider sx={{ my: 2 }} />
+                                        </Box>
+                                    ))}
+                                </Paper>
+                            </>
+                        )}
+                    </Paper>
+                </Grid>
+
+                {/* Right Column: Order Summary */}
+                <Grid item xs={12} md={4}>
+                    <Paper elevation={3} sx={{ ...styles.paper, p: 3, position: 'sticky', top: 32 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
+                            Order Summary ({cartItems.length} item{cartItems.length !== 1 ? 's' : ''})
+                        </Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                            <Typography variant="body1" color="text.secondary">Original Price</Typography>
+                            <Typography variant="body1">{formatPrice(calculateSubtotal())}</Typography>
                         </Box>
-                    </>
-                )}
-            </Paper>
+                        <Divider sx={{ my: 1 }} />
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 700 }}>Total</Typography>
+                            <Typography variant="h6" sx={{ fontWeight: 700 }}>{formatPrice(calculateSubtotal())}</Typography>
+                        </Box>
+                        <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={() => setStep('shipping')}
+                            sx={{ ...styles.button, mt: 2 }}
+                        >
+                            Checkout
+                        </Button>
+                    </Paper>
+                </Grid>
+            </Grid>
         </Container>
     );
 };
