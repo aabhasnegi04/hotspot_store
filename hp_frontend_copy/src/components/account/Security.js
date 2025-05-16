@@ -13,22 +13,24 @@ import {
     Snackbar,
     Divider,
     Switch,
-    FormControlLabel
+    FormControlLabel,
+    CircularProgress
 } from '@mui/material';
 import {
     Visibility as VisibilityIcon,
     VisibilityOff as VisibilityOffIcon,
-    Security as SecurityIcon
+    Security as SecurityIcon,
+    Email as EmailIcon
 } from '@mui/icons-material';
+import { API_BASE_URL } from '../../config';
 
 const Security = () => {
     const [showPassword, setShowPassword] = useState({
-        current: false,
         new: false,
         confirm: false
     });
     const [formData, setFormData] = useState({
-        currentPassword: '',
+        email: '',
         newPassword: '',
         confirmPassword: ''
     });
@@ -42,6 +44,7 @@ const Security = () => {
         message: '',
         severity: 'success'
     });
+    const [loading, setLoading] = useState(false);
 
     const handlePasswordVisibility = (field) => {
         setShowPassword(prev => ({
@@ -50,7 +53,7 @@ const Security = () => {
         }));
     };
 
-    const handlePasswordChange = (e) => {
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
@@ -65,12 +68,32 @@ const Security = () => {
         }));
     };
 
-    const handlePasswordUpdate = () => {
-        // Validate passwords
-        if (!formData.currentPassword || !formData.newPassword || !formData.confirmPassword) {
+    const handlePasswordUpdate = async () => {
+        // Validate all fields
+        if (!formData.email || !formData.newPassword || !formData.confirmPassword) {
             setSnackbar({
                 open: true,
-                message: 'Please fill all password fields',
+                message: 'Please fill all fields',
+                severity: 'error'
+            });
+            return;
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            setSnackbar({
+                open: true,
+                message: 'Please enter a valid email address',
+                severity: 'error'
+            });
+            return;
+        }
+
+        if (formData.newPassword.length < 8) {
+            setSnackbar({
+                open: true,
+                message: 'Password must be at least 8 characters long',
                 severity: 'error'
             });
             return;
@@ -85,39 +108,52 @@ const Security = () => {
             return;
         }
 
-        // Get user data
-        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const userIndex = users.findIndex(user => user.phone === userData.phone);
+        setLoading(true);
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/reset-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: formData.email,
+                    newPassword: formData.newPassword
+                })
+            });
 
-        if (users[userIndex].password !== formData.currentPassword) {
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                setFormData({
+                    email: '',
+                    newPassword: '',
+                    confirmPassword: ''
+                });
+                setSnackbar({
+                    open: true,
+                    message: data.message || 'Password updated successfully',
+                    severity: 'success'
+                });
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: data.message || 'Failed to update password',
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
             setSnackbar({
                 open: true,
-                message: 'Current password is incorrect',
+                message: 'An error occurred while updating the password',
                 severity: 'error'
             });
-            return;
+        } finally {
+            setLoading(false);
         }
-
-        // Update password
-        users[userIndex].password = formData.newPassword;
-        localStorage.setItem('users', JSON.stringify(users));
-
-        // Clear form and show success message
-        setFormData({
-            currentPassword: '',
-            newPassword: '',
-            confirmPassword: ''
-        });
-        setSnackbar({
-            open: true,
-            message: 'Password updated successfully',
-            severity: 'success'
-        });
     };
 
     return (
-        <Container maxWidth="md" sx={{ mt: { xs: 12, sm: 13, md: 14 }, mb: 8 }}>
+        <Container maxWidth="md" sx={{ mt: { xs: 0, sm: 0, md: 0 }, mb: 8 }}>
             <Paper elevation={0} sx={{ p: 4, borderRadius: '20px', backgroundColor: '#fff' }}>
                 {/* Header */}
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
@@ -135,17 +171,15 @@ const Security = () => {
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
-                            type={showPassword.current ? 'text' : 'password'}
-                            label="Current Password"
-                            name="currentPassword"
-                            value={formData.currentPassword}
-                            onChange={handlePasswordChange}
+                            label="Email Address"
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
                             InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton onClick={() => handlePasswordVisibility('current')}>
-                                            {showPassword.current ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                                        </IconButton>
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <EmailIcon sx={{ color: '#FFB800' }} />
                                     </InputAdornment>
                                 )
                             }}
@@ -164,7 +198,8 @@ const Security = () => {
                             label="New Password"
                             name="newPassword"
                             value={formData.newPassword}
-                            onChange={handlePasswordChange}
+                            onChange={handleInputChange}
+                            helperText="Password must be at least 8 characters long"
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -189,7 +224,7 @@ const Security = () => {
                             label="Confirm New Password"
                             name="confirmPassword"
                             value={formData.confirmPassword}
-                            onChange={handlePasswordChange}
+                            onChange={handleInputChange}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -215,8 +250,10 @@ const Security = () => {
                                 backgroundColor: '#FFB800',
                                 '&:hover': { backgroundColor: '#FFA000' }
                             }}
+                            disabled={loading}
+                            startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
                         >
-                            Update Password
+                            {loading ? 'Updating...' : 'Update Password'}
                         </Button>
                     </Grid>
                 </Grid>

@@ -41,10 +41,14 @@ app.get('/', (req, res) => {
 // Authentication Routes
 app.use('/api', require('./routes/authRoutes'));
 
+// Reset Password Routes
+app.use('/api', require('./routes/resetPasswordRoutes'));
+
 // Cart Routes
 app.use('/api/cart', require('./routes/cartRoutes/addToCartRoute'));
 app.use('/api/cart', require('./routes/cartRoutes/getCartItemsRoute'));
 app.use('/api/cart', require('./routes/cartRoutes/deleteCartItemRoute.js'));
+app.use('/api/cart', require('./routes/cartRoutes/plus_minus_CartRoutes'));
 
 // Contact Routes
 app.use('/api/contact', require('./routes/ContactRoutes'));
