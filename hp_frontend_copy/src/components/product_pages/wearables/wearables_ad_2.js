@@ -5,10 +5,10 @@ const WearablesAd2 = () => {
     return (
         <Grid container spacing={3} sx={{ 
             mb: 6,
-            px: 0.5,
+            px: 0,
             mx: 'auto',
-            maxWidth: '98%',
-            ml: -0.5
+            maxWidth: '100vw',
+            width: '98vw'
         }}>
             {/* Main Ad */}
             <Grid item xs={12}>

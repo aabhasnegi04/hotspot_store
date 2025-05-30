@@ -5,8 +5,9 @@ const SmartphonesAd2 = () => {
     return (
         <Grid container spacing={3} sx={{ 
             mb: 6,
-            maxWidth: '99%',
-            ml: { xs: 0, md: '-1%' }
+            maxWidth: '100vw',
+            width: '99vw',
+            px: 0
         }}>
             {/* Main Ad */}
             <Grid item xs={12}>

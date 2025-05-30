@@ -137,7 +137,7 @@ const AccessoryBrands = () => {
     };
 
     return (
-        <Box sx={{ mb: 6 }}>
+        <Box sx={{ mb: 6, maxWidth: '100vw', width: '99vw', px: 0 }}>
             <Typography variant="h4" sx={{
                 mb: 3,
                 fontWeight: 600,
@@ -151,10 +151,12 @@ const AccessoryBrands = () => {
 
             <Box
                 sx={{
-                    py: 4,
+                    display: 'flex',
+                    alignItems: 'center',
+                    position: 'relative',
+                    height: '210px',
                     borderRadius: '20px',
                     overflow: 'visible',
-                    position: 'relative',
                     px: 5
                 }}
             >
@@ -162,7 +164,7 @@ const AccessoryBrands = () => {
                     onClick={handlePrevious}
                     sx={{
                         position: 'absolute',
-                        left: -20,
+                        left: 20,
                         top: '50%',
                         transform: 'translateY(-50%)',
                         bgcolor: 'rgba(255, 255, 255, 0.9)',
@@ -179,7 +181,7 @@ const AccessoryBrands = () => {
                     onClick={handleNext}
                     sx={{
                         position: 'absolute',
-                        right: 40,
+                        right: 20,
                         top: '50%',
                         transform: 'translateY(-50%)',
                         bgcolor: 'rgba(255, 255, 255, 0.9)',
@@ -194,10 +196,10 @@ const AccessoryBrands = () => {
 
                 <Container maxWidth={false} sx={{ 
                     position: 'relative',
-                    px: { xs: 0, md: 0 },
-                    ml: -2,
+                    px: 0,
                     overflow: 'hidden',
-                    maxWidth: '1400px !important'
+                    maxWidth: '100vw',
+                    width: '100%'
                 }}>
                     <Box
                         sx={{

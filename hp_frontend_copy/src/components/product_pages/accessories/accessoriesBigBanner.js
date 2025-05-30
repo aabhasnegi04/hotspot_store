@@ -34,8 +34,8 @@ const styles = {
 
 const ProductBanner = ({ product, handleProductClick }) => (
     <Card onClick={() => handleProductClick(product.itemCode)} sx={styles.card}>
-        <Grid container sx={{ height: '100%' }}>
-            <Grid item xs={12} md={6} sx={{ p: 6, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <Grid container sx={{ height: '100%' }} alignItems="center" justifyContent="center">
+            <Grid item xs={12} md={6} sx={{ p: { xs: 2, sm: 4, md: 6 }, display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
                 <Typography 
                     variant="h4" 
                     sx={{ 
@@ -48,7 +48,8 @@ const ProductBanner = ({ product, handleProductClick }) => (
                         overflow: 'visible',
                         textOverflow: 'clip',
                         wordWrap: 'break-word',
-                        minHeight: '4rem'
+                        minHeight: '4rem',
+                        textAlign: { xs: 'center', md: 'left' }
                     }}
                 >
                     {product.itemName}
@@ -151,7 +152,7 @@ const ProductBanner = ({ product, handleProductClick }) => (
                 justifyContent: 'center',
                 position: 'relative',
                 height: '100%',
-                p: 4
+                p: { xs: 2, sm: 4 },
             }}>
                 <CardMedia
                     component="img"
@@ -162,7 +163,8 @@ const ProductBanner = ({ product, handleProductClick }) => (
                         maxHeight: '400px',
                         objectFit: 'contain',
                         transition: 'transform 0.3s ease',
-                        '&:hover': { transform: 'scale(1.05)' }
+                        '&:hover': { transform: 'scale(1.05)' },
+                        mx: 'auto'
                     }}
                 />
             </Grid>
@@ -203,8 +205,9 @@ const AccessoriesBigBanner = ({ navigate }) => {
             mb: 3,
             borderRadius: '20px',
             overflow: 'hidden',
-            ml: { xs: '1%', md: '0' },
-            maxWidth: '98%'
+            maxWidth: '100vw',
+            width: '98vw',
+            px: 0
         }}>
             <Carousel
                 animation="slide"

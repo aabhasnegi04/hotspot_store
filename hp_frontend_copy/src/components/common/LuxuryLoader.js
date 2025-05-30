@@ -9,10 +9,13 @@ const LuxuryLoader = ({ message = "Loading" }) => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                minHeight: '40vh',
+                  minHeight: '100vh',
+                height: '100%',
+                width: '100%',
                 position: 'relative',
                 background: 'transparent',
-                p: 2
+                p: 2,
+                flex: 1
             }}
         >
             <Box

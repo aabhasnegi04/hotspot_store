@@ -62,6 +62,9 @@ const HotSmartphonesCarousel = ({ navigate }) => {
             mb: 6,
             borderRadius: '20px',
             overflow: 'hidden',
+            maxWidth: '100vw',
+            width: '98vw',
+            px: 0
         }}>
             <Carousel
                 animation="slide"

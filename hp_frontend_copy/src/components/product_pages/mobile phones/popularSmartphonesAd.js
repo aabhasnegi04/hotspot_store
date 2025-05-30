@@ -7,8 +7,9 @@ const PopularSmartphonesAd = () => {
             {/* First row - 2 large ads */}
             <Grid container spacing={3} sx={{ 
                 mb: 3,
-                maxWidth: '99%',
-                ml: { xs: 0, md: '-1%' }
+                maxWidth: '100vw',
+                width: '99vw',
+                px: 0
             }}>
                 {[1, 2].map((num) => (
                     <Grid item xs={12} sm={6} key={num}>
@@ -39,8 +40,9 @@ const PopularSmartphonesAd = () => {
 
             {/* Second row - 4 smaller ads */}
             <Grid container spacing={3} sx={{ 
-                maxWidth: '99%',
-                ml: { xs: 0, md: '-1%' }
+                maxWidth: '100vw',
+                width: '99vw',
+                px: 0
             }}>
                 {[3, 4, 5, 6].map((num) => (
                     <Grid item xs={12} sm={6} md={3} key={num}>

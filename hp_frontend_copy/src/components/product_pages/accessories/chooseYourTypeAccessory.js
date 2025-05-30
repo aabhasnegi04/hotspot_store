@@ -107,7 +107,7 @@ const ChooseYourTypeAccessory = () => {
     const visibleItems = accessoryTypes.slice(currentIndex, currentIndex + itemsPerPage);
 
     return (
-        <Box sx={{ mb: 6, position: 'relative' }}>
+        <Box sx={{ mb: 6, position: 'relative', maxWidth: '100vw', width: '98vw', px: 0 }}>
             <Box sx={{ 
                 display: 'flex', 
                 alignItems: 'center',
@@ -115,8 +115,8 @@ const ChooseYourTypeAccessory = () => {
                 gap: 3,
                 position: 'relative',
                 minHeight: '450px',
-                px: 3,
-                ml: '-1%'
+                width: '100%',
+                px: 0
             }}>
                 <IconButton 
                     onClick={handlePrev}
@@ -151,7 +151,7 @@ const ChooseYourTypeAccessory = () => {
                             }}
                             sx={{
                                 aspectRatio: '1/1',
-                                width: '320px',
+                                width: '355px',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',

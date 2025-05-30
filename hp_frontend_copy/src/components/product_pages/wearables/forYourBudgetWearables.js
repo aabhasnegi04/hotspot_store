@@ -44,19 +44,18 @@ const ForYourBudgetWearables = () => {
     ];
 
     return (
-        <Box sx={{ mb: 6 }}>
+        <Box sx={{ mb: 6, maxWidth: '1500px', width: '100%', mx: 'auto', px: { xs: 1, sm: 2, md: 3 } }}>
             <Typography variant="h4" sx={{
                 mb: 3,
                 fontWeight: 600,
                 background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                 WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                pl: 1,
+                WebkitTextFillColor: 'transparent'
             }}>
                 For Your Budget
             </Typography>
 
-            <Grid container spacing={1} sx={{ px: 0.5, ml: '0.5%', maxWidth: '99%' }}>
+            <Grid container spacing={3}>
                 {priceRanges.map((range, index) => (
                     <Grid item xs={12} sm={6} md={2.35} key={index}>
                         <Card 

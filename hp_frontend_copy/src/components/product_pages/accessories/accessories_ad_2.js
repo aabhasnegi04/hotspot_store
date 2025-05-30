@@ -5,16 +5,17 @@ const AccessoriesAd2 = () => {
     return (
         <Grid container spacing={3} sx={{ 
             mb: 6,
-            px: 1,
-            ml: '-2.2%',
-            maxWidth: '101%'
+            px: 0,
+            maxWidth: '100vw',
+            width: '99vw'
         }}>
             {/* Main Ad */}
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Card sx={{ 
                     height: 500,
-                    background: 'rgba(255, 255, 255, 0.8)',
+                    width: '100%',
                     borderRadius: '20px',
+                    background: 'rgba(255, 255, 255, 0.8)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -159,8 +160,9 @@ const AccessoriesAd2 = () => {
             <Grid item xs={12}>
                 <Card sx={{ 
                     height: 500,
-                    background: 'rgba(255, 255, 255, 0.8)',
+                    width: '100%',
                     borderRadius: '20px',
+                    background: 'rgba(255, 255, 255, 0.8)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',

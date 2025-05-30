@@ -108,7 +108,7 @@ const WearablesHomepage = () => {
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        pl: { xs: 1, sm: 1.5, md: 2 },
+                        pl: { xs: 2, sm: 3, md: 4 },
                         fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
                     }}>
                         Most Popular Wearables

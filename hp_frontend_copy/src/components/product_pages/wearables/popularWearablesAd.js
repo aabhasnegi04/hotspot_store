@@ -37,7 +37,7 @@ const PopularWearablesAd = () => {
     ];
 
     return (
-        <Box sx={{ mb: 4, maxWidth: '97%', mx: 'auto' }}>
+        <Box sx={{ mb: 4, maxWidth: '98%', mx: 'auto', ml: { xs: 1, sm: 2, md: 3 } }}>
             <Grid container spacing={2}>
                 {brands.map((brand, index) => (
                     <Grid item xs={12} md={4} key={index}>

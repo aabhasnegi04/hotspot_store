@@ -55,7 +55,7 @@ const ForYourBudgetAccessories = () => {
                 For Your Budget
             </Typography>
 
-            <Grid container spacing={3} sx={{ px: 1, ml: '-2%', maxWidth: '101%' }}>
+            <Grid container spacing={3} sx={{ px: 0, maxWidth: '100vw', width: '99vw' }}>
                 {priceRanges.map((range, index) => (
                     <Grid item xs={12} sm={6} md={2.4} key={index}>
                         <Card 

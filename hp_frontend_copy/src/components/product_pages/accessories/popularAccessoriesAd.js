@@ -16,9 +16,9 @@ const PopularAccessoriesAd = () => {
             {/* First row - 2 large ads */}
             <Grid container spacing={3} sx={{ 
                 mb: 3, 
-                px: 1,
-                ml: '-2.2%',
-                maxWidth: '101%'
+                px: 0,
+                maxWidth: '100vw',
+                width: '99vw'
             }}>
                 {accessoryTypes.slice(0, 2).map((item, index) => (
                     <Grid item xs={12} sm={6} key={index}>
@@ -54,9 +54,9 @@ const PopularAccessoriesAd = () => {
 
             {/* Second row - 4 smaller ads */}
             <Grid container spacing={3} sx={{ 
-                px: 1,
-                ml: '-2.2%',
-                maxWidth: '101%'
+                px: 0,
+                maxWidth: '100vw',
+                width: '99vw'
             }}>
                 {accessoryTypes.slice(2).map((item, index) => (
                     <Grid item xs={12} sm={6} md={3} key={index}>

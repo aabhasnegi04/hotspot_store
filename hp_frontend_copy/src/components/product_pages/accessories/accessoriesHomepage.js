@@ -73,8 +73,9 @@ const AccessoriesHomepage = () => {
             <Container 
                 maxWidth={false}
                 sx={{ 
-                    pr: { xs: 0.5, sm: 1, md: 0 },
-                    pl: { xs: 0.5, sm: 1, md: 1.5 },
+                    mx: 'auto',
+                    pr: 0,
+                    pl: 0,
                 }}
             >
                 <AnimatedSection>
@@ -102,7 +103,7 @@ const AccessoriesHomepage = () => {
                 <AnimatedSection>
                     <Typography variant="h4" sx={{
                         textAlign: 'left',
-                        mb: { xs: 0.5, sm: 0.8 },
+                        mb: { xs: 0.8, sm: 1.5 },
                         fontWeight: 600,
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
