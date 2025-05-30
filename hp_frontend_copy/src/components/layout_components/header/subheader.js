@@ -45,7 +45,7 @@ const SubHeader = () => {
         { name: 'Tablets', path: '/products/tablets' },
         { name: 'Best Sellers', path: '/bestsellers', hasDropdown: false },
         { name: 'Shop by Brand', path: '/brands' },
-        { name: 'Offers', path: '/offers' },
+        { name: 'Offers', path: '/offers', hasDropdown: false },
         { name: 'About', path: '/about' }
     ];
 
@@ -67,6 +67,7 @@ const SubHeader = () => {
         if (section === 'main') {
             path = item.toLowerCase().replace(/ /g, '-');
             navigate(`/products/${category}/${path}`);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             setOpenDropdown(null);
             return;
         }
@@ -75,6 +76,7 @@ const SubHeader = () => {
         if (section === 'category') {
             const sectionPath = item.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
             navigate(`/products/${category}/${sectionPath}`);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             setOpenDropdown(null);
             return;
         }
@@ -99,6 +101,7 @@ const SubHeader = () => {
             navigate(path);
         }
         
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setOpenDropdown(null);
     };
 
@@ -118,6 +121,7 @@ const SubHeader = () => {
                         } else {
                             navigate(category.path);
                         }
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
                         handleDrawerToggle();
                     }}
                     sx={{

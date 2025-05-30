@@ -44,6 +44,9 @@ app.use('/api', require('./routes/authRoutes'));
 // Reset Password Routes
 app.use('/api', require('./routes/resetPasswordRoutes'));
 
+// Update Profile Routes
+app.use('/api', require('./routes/updateProfileRoutes'));
+
 // Cart Routes
 app.use('/api/cart', require('./routes/cartRoutes/addToCartRoute'));
 app.use('/api/cart', require('./routes/cartRoutes/getCartItemsRoute'));
@@ -69,6 +72,9 @@ app.use('/api/price-range', require('./routes/smartphones_Routes/priceRangeRoute
 app.use('/api/hot-products', require('./routes/smartphones_Routes/HotProductsRoutes'));
 app.use('/api/featured-phones', require('./routes/smartphones_Routes/featuredPhonesRoutes'));
 
+// Phone Comparison Routes
+app.use('/api/phone-compare', require('./routes/phoneCompareRoutes'));
+
 // Tablet Routes
 app.use('/api', require('./routes/tablets_routes/bestSellerTabletsRoutes'));
 app.use('/api/brand-tablets', require('./routes/tablets_routes/brandTabletsRoutes'));
@@ -89,6 +95,9 @@ app.use('/api/price-range-smartwatches', require('./routes/wearables_Routes/pric
 
 // Best Seller Routes
 app.use('/api/bestsellers', require('./routes/bestSeller_Routes/bestsellerRoutes'));
+
+// Register payment routes
+app.use('/api/payment', require('./routes/paymentRoutes'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

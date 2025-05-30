@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     Container,
     Paper,
@@ -10,23 +10,84 @@ import {
     Box,
     IconButton,
     Divider,
-    Input
+    Input,
+    Snackbar,
+    Alert
 } from '@mui/material';
 import {
     Edit as EditIcon,
     PhotoCamera as PhotoCameraIcon
 } from '@mui/icons-material';
+import { API_BASE_URL } from '../../config';
 
 const MyProfile = () => {
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    console.log('UserData from localStorage:', userData); // Debug log
+
     const [formData, setFormData] = useState({
-        firstName: userData.firstName || '',
-        lastName: userData.lastName || '',
+        name: userData.name || '',
         email: userData.email || '',
-        phone: userData.phone || '',
-        dateOfBirth: userData.dateOfBirth || '',
+        mobileno: userData.mobileno || '',
+        address: userData.address || '',
+        country: userData.country || '',
+        state: userData.state || '',
+        city: userData.city || '',
+        pincode: userData.pincode || '',
+        landmark: userData.landmark || '',
         profilePicture: userData.profilePicture || ''
     });
+
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: '',
+        severity: 'success'
+    });
+
+    const fetchProfile = useCallback(async () => {
+        try {
+            console.log('Fetching profile for user ID:', userData.id); // Debug log
+            const response = await fetch(`${API_BASE_URL}/api/profile/${userData.id}`);
+            console.log('API Response status:', response.status); // Debug log
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Profile data received:', data); // Debug log
+                setFormData(prev => ({
+                    ...prev,
+                    ...data
+                }));
+            } else {
+                const errorData = await response.json();
+                console.error('API Error:', errorData); // Debug log
+                setSnackbar({
+                    open: true,
+                    message: errorData.message || 'Error fetching profile data',
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+            setSnackbar({
+                open: true,
+                message: 'Error fetching profile data',
+                severity: 'error'
+            });
+        }
+    }, [userData.id]);
+
+    useEffect(() => {
+        if (userData.id) {
+            console.log('useEffect triggered with user ID:', userData.id); // Debug log
+            fetchProfile();
+        } else {
+            console.log('No user ID found in localStorage'); // Debug log
+            setSnackbar({
+                open: true,
+                message: 'Please log in to view your profile',
+                severity: 'error'
+            });
+        }
+    }, [userData.id, fetchProfile]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -50,11 +111,44 @@ const MyProfile = () => {
         }
     };
 
-    const handleSave = () => {
-        localStorage.setItem('userData', JSON.stringify({
-            ...userData,
-            ...formData
-        }));
+    const handleSave = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/profile/${userData.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Update local storage
+                localStorage.setItem('userData', JSON.stringify({
+                    ...userData,
+                    ...formData
+                }));
+
+                setSnackbar({
+                    open: true,
+                    message: 'Profile updated successfully',
+                    severity: 'success'
+                });
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: data.message || 'Failed to update profile',
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: 'An error occurred while updating profile',
+                severity: 'error'
+            });
+        }
     };
 
     return (
@@ -90,7 +184,7 @@ const MyProfile = () => {
                                 fontSize: '3rem'
                             }}
                         >
-                            {formData.firstName?.[0]?.toUpperCase() || 'U'}
+                            {formData.name?.[0]?.toUpperCase() || 'U'}
                         </Avatar>
                         <Input
                             type="file"
@@ -117,7 +211,7 @@ const MyProfile = () => {
                     </Box>
                     <Box sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
                         <Typography variant="h4" sx={{ fontWeight: 600, color: '#FFB800', mb: 1 }}>
-                            {formData.firstName} {formData.lastName}
+                            {formData.name}
                         </Typography>
                         <Typography variant="body1" color="text.secondary">
                             {formData.email || 'Add your email'}
@@ -129,31 +223,12 @@ const MyProfile = () => {
 
                 {/* Profile Form */}
                 <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12}>
                         <TextField
                             fullWidth
-                            label="First Name"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleChange}
-                            InputProps={{
-                                endAdornment: <EditIcon sx={{ color: '#FFB800', opacity: 0.5 }} />
-                            }}
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    '&:hover fieldset': { borderColor: '#FFB800' },
-                                    '&.Mui-focused fieldset': { borderColor: '#FFB800' }
-                                }
-                            }}
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            fullWidth
-                            label="Last Name"
-                            name="lastName"
-                            value={formData.lastName}
+                            label="Full Name"
+                            name="name"
+                            value={formData.name}
                             onChange={handleChange}
                             InputProps={{
                                 endAdornment: <EditIcon sx={{ color: '#FFB800', opacity: 0.5 }} />
@@ -174,6 +249,65 @@ const MyProfile = () => {
                             name="email"
                             type="email"
                             value={formData.email}
+                            disabled
+                            InputProps={{
+                                endAdornment: <EditIcon sx={{ color: '#FFB800', opacity: 0.5 }} />
+                            }}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '&:hover fieldset': { borderColor: '#FFB800' },
+                                    '&.Mui-focused fieldset': { borderColor: '#FFB800' }
+                                }
+                            }}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="Mobile Number"
+                            name="mobileno"
+                            value={formData.mobileno}
+                            onChange={handleChange}
+                            InputProps={{
+                                endAdornment: <EditIcon sx={{ color: '#FFB800', opacity: 0.5 }} />
+                            }}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '&:hover fieldset': { borderColor: '#FFB800' },
+                                    '&.Mui-focused fieldset': { borderColor: '#FFB800' }
+                                }
+                            }}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="Address"
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                            multiline
+                            rows={3}
+                            InputProps={{
+                                endAdornment: <EditIcon sx={{ color: '#FFB800', opacity: 0.5 }} />
+                            }}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '&:hover fieldset': { borderColor: '#FFB800' },
+                                    '&.Mui-focused fieldset': { borderColor: '#FFB800' }
+                                }
+                            }}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            fullWidth
+                            label="Country"
+                            name="country"
+                            value={formData.country}
                             onChange={handleChange}
                             InputProps={{
                                 endAdornment: <EditIcon sx={{ color: '#FFB800', opacity: 0.5 }} />
@@ -190,9 +324,9 @@ const MyProfile = () => {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             fullWidth
-                            label="Phone Number"
-                            name="phone"
-                            value={formData.phone}
+                            label="State"
+                            name="state"
+                            value={formData.state}
                             onChange={handleChange}
                             InputProps={{
                                 endAdornment: <EditIcon sx={{ color: '#FFB800', opacity: 0.5 }} />
@@ -209,12 +343,51 @@ const MyProfile = () => {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             fullWidth
-                            label="Date of Birth"
-                            name="dateOfBirth"
-                            type="date"
-                            value={formData.dateOfBirth}
+                            label="City"
+                            name="city"
+                            value={formData.city}
                             onChange={handleChange}
-                            InputLabelProps={{ shrink: true }}
+                            InputProps={{
+                                endAdornment: <EditIcon sx={{ color: '#FFB800', opacity: 0.5 }} />
+                            }}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '&:hover fieldset': { borderColor: '#FFB800' },
+                                    '&.Mui-focused fieldset': { borderColor: '#FFB800' }
+                                }
+                            }}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            fullWidth
+                            label="Pincode"
+                            name="pincode"
+                            value={formData.pincode}
+                            onChange={handleChange}
+                            InputProps={{
+                                endAdornment: <EditIcon sx={{ color: '#FFB800', opacity: 0.5 }} />
+                            }}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '&:hover fieldset': { borderColor: '#FFB800' },
+                                    '&.Mui-focused fieldset': { borderColor: '#FFB800' }
+                                }
+                            }}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="Landmark"
+                            name="landmark"
+                            value={formData.landmark}
+                            onChange={handleChange}
+                            InputProps={{
+                                endAdornment: <EditIcon sx={{ color: '#FFB800', opacity: 0.5 }} />
+                            }}
                             sx={{
                                 '& .MuiOutlinedInput-root': {
                                     '&:hover fieldset': { borderColor: '#FFB800' },
@@ -242,6 +415,20 @@ const MyProfile = () => {
                     </Grid>
                 </Grid>
             </Paper>
+
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={6000}
+                onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+            >
+                <Alert
+                    onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+                    severity={snackbar.severity}
+                    sx={{ width: '100%' }}
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </Container>
     );
 };

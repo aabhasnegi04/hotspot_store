@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import { API_BASE_URL } from '../../config';
 
-const searchTerms = ['phone', 'phones', 'mobile', 'mobiles', 'smartphone', 'smartphones', 'device', 'devices'];
+const searchTerms = ['phone', 'phones', 'mobile', 'mobiles'];
 
 const priceRanges = [
     { min: 10000, max: 15000, label: 'under ₹15,000' },
@@ -119,16 +119,16 @@ export const getMatchingPriceSuggestions = query => {
 
     return priceRangeSuggestions.filter(suggestion => 
         suggestion.searchTerms.some(term => 
-            queryWords.some(word => word.includes(term) || term.includes(word))
+            queryWords.some(word => word === term)
         )
     ).map(suggestion => ({
         ...suggestion,
         label: suggestion.label.replace('Devices', 
             queryWords.find(word => 
-                suggestion.searchTerms.some(term => word.includes(term))
+                suggestion.searchTerms.some(term => word === term)
             )?.charAt(0).toUpperCase() + 
             queryWords.find(word => 
-                suggestion.searchTerms.some(term => word.includes(term))
+                suggestion.searchTerms.some(term => word === term)
             )?.slice(1) || 'Devices'
         )
     }));

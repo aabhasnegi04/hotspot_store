@@ -177,7 +177,7 @@ const SignUp = () => {
     );
 
     return (
-        <Container maxWidth="sm" sx={{ mt: 16, mb: 8 }}>
+        <Container maxWidth="sm" sx={{ mt: 0, mb: 0 }}>
             <Paper elevation={3} sx={styles.paper}>
                 <Typography 
                     variant="h4" 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Grid, Paper, Typography, Button, TextField, Divider, Alert, Link, Radio, FormControlLabel } from '@mui/material';
+import PaymentButton from './PaymentButton';
 
 const styles = {
     paper: {
@@ -38,7 +39,7 @@ const ShippingCart = ({ cartItems = [], orderSummary = {}, onBackToCart }) => {
     return (
         <Box sx={{ mt: 2, mb: 8 }}>
             <Grid container spacing={3} justifyContent="center">
-                {/* Left Column: Main Content (Shipping, Billing, Contact, Delivery) */}
+                {/* Left Column: Main   Content (Shipping, Billing, Contact, Delivery) */}
                 <Grid item xs={12} md={8}>
                     <Grid container spacing={2}>
                         {/* Top Row: Back to Cart (left) and Shipping Address (right) */}
@@ -136,13 +137,11 @@ const ShippingCart = ({ cartItems = [], orderSummary = {}, onBackToCart }) => {
                             <Typography variant="h6" sx={{ fontWeight: 700 }}>Total</Typography>
                             <Typography variant="h6" sx={{ fontWeight: 700 }}>₹{(orderSummary.subtotal || 0).toLocaleString('en-IN')}</Typography>
                         </Box>
-                        <Button
-                            variant="contained"
-                            fullWidth
-                            sx={{ ...styles.button, mt: 2 }}
-                        >
-                            Proceed To Payment
-                        </Button>
+                        <PaymentButton
+                            amount={orderSummary.subtotal || 0}
+                            email={''} // TODO: Replace with actual user email
+                            contact={''} // TODO: Replace with actual user contact
+                        />
                         <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: 'block' }}>
                             Delivery charges, if applicable, will be calculated on the next page
                         </Typography>

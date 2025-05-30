@@ -9,7 +9,10 @@ import {
     Typography,
     IconButton,
     InputAdornment,
-    Grid
+    Grid,
+    Dialog,
+    DialogTitle,
+    DialogContent,
 } from '@mui/material';
 import {
     Lock,
@@ -26,6 +29,7 @@ const Login = () => {
     });
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
+    const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -81,8 +85,14 @@ const Login = () => {
                 // Trigger storage event for header component
                 window.dispatchEvent(new Event('storage'));
                 
-                // Navigate to homepage
-                navigate('/');
+                // Show success dialog
+                setShowSuccessDialog(true);
+                
+                // Automatically navigate after 1.5 seconds
+                setTimeout(() => {
+                    setShowSuccessDialog(false);
+                    navigate('/');
+                }, 1500);
             } catch (error) {
                 console.error('Login error:', error);
                 setErrors({
@@ -230,7 +240,7 @@ const Login = () => {
                         <Grid item xs={12} container justifyContent="space-between">
                             <Grid item>
                                 <Link 
-                                    to="#" 
+                                    to="/forgot-password" 
                                     style={{
                                         color: '#FFD700',
                                         textDecoration: 'none',
@@ -262,6 +272,24 @@ const Login = () => {
                     </Grid>
                 </form>
             </Paper>
+
+            {/* Success Dialog */}
+            <Dialog
+                open={showSuccessDialog}
+                maxWidth="xs"
+                fullWidth
+            >
+                <DialogTitle sx={{ textAlign: 'center' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: '#4CAF50' }}>
+                        Login Successful!
+                    </Typography>
+                </DialogTitle>
+                <DialogContent>
+                    <Typography variant="body1" sx={{ textAlign: 'center', my: 2 }}>
+                        Welcome back! You have successfully logged in.
+                    </Typography>
+                </DialogContent>
+            </Dialog>
         </Container>
     );
 };

@@ -11,6 +11,7 @@ import Hero from './components/homepage_components/hero/Hero';
 import Footer from './components/layout_components/footer/footer';
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
+import ForgotPassword from './components/auth/ForgotPassword';
 import ShoppingCart from './components/cart/ShoppingCart';
 import ProductListingPage from './components/product_pages/ProductListingPage';
 import AboutPage from './components/about/AboutPage';
@@ -18,7 +19,7 @@ import MyAccount from './components/account/MyAccount';
 import MyProfile from './components/account/MyProfile';
 import MyAddresses from './components/account/MyAddresses';
 import Security from './components/account/Security';
-import ProductDetail from './components/product_pages/ProductDetail';
+import ProductDetail from './components/product_pages/DetailPage/ProductDetail';
 import Contact from './components/layout_components/footer/Contact';
 import PrivacyPolicy from './components/layout_components/footer/PrivacyPolicy';
 import TermsOfService from './components/layout_components/footer/TermsOfService';
@@ -38,6 +39,7 @@ import BrandWearables from './components/product_pages/wearables/brandWearables'
 import FeaturedPhones from './components/product_pages/mobile phones/FeaturedPhones';
 import BestsellersHomepage from './components/product_pages/bestsellers/bestsellersHomepage';
 import AllTablets from './components/product_pages/tablets/allTablets';
+import OfferSection from './components/product_pages/offers/offerSection';
 import './App.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -82,10 +84,12 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/cart" element={<ShoppingCart />} />
               <Route path="/bestsellers" element={<BestsellersHomepage />} />
               <Route path="/bestseller-accessories" element={<BestSellerAccessories />} />
               <Route path="/featured-phones" element={<FeaturedPhones />} />
+              <Route path="/offers" element={<OfferSection />} />
               <Route path="/" element={
                 <main className="main-content">
                   <Hero />

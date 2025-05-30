@@ -131,21 +131,25 @@ const Header = () => {
 
     const handleCartClick = () => {
         navigate('/cart');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleLogin = () => {
         handleClose();
         navigate('/login');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleSignUp = () => {
         handleClose();
         navigate('/signup');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleProfile = () => {
         handleClose();
         navigate('/account');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleLogout = () => {
@@ -154,6 +158,7 @@ const Header = () => {
         localStorage.removeItem('userData');
         setIsAuthenticated(false);
         navigate('/login');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleLogoClick = () => {
