@@ -15,11 +15,12 @@ const styles = {
         position: 'relative',
         height: '500px',
         background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8))',
-        borderRadius: '20px',
+        borderRadius: 0,
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
         border: '1px solid rgba(255, 215, 0, 0.1)',
+        width: '100%'
     },
     carouselNav: {
         '& .MuiIconButton-root': {
@@ -160,9 +161,7 @@ const ProductBanner = ({ product, handleProductClick }) => (
                     sx={{ 
                         maxWidth: '100%',
                         maxHeight: '400px',
-                        objectFit: 'contain',
-                        transition: 'transform 0.3s ease',
-                        '&:hover': { transform: 'scale(1.05)' }
+                        objectFit: 'contain'
                     }}
                 />
             </Grid>
@@ -200,21 +199,24 @@ const WearablesBigBanner = ({ navigate }) => {
 
     return (
         <Box sx={{ 
+            width: '100vw',
+            position: 'relative',
+            left: '50%',
+            transform: 'translateX(-50%)',
             mb: 3,
-            borderRadius: '20px',
-            overflow: 'hidden',
-            maxWidth: '100vw',
-            width: '98vw',
-            px: 0,
-            mx: 'auto',
-            ml: { xs: 1, sm: 2, md: 3 }
+            overflow: 'hidden'
         }}>
             <Carousel
                 animation="slide"
                 navButtonsAlwaysVisible
                 autoPlay={true}
-                interval={5000}
-                sx={styles.carouselNav}
+                interval={3000}
+                sx={{
+                    ...styles.carouselNav,
+                    '& .MuiPaper-root': {
+                        borderRadius: 0
+                    }
+                }}
             >
                 {products.map((product) => (
                     <ProductBanner 

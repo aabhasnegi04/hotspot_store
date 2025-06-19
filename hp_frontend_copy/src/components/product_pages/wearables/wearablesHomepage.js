@@ -66,13 +66,15 @@ const WearablesHomepage = () => {
             pt: 0,
             pb: { xs: 2, sm: 3, md: 4 },
             width: '100vw',
-            overflowX: 'hidden',
+            overflowX: 'hidden'
         }}>
             <Container 
                 maxWidth={false}
+                disableGutters
                 sx={{ 
-                    pr: { xs: 0.5, sm: 1, md: 0 },
-                    pl: { xs: 0.5, sm: 1, md: 0 },
+                    width: '100%',
+                    p: 0,
+                    m: 0
                 }}
             >
                 <AnimatedSection>
@@ -84,7 +86,7 @@ const WearablesHomepage = () => {
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         fontFamily: "'Outfit', sans-serif",
-                        pl: '1.5%',
+                        pl: { xs: 2, sm: 3 },
                         position: 'relative',
                         top: '8px',
                         fontSize: { xs: '1.3rem', sm: '1.8rem', md: '2.2rem' }
@@ -108,7 +110,7 @@ const WearablesHomepage = () => {
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        pl: { xs: 2, sm: 3, md: 4 },
+                        pl: { xs: 2, sm: 3 },
                         fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
                     }}>
                         Most Popular Wearables
@@ -124,7 +126,7 @@ const WearablesHomepage = () => {
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        pl: { xs: 1, sm: 3, md: 4 },
+                        pl: { xs: 2, sm: 3 },
                         fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
                     }}>
                         Hot Wearables right now

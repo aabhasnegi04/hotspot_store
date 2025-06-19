@@ -7,6 +7,8 @@ require('dotenv').config();
 const { Buffer } = require('buffer');
 global.Buffer = Buffer;
 
+const PORT = process.env.PORT || 5000;
+
 const app = express();
 
 // Session configuration
@@ -23,11 +25,10 @@ app.use(session({
 // Middleware
 app.use(cors({
   origin: [
-    'http://veneersoft.in',
+    'https://hotspotstore.com',
     'http://localhost:8001',
-    'http://api.veneersoft.in:8001',
+    'https://api.hotspotstore.com:8001',
     'http://localhost:3000',
-    'http://localhost:5173'
   ],
   credentials: true
 }));
@@ -35,17 +36,21 @@ app.use(express.json());
 
 // Root route for a friendly message
 app.get('/', (req, res) => {
-    res.send('Welcome to the Veneersoft API! The server is running successfully.');
+    res.send('Welcome to the Hotspotstore API! The server is running successfully.');
 });
 
 // Authentication Routes
-app.use('/api', require('./routes/authRoutes'));
+app.use('/api', require('./routes/userRoutes/authRoutes'));
+
+// Address Routes
+app.use('/api/address', require('./routes/userRoutes/addAddressRoutes'));
+app.use('/api/address', require('./routes/userRoutes/getAddressRoutes'));
 
 // Reset Password Routes
-app.use('/api', require('./routes/resetPasswordRoutes'));
+app.use('/api', require('./routes/userRoutes/resetPasswordRoutes'));
 
 // Update Profile Routes
-app.use('/api', require('./routes/updateProfileRoutes'));
+app.use('/api', require('./routes/userRoutes/updateProfileRoutes'));
 
 // Cart Routes
 app.use('/api/cart', require('./routes/cartRoutes/addToCartRoute'));
@@ -60,7 +65,7 @@ app.use('/api/contact', require('./routes/ContactRoutes'));
 app.use('/api/search', require('./routes/searchSuggestionsRoutes'));
 
 // Pincode Routes
-app.use('/api/pincode', require('./routes/pincodeRoutes'));
+app.use('/api/pincode', require('./routes/userRoutes/pincodeRoutes'));
 
 // Product Routes
 app.use('/api/product', require('./routes/product_Routes/productDetailsRoutes'));
@@ -99,6 +104,15 @@ app.use('/api/bestsellers', require('./routes/bestSeller_Routes/bestsellerRoutes
 // Register payment routes
 app.use('/api/payment', require('./routes/paymentRoutes'));
 
+// Serve static files from the React app build directory
+const path = require('path');
+app.use(express.static('C:/inetpub/hotspotstore.com'));
+
+// The "catchall" handler: for any request that doesn't match an API route, send back index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join('C:/inetpub/hotspotstore.com', 'index.html'));
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err.stack);
@@ -109,10 +123,10 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port http://localhost:${PORT}`);
-  console.log(`Server is accessible at http://api.veneersoft.in:${PORT}`);
+  console.log(`Server is accessible at http://api.hotspotstore.com:${PORT}`);
 });
 
 // Handle uncaught exceptions

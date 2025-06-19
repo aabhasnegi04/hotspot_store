@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { sql, poolPromise } = require('../config/db');
-const auth = require('../middleware/auth');
+const { sql, poolPromise } = require('../../config/db');
+const auth = require('../../middleware/auth');
 
 // Register endpoint
 router.post('/register', async (req, res) => {

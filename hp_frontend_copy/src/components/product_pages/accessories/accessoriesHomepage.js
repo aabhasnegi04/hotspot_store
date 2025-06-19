@@ -72,10 +72,11 @@ const AccessoriesHomepage = () => {
         }}>
             <Container 
                 maxWidth={false}
+                disableGutters
                 sx={{ 
-                    mx: 'auto',
-                    pr: 0,
-                    pl: 0,
+                    width: '100%',
+                    p: 0,
+                    m: 0
                 }}
             >
                 <AnimatedSection>
@@ -97,7 +98,14 @@ const AccessoriesHomepage = () => {
                 </AnimatedSection>
 
                 <AnimatedSection>
-                    <AccessoriesBigBanner bestSellers={bestSellers} navigate={navigate} />
+                    <Box sx={{
+                        width: '100vw',
+                        position: 'relative',
+                        left: '50%',
+                        transform: 'translateX(-50%)'
+                    }}>
+                        <AccessoriesBigBanner bestSellers={bestSellers} navigate={navigate} />
+                    </Box>
                 </AnimatedSection>
 
                 <AnimatedSection>

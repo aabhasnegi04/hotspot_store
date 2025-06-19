@@ -33,7 +33,7 @@ const FeaturedProducts = () => {
         {
             id: 4,
             title: "Special sale",
-            image: "https://images.xtracover.com/Mobil1622_ALDU_1735363766.PNG",
+            image: "https://img.freepik.com/free-vector/realism-hand-drawn-horizontal-banner_23-2150203461.jpg?semt=ais_hybrid&w=740",
             link: "#",
             gridConfig: { xs: 12, sm: 6 },
             height: "400px"
@@ -54,6 +54,7 @@ const FeaturedProducts = () => {
                 py: 6,
                 backgroundColor: '#ffffff',
                 position: 'relative',
+                px: { xs: 0, sm: 0 },
                 '&::before': {
                     content: '""',
                     position: 'absolute',
@@ -66,7 +67,7 @@ const FeaturedProducts = () => {
                 }
             }}
         >
-            <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 4, md: 6 } }}>
+            <Container maxWidth={false} sx={{ px: { xs: 0, sm: 4, md: 6 } }}>
                 <Typography
                     variant="h4"
                     sx={{
@@ -78,6 +79,7 @@ const FeaturedProducts = () => {
                         position: 'relative',
                         display: 'inline-block',
                         width: '100%',
+                        fontSize: { xs: '1.3rem', sm: '2rem' },
                         '&::after': {
                             content: '""',
                             position: 'absolute',
@@ -105,7 +107,7 @@ const FeaturedProducts = () => {
                                     sx={{
                                         display: 'block',
                                         position: 'relative',
-                                        height: banner.height,
+                                        height: { xs: '200px', sm: banner.height },
                                         borderRadius: '12px',
                                         overflow: 'hidden',
                                         boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
@@ -178,7 +180,7 @@ const FeaturedProducts = () => {
                                             sx={{
                                                 fontFamily: "'Outfit', sans-serif",
                                                 fontWeight: 600,
-                                                fontSize: '1.5rem',
+                                                fontSize: { xs: '0.9rem', sm: '1.5rem' },
                                                 textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                                             }}
                                         >
@@ -198,7 +200,7 @@ const FeaturedProducts = () => {
                             sx={{
                                 display: 'block',
                                 position: 'relative',
-                                height: featuredBanners[2].height,
+                                height: { xs: '200px', sm: featuredBanners[2].height },
                                 borderRadius: '12px',
                                 overflow: 'hidden',
                                 boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
@@ -268,7 +270,7 @@ const FeaturedProducts = () => {
                                     sx={{
                                         fontFamily: "'Outfit', sans-serif",
                                         fontWeight: 700,
-                                        fontSize: '2rem',
+                                        fontSize: { xs: '1.1rem', sm: '2rem' },
                                         textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                                     }}
                                 >
@@ -288,7 +290,7 @@ const FeaturedProducts = () => {
                                     sx={{
                                         display: 'block',
                                         position: 'relative',
-                                        height: banner.height,
+                                        height: { xs: '200px', sm: banner.height },
                                         borderRadius: '12px',
                                         overflow: 'hidden',
                                         boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
@@ -361,7 +363,7 @@ const FeaturedProducts = () => {
                                             sx={{
                                                 fontFamily: "'Outfit', sans-serif",
                                                 fontWeight: 600,
-                                                fontSize: '1.5rem',
+                                                fontSize: { xs: '0.9rem', sm: '1.5rem' },
                                                 textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                                             }}
                                         >

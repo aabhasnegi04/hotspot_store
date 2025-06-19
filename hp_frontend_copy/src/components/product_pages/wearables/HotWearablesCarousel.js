@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Grid, Card, CardMedia, Typography } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
+import { useNavigate } from 'react-router-dom';
 
 const styles = {
     carouselNav: {
@@ -14,48 +15,90 @@ const styles = {
     }
 };
 
-const HotWearablesCarousel = ({ bestSellers, navigate }) => {
+const HotWearablesCarousel = ({ bestSellers }) => {
+    const navigate = useNavigate();
+
+    // Debug log to check the data structure
+    console.log('Best Sellers Data:', bestSellers);
+
+    const handleProductClick = (product) => {
+        // Debug log to check the clicked product
+        console.log('Clicked Product:', product);
+        
+        // Check all possible property names for the item code
+        const itemCode = product.ItemCode || product.itemCode || product.itemcode || product.id;
+        if (itemCode) {
+            console.log('Navigating to product:', itemCode);
+            navigate(`/product/${itemCode}`);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        } else {
+            console.error('No item code found for product:', product);
+        }
+    };
+
     return (
         <Box sx={{ 
+            width: '100vw',
+            position: 'relative',
+            left: '50%',
+            transform: 'translateX(-50%)',
             mb: 6,
-            borderRadius: '20px',
-            overflow: 'hidden',
-            maxWidth: '95%',
-            mx: 'auto'
+            overflow: 'hidden'
         }}>
             <Carousel
                 animation="slide"
                 navButtonsAlwaysVisible
                 autoPlay={true}
-                interval={5000}
-                sx={styles.carouselNav}
+                interval={3000}
+                sx={{
+                    ...styles.carouselNav,
+                    '& .MuiPaper-root': {
+                        borderRadius: 0
+                    }
+                }}
                 indicators={false}
             >
                 {/* Group products into chunks of 4 */}
                 {Array.from({ length: Math.ceil(bestSellers.length / 4) }, (_, index) => {
                     const pageItems = bestSellers.slice(index * 4, (index + 1) * 4);
                     return (
-                        <Grid container spacing={2} key={`page-${index}`}>
+                        <Grid 
+                            container 
+                            spacing={0} 
+                            key={`page-${index}`}
+                            sx={{
+                                width: '100%',
+                                m: 0,
+                                p: 0
+                            }}
+                        >
                             {pageItems.map((product, productIndex) => (
                                 <Grid 
                                     item 
                                     xs={12} 
                                     sm={6} 
                                     md={3} 
-                                    key={`product-${product.itemcode || product.ItemCode || `${index}-${productIndex}`}`}
+                                    key={`product-${product.ItemCode || product.itemCode || product.itemcode || product.id || `${index}-${productIndex}`}`}
+                                    sx={{
+                                        px: { xs: 0, md: productIndex === 0 ? 0 : (productIndex === 3 ? 0 : 3) },
+                                        mb: { xs: 3, md: 0 }
+                                    }}
                                 >
                                     <Card 
-                                        onClick={() => navigate(`/product/${product.itemcode || product.ItemCode}`)}
+                                        onClick={() => handleProductClick(product)}
                                         sx={{
                                             height: '320px',
-                                            background: 'rgba(255, 255, 255, 0.8)',
-                                            borderRadius: '16px',
+                                            background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
+                                            borderRadius: 0,
                                             display: 'flex',
                                             flexDirection: 'column',
                                             border: '1px solid rgba(255, 215, 0, 0.1)',
                                             cursor: 'pointer',
                                             position: 'relative',
-                                            p: 1.5,
+                                            p: 2
                                         }}
                                     >
                                         <CardMedia
@@ -66,20 +109,24 @@ const HotWearablesCarousel = ({ bestSellers, navigate }) => {
                                                 height: '140px',
                                                 objectFit: 'contain',
                                                 mb: 1.5,
-                                                transition: 'transform 0.3s ease',
-                                                '&:hover': {
-                                                    transform: 'scale(1.1)'
-                                                }
+                                                background: 'rgba(255, 255, 255, 0.7)'
                                             }}
                                         />
                                         
-                                        <Box sx={{ flexGrow: 1 }}>
+                                        <Box sx={{ 
+                                            flexGrow: 1,
+                                            background: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7))',
+                                            p: 2,
+                                            mt: -2
+                                        }}>
                                             <Typography 
                                                 variant="h6" 
                                                 sx={{
                                                     fontWeight: 600,
                                                     mb: 1,
-                                                    color: '#b7950b',
+                                                    background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
+                                                    WebkitBackgroundClip: 'text',
+                                                    WebkitTextFillColor: 'transparent',
                                                     fontSize: '1rem',
                                                     height: '2.4em',
                                                     overflow: 'hidden',

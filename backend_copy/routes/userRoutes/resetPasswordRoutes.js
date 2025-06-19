@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
-const { poolPromise } = require('../config/db'); // Use poolPromise
+const { poolPromise } = require('../../config/db'); // Use poolPromise
 
 // Route to handle password reset
 router.post('/reset-password', async (req, res) => {

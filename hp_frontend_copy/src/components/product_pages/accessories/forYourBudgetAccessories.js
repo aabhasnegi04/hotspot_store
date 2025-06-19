@@ -44,41 +44,56 @@ const ForYourBudgetAccessories = () => {
     ];
 
     return (
-        <Box sx={{ mb: 6 }}>
+        <Box sx={{
+            width: '100vw',
+            position: 'relative',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            mb: 6,
+            overflow: 'hidden'
+        }}>
             <Typography variant="h4" sx={{
                 mb: 3,
                 fontWeight: 600,
                 background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
+                pl: { xs: 2, sm: 3 }
             }}>
                 For Your Budget
             </Typography>
 
-            <Grid container spacing={3} sx={{ px: 0, maxWidth: '100vw', width: '99vw' }}>
+            <Grid container spacing={0} sx={{ width: '100%' }}>
                 {priceRanges.map((range, index) => (
-                    <Grid item xs={12} sm={6} md={2.4} key={index}>
+                    <Grid item xs={12} sm={6} md={2.4} key={index} sx={{
+                        pl: { 
+                            xs: 0,
+                            md: index === 0 ? 0 : 1.5
+                        },
+                        pr: {
+                            xs: 0,
+                            md: index === priceRanges.length - 1 ? 0 : 1.5
+                        },
+                        mb: { 
+                            xs: 3,
+                            md: 0
+                        }
+                    }}>
                         <Card 
                             onClick={() => handleClick(range.range)}
                             sx={{
                                 height: 200,
                                 background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
-                                borderRadius: '20px',
+                                borderRadius: 0,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                border: '2px solid rgba(183, 149, 11, 0.1)',
+                                border: '1px solid rgba(183, 149, 11, 0.1)',
                                 cursor: 'pointer',
-                                transition: 'all 0.4s ease',
                                 position: 'relative',
                                 overflow: 'hidden',
-                                boxShadow: '0 10px 20px rgba(183, 149, 11, 0.05)',
-                                '&:hover': {
-                                    transform: 'translateY(-5px)',
-                                    border: '2px solid rgba(183, 149, 11, 0.2)',
-                                    boxShadow: '0 15px 30px rgba(183, 149, 11, 0.1)'
-                                }
+                                boxShadow: 'none'
                             }}
                         >
                             <CardMedia
@@ -95,7 +110,7 @@ const ForYourBudgetAccessories = () => {
                             <Typography variant="h6" sx={{
                                 color: '#b7950b',
                                 fontWeight: 600,
-                                fontSize: '1.1rem',
+                                fontSize: { xs: '1rem', sm: '1.1rem' },
                                 textAlign: 'center'
                             }}>
                                 {range.label}

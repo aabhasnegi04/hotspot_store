@@ -21,7 +21,7 @@ import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
  * - Error handling for failed image loads
  * - Responsive design with hover effects
  */
-const AnimatedSection = ({ children }) => {
+const AnimatedSection = ({ children, sx }) => {
     const [ref, isVisible] = useScrollAnimation(0.1);
     
     return (
@@ -34,7 +34,8 @@ const AnimatedSection = ({ children }) => {
                 opacity: isVisible ? 1 : 0,
                 transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 mb: 4,
-                willChange: 'transform, opacity'
+                willChange: 'transform, opacity',
+                ...(sx || {})
             }}
         >
             {children}
@@ -167,7 +168,7 @@ const Hero = () => {
             <Box
                 sx={{
                     background: 'linear-gradient(180deg, rgba(248, 247, 247, 0.95) 0%, rgba(248, 247, 247, 0.85) 100%)',
-                    pt: { xs: '35px', md: '0px' },
+                    pt: 0,
                     pb: 0,
                     width: '100%',
                     position: 'relative',
@@ -186,17 +187,17 @@ const Hero = () => {
                     }
                 }}
             >
-                <Container 
-                    maxWidth={false} 
-                    disableGutters 
-                    sx={{ 
+                <Box
+                    sx={{
+                        width: { xs: '100%', md: '100%' },
+                        position: 'relative',
+                        left: { xs: 0, md: 0 },
+                        transform: { xs: 'none', md: 'none' },
                         px: 0,
-                        width: '100%',
+                        mx: 0,
                         maxWidth: 'none',
-                        mt: { xs: -4, md: 0 },
-                        mr: 0,
+                        mt: { xs: 0, md: 0 },
                         overflow: 'hidden',
-                        position: 'relative'
                     }}
                 >
                     {/* Carousel container with hover effects and border */}
@@ -206,15 +207,7 @@ const Hero = () => {
                         sx={{
                             position: 'relative',
                             width: '100%',
-                            height: { 
-                                xs: 'auto', // Auto height on mobile
-                                sm: '60vh', // Medium height on tablets
-                                md: 'calc(100vh - 150px)' // Full height on desktop
-                            },
-                            aspectRatio: { 
-                                xs: '16/9', // Standard aspect ratio for mobile
-                                sm: 'auto' // Auto aspect ratio for larger screens
-                            },
+                            aspectRatio: { xs: '2.56/1', sm: 'auto' }, // Match 1920x750 aspect ratio for mobile
                             overflow: 'hidden',
                             borderRadius: 0,
                             border: 'none',
@@ -231,17 +224,15 @@ const Hero = () => {
                             alt={`Slide ${currentImageIndex + 1}`}
                             onError={handleImageError}
                             sx={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
                                 width: '100%',
                                 height: '100%',
-                                objectFit: { xs: 'cover', sm: 'cover' }, // Changed to cover for consistent aspect ratio
+                                objectFit: 'cover',
                                 objectPosition: 'center',
+                                display: 'block',
                                 opacity: isTransitioning ? 0 : 1,
                                 transition: 'opacity 0.5s ease-in-out',
                                 backgroundColor: '#f8f7f7',
-                                padding: { xs: 0, sm: 0 } // Removed padding for full-width display
+                                padding: 0,
                             }}
                         />
 
@@ -347,27 +338,29 @@ const Hero = () => {
                             ))}
                         </Box>
                     </Box>
-                </Container>
+                </Box>
             </Box>
 
             {/* Category and Latest Phones Section */}
-            <Box sx={{ mt: { xs: 4, md: 0 } }}>
+            <Box sx={{ mt: 0 }}>
                 <AnimatedSection>
                     <CategoryCarousel />
                 </AnimatedSection>
                 
-                <AnimatedSection>
+                <AnimatedSection sx={{ mb: { xs: 0, md: 4 } }}>
                     <LatestPhonesCarousel />
                 </AnimatedSection>
             </Box>
             
             {/* Delivery Banner */}
-            <AnimatedSection>
+            <AnimatedSection sx={{ mb: { xs: 0, md: 4 }, mt: { xs: 0, md: 0 } }}>
                 <Box sx={{ 
                     display: 'flex', 
                     justifyContent: 'center',
                     width: '100%',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    mt: 0,
+                    mb: 0
                 }}>
                     <img
                         src="/Image/img/others/30-min-delivery.jpg"
@@ -376,7 +369,8 @@ const Hero = () => {
                             width: 'calc(100vw + 20px)',
                             height: 'auto',
                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                            marginTop: '32px',
+                            marginTop: 0,
+                            marginBottom: 0,
                             objectFit: 'cover',
                             marginRight: '-20px'
                         }}
@@ -386,18 +380,18 @@ const Hero = () => {
 
             {/* Laptops Section */}
             <Box sx={{ mt: 4 }}>
-                <AnimatedSection>
+                <AnimatedSection sx={{ mt: { xs: 0, md: 4 } }}>
                     <LaptopsCarousel />
                 </AnimatedSection>
             </Box>
 
             {/* Featured Products and Below Section */}
             <Box sx={{ mt: 4 }}>
-                <AnimatedSection>
+                <AnimatedSection sx={{ mb: { xs: 0, md: 4 } }}>
                     <FeaturedProducts />
                 </AnimatedSection>
                 
-                <AnimatedSection>
+                <AnimatedSection sx={{ mt: { xs: 0, md: 4 } }}>
                     <AccessoriesCarousel />
                 </AnimatedSection>
                 

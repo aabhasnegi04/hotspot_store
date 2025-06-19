@@ -48,7 +48,7 @@ const LatestPhonesCarousel = () => {
                 position: 'relative',
                 width: '100%',
                 py: 4,
-                px: 2,
+                px: 0,
                 backgroundColor: '#ffffff',
                 boxShadow: 'none',
                 borderTop: 'none',
@@ -63,7 +63,7 @@ const LatestPhonesCarousel = () => {
                     fontWeight: 700,
                     color: '#333333',
                     fontFamily: "'Outfit', sans-serif",
-                    fontSize: '2rem',
+                    fontSize: { xs: '1.3rem', sm: '2rem' },
                     position: 'relative',
                     display: 'inline-block',
                     '&::after': {
@@ -79,6 +79,13 @@ const LatestPhonesCarousel = () => {
                     },
                     textShadow: '0 2px 4px rgba(0,0,0,0.05)',
                     letterSpacing: '0.5px',
+                    '@media (max-width:600px)': {
+                        textAlign: 'center',
+                        display: 'block',
+                        px: 0,
+                        mx: 'auto',
+                        width: '100%',
+                    }
                 }}
             >
                 Latest Phones
@@ -151,6 +158,10 @@ const LatestPhonesCarousel = () => {
                             '&:hover': {
                                 transform: 'translateY(-5px)',
                                 boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
+                            },
+                            '@media (max-width:600px)': {
+                                flex: '0 0 48vw',
+                                maxWidth: '48vw',
                             }
                         }}
                     >
@@ -163,10 +174,13 @@ const LatestPhonesCarousel = () => {
                             sx={{
                                 objectFit: 'contain',
                                 p: 2,
-                                backgroundColor: '#fff'
+                                backgroundColor: '#fff',
+                                '@media (max-width:600px)': {
+                                    height: '140px',
+                                }
                             }}
                         />
-                        <CardContent sx={{ p: 2 }}>
+                        <CardContent sx={{ p: 2, '@media (max-width:600px)': { p: 1 } }}>
                             <Typography
                                 gutterBottom
                                 variant="h6"

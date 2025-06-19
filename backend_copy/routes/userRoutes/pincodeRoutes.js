@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { sql, poolPromise } = require('../config/db');
+const { sql, poolPromise } = require('../../config/db');
 
 // GET /api/pincode/:pincode
 router.get('/:pincode', async (req, res) => {

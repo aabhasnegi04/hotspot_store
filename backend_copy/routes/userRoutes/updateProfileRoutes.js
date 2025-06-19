@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { poolPromise } = require('../config/db');
+const { poolPromise } = require('../../config/db');
 
 // Get user profile
 router.get('/profile/:userId', async (req, res) => {

@@ -49,7 +49,7 @@ const LaptopsCarousel = () => {
                     fontWeight: 700,
                     color: '#333333',
                     fontFamily: "'Outfit', sans-serif",
-                    fontSize: '2rem',
+                    fontSize: { xs: '1.3rem', sm: '2rem' },
                     position: 'relative',
                     display: 'inline-block',
                     '&::after': {
@@ -65,6 +65,13 @@ const LaptopsCarousel = () => {
                     },
                     textShadow: '0 2px 4px rgba(0,0,0,0.05)',
                     letterSpacing: '0.5px',
+                    '@media (max-width:600px)': {
+                        textAlign: 'center',
+                        display: 'block',
+                        px: 0,
+                        mx: 'auto',
+                        width: '100%',
+                    }
                 }}
             >
                 Premium Laptops
@@ -136,10 +143,14 @@ const LaptopsCarousel = () => {
                             '&:hover': {
                                 transform: 'translateY(-5px)',
                                 boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
+                            },
+                            '@media (max-width:600px)': {
+                                flex: '0 0 48vw',
+                                maxWidth: '48vw',
                             }
                         }}
                     >
-                        <Box sx={{ position: 'relative', height: '200px' }}>
+                        <Box sx={{ position: 'relative', height: '200px', '@media (max-width:600px)': { height: '140px' } }}>
                             {imageLoading[laptop.id] !== false && (
                                 <Skeleton 
                                     variant="rectangular" 
@@ -166,10 +177,13 @@ const LaptopsCarousel = () => {
                                     p: 2,
                                     backgroundColor: '#fff',
                                     transition: 'opacity 0.3s ease',
+                                    '@media (max-width:600px)': {
+                                        height: '140px',
+                                    }
                                 }}
                             />
                         </Box>
-                        <Box sx={{ p: 2 }}>
+                        <Box sx={{ p: 2, '@media (max-width:600px)': { p: 1 } }}>
                             <Typography
                                 variant="h6"
                                 sx={{

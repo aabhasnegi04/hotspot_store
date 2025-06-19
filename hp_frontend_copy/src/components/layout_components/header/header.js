@@ -520,14 +520,16 @@ const Header = () => {
 
                         {/* Mobile Search Bar */}
                         <Box sx={{ 
-                            width: '100%',
+                            width: { xs: '100%', sm: '100%' },
                             display: { xs: 'flex', sm: 'none' },
                             mt: { xs: -6, sm: 0 },
                             position: 'relative',
-                            top: { xs: '-10px', sm: 0 }
+                            top: { xs: '-10px', sm: 0 },
+                            mx: 'auto',
+                            px: { xs: 0.5, sm: 0 }
                         }}>
                             <SearchBar />
-                                        </Box>
+                        </Box>
                     </Toolbar>
                 </Container>
             </AppBar>

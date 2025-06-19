@@ -107,29 +107,36 @@ const ChooseYourTypeAccessory = () => {
     const visibleItems = accessoryTypes.slice(currentIndex, currentIndex + itemsPerPage);
 
     return (
-        <Box sx={{ mb: 6, position: 'relative', maxWidth: '100vw', width: '98vw', px: 0 }}>
+        <Box sx={{
+            width: '100vw',
+            position: 'relative',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            mb: 6,
+            overflow: 'hidden'
+        }}>
             <Box sx={{ 
                 display: 'flex', 
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: 3,
+                gap: { xs: 1, sm: 2, md: 3 },
                 position: 'relative',
                 minHeight: '450px',
-                width: '100%',
-                px: 0
+                width: '100%'
             }}>
                 <IconButton 
                     onClick={handlePrev}
                     sx={{
                         position: 'absolute',
-                        left: '2%',
+                        left: { xs: 1, sm: 2 },
                         top: '50%',
                         transform: 'translateY(-50%)',
                         backgroundColor: 'rgba(255, 255, 255, 0.8)',
                         '&:hover': {
                             backgroundColor: 'rgba(255, 255, 255, 0.9)',
                         },
-                        zIndex: 1
+                        zIndex: 1,
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                     }}
                 >
                     <ArrowBackIosNewIcon />
@@ -137,10 +144,11 @@ const ChooseYourTypeAccessory = () => {
 
                 <Box sx={{ 
                     display: 'flex', 
-                    gap: 3,
+                    gap: { xs: 1, sm: 2, md: 3 },
                     width: '100%',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    px: { xs: 4, sm: 6 }
                 }}>
                     {visibleItems.map((type, index) => (
                         <Box 
@@ -150,36 +158,28 @@ const ChooseYourTypeAccessory = () => {
                                 navigate(type.path);
                             }}
                             sx={{
+                                flex: '1 1 0',
+                                maxWidth: { xs: '200px', sm: '250px', md: '355px' },
                                 aspectRatio: '1/1',
-                                width: '355px',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                                '&:hover': {
-                                    '& .card-media': {
-                                        transform: 'scale(1.05)',
-                                    }
-                                }
+                                cursor: 'pointer'
                             }}
                         >
                             <Box
                                 component="img"
                                 src={type.image}
                                 alt={type.title}
-                                className="card-media"
                                 sx={{
                                     width: '100%',
                                     height: '100%',
                                     objectFit: 'contain',
-                                    transition: 'transform 0.3s ease',
-                                    filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
-                                    borderRadius: '12px',
+                                    borderRadius: 0,
                                     border: '1px solid rgba(0, 0, 0, 0.05)',
                                     padding: '4px',
-                                    backgroundColor: '#ffffff',
+                                    backgroundColor: '#ffffff'
                                 }}
                             />
                             <Typography variant="subtitle1" sx={{
@@ -187,12 +187,11 @@ const ChooseYourTypeAccessory = () => {
                                 color: '#b7950b',
                                 fontWeight: 600,
                                 textAlign: 'center',
-                                px: 0.5,
-                                fontSize: '1.1rem',
+                                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
                                 whiteSpace: 'nowrap',
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
-                                maxWidth: '100%'
+                                width: '100%'
                             }}>
                                 {type.title}
                             </Typography>
@@ -204,14 +203,15 @@ const ChooseYourTypeAccessory = () => {
                     onClick={handleNext}
                     sx={{
                         position: 'absolute',
-                        right: '2%',
+                        right: { xs: 1, sm: 2 },
                         top: '50%',
                         transform: 'translateY(-50%)',
                         backgroundColor: 'rgba(255, 255, 255, 0.8)',
                         '&:hover': {
                             backgroundColor: 'rgba(255, 255, 255, 0.9)',
                         },
-                        zIndex: 1
+                        zIndex: 1,
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                     }}
                 >
                     <ArrowForwardIosIcon />

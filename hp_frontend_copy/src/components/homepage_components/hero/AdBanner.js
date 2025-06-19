@@ -7,6 +7,7 @@ const styles = {
         backgroundColor: '#ffffff',
         position: 'relative',
         width: '100vw',
+        px: { xs: 0, sm: 0 },
         '&::before': {
             content: '""',
             position: 'absolute',
@@ -16,8 +17,8 @@ const styles = {
         }
     },
     container: {
-        px: { xs: 2, sm: 4, md: 6 },
-        maxWidth: '2000px',
+        px: { xs: 0, sm: 4, md: 6 },
+        width: '100%',
         mx: 'auto'
     },
     title: {
@@ -41,7 +42,7 @@ const styles = {
     },
     adCard: {
         position: 'relative',
-        height: '400px',
+        height: { xs: '200px', sm: '400px' },
         overflow: 'hidden',
         borderRadius: '16px',
         cursor: 'pointer',

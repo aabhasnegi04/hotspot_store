@@ -39,7 +39,13 @@ const ForYourBudget = () => {
     ];
 
     return (
-        <Box sx={{ mb: 6 }}>
+        <Box sx={{ 
+            mb: 6,
+            width: '100vw',
+            position: 'relative',
+            left: '50%',
+            transform: 'translateX(-50%)'
+        }}>
             <Typography variant="h4" sx={{
                 mb: 3,
                 fontWeight: 600,
@@ -51,45 +57,42 @@ const ForYourBudget = () => {
                 For Your Budget
             </Typography>
 
-            <Grid container spacing={3}>
+            <Box sx={{ 
+                display: 'flex',
+                gap: 3,
+                width: '100%'
+            }}>
                 {priceRanges.map((range, index) => (
-                    <Grid item xs={12} sm={6} md={2.4} key={index}>
-                        <Card 
-                            onClick={() => handleClick(range.range)}
+                    <Card 
+                        key={index}
+                        onClick={() => handleClick(range.range)}
+                        sx={{
+                            height: 200,
+                            background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
+                            borderRadius: '0',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            border: '1px solid rgba(183, 149, 11, 0.1)',
+                            cursor: 'pointer',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            flex: 1
+                        }}
+                    >
+                        <CardMedia
+                            component="img"
+                            image={range.image}
+                            alt={`Price range ${range.range}`}
                             sx={{
-                                height: 200,
-                                background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
-                                borderRadius: '20px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                border: '2px solid rgba(183, 149, 11, 0.1)',
-                                cursor: 'pointer',
-                                transition: 'all 0.4s ease',
-                                position: 'relative',
-                                overflow: 'hidden',
-                                boxShadow: '0 10px 20px rgba(183, 149, 11, 0.05)',
-                                '&:hover': {
-                                    transform: 'translateY(-5px)',
-                                    border: '2px solid rgba(183, 149, 11, 0.2)',
-                                    boxShadow: '0 15px 30px rgba(183, 149, 11, 0.1)'
-                                }
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover'
                             }}
-                        >
-                            <CardMedia
-                                component="img"
-                                image={range.image}
-                                alt={`Price range ${range.range}`}
-                                sx={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover'
-                                }}
-                            />
-                        </Card>
-                    </Grid>
+                        />
+                    </Card>
                 ))}
-            </Grid>
+            </Box>
         </Box>
     );
 };

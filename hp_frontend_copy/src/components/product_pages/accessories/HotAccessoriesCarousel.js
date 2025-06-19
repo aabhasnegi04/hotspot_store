@@ -39,38 +39,56 @@ const HotAccessoriesCarousel = ({ navigate }) => {
 
     return (
         <Box sx={{ 
+            width: '100vw',
+            position: 'relative',
+            left: '50%',
+            transform: 'translateX(-50%)',
             mb: 6,
-            borderRadius: '20px',
-            overflow: 'hidden',
-            maxWidth: '100vw',
-            width: '98vw',
-            px: 0
+            overflow: 'hidden'
         }}>
             <Carousel
                 animation="slide"
                 navButtonsAlwaysVisible
                 autoPlay={true}
-                interval={5000}
-                sx={styles.carouselNav}
+                interval={3000}
+                sx={{
+                    ...styles.carouselNav,
+                    '& .MuiPaper-root': {
+                        borderRadius: 0
+                    }
+                }}
                 indicators={false}
             >
                 {/* Group products into chunks of 4 */}
                 {Array.from({ length: Math.ceil(bestSellers.length / 4) }, (_, index) => (
-                    <Grid container spacing={2} key={index} sx={{ px: 1 }}>
-                        {bestSellers.slice(index * 4, (index + 1) * 4).map((product) => (
-                            <Grid item xs={12} sm={6} md={3} key={product.itemCode}>
+                    <Grid container spacing={0} key={index}>
+                        {bestSellers.slice(index * 4, (index + 1) * 4).map((product, productIndex) => (
+                            <Grid item xs={12} sm={6} md={3} key={product.itemCode} sx={{
+                                pl: { 
+                                    xs: 0,
+                                    md: productIndex === 0 ? 0 : 1.5
+                                },
+                                pr: {
+                                    xs: 0,
+                                    md: productIndex === 3 ? 0 : 1.5
+                                },
+                                mb: { 
+                                    xs: 3,
+                                    md: 0
+                                }
+                            }}>
                                 <Card 
                                     onClick={() => navigate(`/product/${product.itemCode}`)}
                                     sx={{
                                         height: '350px',
                                         background: 'rgba(255, 255, 255, 0.8)',
-                                        borderRadius: '20px',
+                                        borderRadius: 0,
                                         display: 'flex',
                                         flexDirection: 'column',
                                         border: '1px solid rgba(255, 215, 0, 0.1)',
                                         cursor: 'pointer',
                                         position: 'relative',
-                                        p: 1.5,
+                                        p: 1.5
                                     }}
                                 >
                                     <CardMedia
@@ -80,11 +98,7 @@ const HotAccessoriesCarousel = ({ navigate }) => {
                                         sx={{
                                             height: '160px',
                                             objectFit: 'contain',
-                                            mb: 1.5,
-                                            transition: 'transform 0.3s ease',
-                                            '&:hover': {
-                                                transform: 'scale(1.1)'
-                                            }
+                                            mb: 1.5
                                         }}
                                     />
                                     
@@ -101,7 +115,7 @@ const HotAccessoriesCarousel = ({ navigate }) => {
                                                 textOverflow: 'ellipsis',
                                                 display: '-webkit-box',
                                                 WebkitLineClamp: 2,
-                                                WebkitBoxOrient: 'vertical',
+                                                WebkitBoxOrient: 'vertical'
                                             }}
                                         >
                                             {product.itemName}
@@ -112,7 +126,7 @@ const HotAccessoriesCarousel = ({ navigate }) => {
                                             display: 'flex',
                                             alignItems: 'center',
                                             gap: 1,
-                                            fontSize: '1rem',
+                                            fontSize: '1rem'
                                         }}>
                                             <span style={{ 
                                                 color: '#b7950b',

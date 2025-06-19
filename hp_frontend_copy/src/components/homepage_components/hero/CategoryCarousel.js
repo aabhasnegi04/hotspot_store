@@ -42,7 +42,7 @@ const CategoryCarousel = () => {
                     fontWeight: 700,
                     color: '#333333',
                     fontFamily: "'Outfit', sans-serif",
-                    fontSize: '2rem',
+                    fontSize: { xs: '1.3rem', sm: '2rem' },
                     position: 'relative',
                     display: 'inline-block',
                     left: '50%',
@@ -80,7 +80,7 @@ const CategoryCarousel = () => {
                 sx={{
                     display: 'grid',
                     gridTemplateColumns: {
-                        xs: 'repeat(2, 1fr)',
+                        xs: 'repeat(3, 1fr)',
                         sm: 'repeat(3, 1fr)',
                         md: 'repeat(3, 1fr)',
                         lg: 'repeat(6, 1fr)'

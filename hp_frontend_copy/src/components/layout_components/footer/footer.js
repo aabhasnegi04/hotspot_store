@@ -68,10 +68,9 @@ const Footer = () => {
         pt: 8,
         pb: 4,
         mt: 0,
-        mx: -2,
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth={false} disableGutters sx={{ px: 0 }}>
         {/* Main Footer Content */}
         <Grid container spacing={4}>
           {/* Company Info */}

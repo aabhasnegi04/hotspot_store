@@ -31,7 +31,6 @@ const HotSmartphonesCarousel = ({ navigate }) => {
                 }
                 const data = await response.json();
                 
-                // Transform the data to match our component's expected structure
                 const transformedProducts = data.map(product => ({
                     itemcode: product.ItemCode,
                     ItemName: product.ItemName,
@@ -60,166 +59,172 @@ const HotSmartphonesCarousel = ({ navigate }) => {
     return (
         <Box sx={{ 
             mb: 6,
-            borderRadius: '20px',
-            overflow: 'hidden',
-            maxWidth: '100vw',
-            width: '98vw',
-            px: 0
+            width: '100vw',
+            position: 'relative',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            overflow: 'hidden'
         }}>
             <Carousel
                 animation="slide"
                 navButtonsAlwaysVisible
                 autoPlay={true}
-                interval={5000}
-                sx={styles.carouselNav}
+                interval={3000}
+                duration={800}
+                swipe={true}
+                sx={{
+                    ...styles.carouselNav,
+                    width: '100%',
+                    '& .MuiBox-root': {
+                        width: '100%'
+                    },
+                    '& .CarouselItem': {
+                        transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                    }
+                }}
                 indicators={false}
             >
-                {/* Group products into chunks of 4 */}
                 {Array.from({ length: Math.ceil(hotProducts.length / 4) }, (_, index) => (
-                    <Grid container spacing={2} key={index}>
+                    <Box sx={{ display: 'flex', gap: 3 }} key={index}>
                         {hotProducts.slice(index * 4, (index + 1) * 4).map((product) => (
-                            <Grid item xs={12} sm={6} md={3} key={product.itemcode}>
-                                <Card 
-                                    onClick={() => navigate(`/product/${product.itemcode}`)}
+                            <Card 
+                                key={product.itemcode}
+                                onClick={() => navigate(`/product/${product.itemcode}`)}
+                                sx={{
+                                    height: '400px',
+                                    background: 'rgba(255, 255, 255, 0.8)',
+                                    borderRadius: '0',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    border: '1px solid rgba(255, 215, 0, 0.1)',
+                                    cursor: 'pointer',
+                                    position: 'relative',
+                                    p: 2,
+                                    flex: 1
+                                }}
+                            >
+                                <CardMedia
+                                    component="img"
+                                    image={product.image || 'https://via.placeholder.com/300'}
+                                    alt={product.ItemName}
                                     sx={{
-                                        height: '400px',
-                                        background: 'rgba(255, 255, 255, 0.8)',
-                                        borderRadius: '20px',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        border: '1px solid rgba(255, 215, 0, 0.1)',
-                                        cursor: 'pointer',
-                                        position: 'relative',
-                                        p: 2,
+                                        height: '200px',
+                                        objectFit: 'contain',
+                                        mb: 3
                                     }}
-                                >
-                                    <CardMedia
-                                        component="img"
-                                        image={product.image || 'https://via.placeholder.com/300'}
-                                        alt={product.ItemName}
+                                />
+                                
+                                <Box sx={{ 
+                                    flexGrow: 1,
+                                    mt: 2,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: 1,
+                                    width: '100%',
+                                    px: 1
+                                }}>
+                                    <Typography 
+                                        variant="h6" 
                                         sx={{
-                                            height: '200px',
-                                            objectFit: 'contain',
-                                            mb: 3,
-                                            transition: 'transform 0.3s ease',
-                                            '&:hover': {
-                                                transform: 'scale(1.1)'
-                                            }
+                                            fontWeight: 600,
+                                            mb: 1.5,
+                                            color: '#b7950b',
+                                            fontSize: '0.9rem',
+                                            height: '3.6em',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            display: '-webkit-box',
+                                            WebkitLineClamp: 3,
+                                            WebkitBoxOrient: 'vertical',
+                                            width: '100%',
+                                            textAlign: 'left',
+                                            padding: 0,
+                                            margin: 0
                                         }}
-                                    />
-                                    
-                                    <Box sx={{ 
-                                        flexGrow: 1,
-                                        mt: 2,
+                                    >
+                                        {product.ItemName}
+                                    </Typography>
+
+                                    <Box sx={{
                                         display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: 1,
-                                        width: '100%',
-                                        px: 1
+                                        alignItems: 'center',
+                                        mb: 0.5,
+                                        gap: 0.5
                                     }}>
+                                        <Typography 
+                                            sx={{
+                                                color: '#b7950b',
+                                                fontWeight: 800,
+                                                fontSize: '1.1rem'
+                                            }}
+                                        >
+                                            {product.brand}
+                                        </Typography>
+                                        <Typography 
+                                            sx={{
+                                                color: '#666',
+                                                fontSize: '1.1rem',
+                                                mx: 0.5
+                                            }}
+                                        >
+                                            •
+                                        </Typography>
+                                        <Typography 
+                                            sx={{
+                                                color: '#b7950b',
+                                                fontWeight: 700,
+                                                fontSize: '0.9rem'
+                                            }}
+                                        >
+                                            {product.model || 'Latest Model'}
+                                        </Typography>
+                                    </Box>
+
+                                    <Box sx={{ mt: 'auto' }}>
                                         <Typography 
                                             variant="h6" 
                                             sx={{
-                                                fontWeight: 600,
-                                                mb: 1.5,
                                                 color: '#b7950b',
-                                                fontSize: '0.9rem',
-                                                height: '3.6em',
-                                                overflow: 'hidden',
-                                                textOverflow: 'ellipsis',
-                                                display: '-webkit-box',
-                                                WebkitLineClamp: 3,
-                                                WebkitBoxOrient: 'vertical',
-                                                width: '100%',
-                                                textAlign: 'left',
-                                                padding: 0,
-                                                margin: 0
+                                                fontWeight: 700,
+                                                fontSize: '1.2rem',
+                                                mb: 0.5
                                             }}
                                         >
-                                            {product.ItemName}
+                                            ₹{product.salePrice?.toLocaleString('en-IN') || '0'}
                                         </Typography>
 
-                                        <Box sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            mb: 0.5,
-                                            gap: 0.5
+                                        <Box sx={{ 
+                                            display: 'flex', 
+                                            alignItems: 'center', 
+                                            gap: 1,
+                                            minHeight: '24px'
                                         }}>
-                                            <Typography 
-                                                sx={{
-                                                    color: '#b7950b',
-                                                    fontWeight: 800,
-                                                    fontSize: '1.1rem'
-                                                }}
-                                            >
-                                                {product.brand}
-                                            </Typography>
-                                            <Typography 
-                                                sx={{
-                                                    color: '#666',
-                                                    fontSize: '1.1rem',
-                                                    mx: 0.5
-                                                }}
-                                            >
-                                                •
-                                            </Typography>
-                                            <Typography 
-                                                sx={{
-                                                    color: '#b7950b',
-                                                    fontWeight: 700,
-                                                    fontSize: '0.9rem'
-                                                }}
-                                            >
-                                                {product.model || 'Latest Model'}
-                                            </Typography>
-                                        </Box>
-
-                                        <Box sx={{ mt: 'auto' }}>
-                                            <Typography 
-                                                variant="h6" 
-                                                sx={{
-                                                    color: '#b7950b',
-                                                    fontWeight: 700,
-                                                    fontSize: '1.2rem',
-                                                    mb: 0.5
-                                                }}
-                                            >
-                                                ₹{product.salePrice?.toLocaleString('en-IN') || '0'}
-                                            </Typography>
-
-                                            <Box sx={{ 
-                                                display: 'flex', 
-                                                alignItems: 'center', 
-                                                gap: 1,
-                                                minHeight: '24px'
-                                            }}>
-                                                {product.currentMRP > product.salePrice ? (
-                                                    <>
-                                                        <Typography sx={{ 
-                                                            textDecoration: 'line-through',
-                                                            color: '#666',
-                                                            fontSize: '0.9rem'
-                                                        }}>
-                                                            ₹{product.currentMRP?.toLocaleString('en-IN') || '0'}
-                                                        </Typography>
-                                                        <Typography sx={{ 
-                                                            color: '#4CAF50',
-                                                            fontWeight: 600,
-                                                            fontSize: '0.9rem'
-                                                        }}>
-                                                            {Math.round(((product.currentMRP - product.salePrice) / product.currentMRP) * 100)}% OFF
-                                                        </Typography>
-                                                    </>
-                                                ) : (
-                                                    <Box sx={{ height: '24px' }} />
-                                                )}
-                                            </Box>
+                                            {product.currentMRP > product.salePrice ? (
+                                                <>
+                                                    <Typography sx={{ 
+                                                        textDecoration: 'line-through',
+                                                        color: '#666',
+                                                        fontSize: '0.9rem'
+                                                    }}>
+                                                        ₹{product.currentMRP?.toLocaleString('en-IN') || '0'}
+                                                    </Typography>
+                                                    <Typography sx={{ 
+                                                        color: '#4CAF50',
+                                                        fontWeight: 600,
+                                                        fontSize: '0.9rem'
+                                                    }}>
+                                                        {Math.round(((product.currentMRP - product.salePrice) / product.currentMRP) * 100)}% OFF
+                                                    </Typography>
+                                                </>
+                                            ) : (
+                                                <Box sx={{ height: '24px' }} />
+                                            )}
                                         </Box>
                                     </Box>
-                                </Card>
-                            </Grid>
+                                </Box>
+                            </Card>
                         ))}
-                    </Grid>
+                    </Box>
                 ))}
             </Carousel>
         </Box>

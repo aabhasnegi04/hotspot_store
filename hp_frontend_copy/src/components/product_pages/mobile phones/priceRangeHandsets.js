@@ -1,58 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import { 
     Box, Container, Grid, Card, CardMedia, CardContent, Typography, 
-    Alert, FormControlLabel, Checkbox, Divider, Paper 
+    Alert, FormControlLabel, Checkbox, Divider, Paper, useMediaQuery, useTheme, Collapse, IconButton, Button
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import LuxuryLoader from '../../common/LuxuryLoader';
 import { API_BASE_URL } from '../../../config';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 const styles = {
     gradientBg: {
         background: 'linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)',
         minHeight: '100vh',
         mt: '-84px',
-        width: '100%',
+        pt: { xs: '84px', sm: '104px' },
+        pb: { xs: 4, sm: 8 },
+        width: '100vw',
         overflowX: 'hidden'
     },
     container: {
-        py: 4,
-        pt: '104px',
-        px: { xs: 2, sm: 4, md: 6 },
-        width: '100%',
-        maxWidth: '1600px',
-        margin: '0 auto',
-        pl: 3,
-        background: 'linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)'
+        maxWidth: '1600px !important',
+        pl: { xs: 1, sm: 2 },
+        pr: { xs: 1, sm: 2 },
+        ml: { xs: 0, sm: -2 },
+        mr: 0
     },
     header: {
         display: 'flex',
         alignItems: 'center',
-        gap: 2,
-        mb: 2,
-        mt: 2,
-        pl: { xs: 0, md: 2 }
+        gap: { xs: 1, sm: 2 },
+        mb: { xs: 2, sm: 4 },
+        mt: 0,
+        pt: 0,
+        pl: { xs: 0, sm: 1 }
     },
     resultsText: {
         fontWeight: 600,
-        fontSize: { xs: '1.3rem', md: '1.5rem' },
+        fontSize: { xs: '1rem', sm: '1.1rem', md: '1.4rem' },
         color: '#666',
         fontFamily: "'Outfit', sans-serif",
+        textAlign: 'center',
+        width: '100%',
         '& span': {
             color: '#b7950b',
             fontWeight: 700,
-            fontSize: { xs: '1rem', md: '1.2rem' }
+            fontSize: { xs: '1rem', sm: '1.1rem', md: '1.4rem' }
         }
     },
-    priceText: {
-        fontWeight: 600,
-        fontSize: { xs: '1.2rem', md: '1.5rem' },
-        color: '#666',
-        fontFamily: "'Outfit', sans-serif",
-        '& span': {
-            color: '#b7950b',
-            fontWeight: 700,
+    filterPaper: {
+        p: { xs: 1, sm: 2 },
+        borderRadius: { xs: '8px', sm: '12px' },
+        background: 'rgba(255, 255, 255, 0.95)',
+        border: '1px solid rgba(255, 184, 0, 0.2)',
+        position: { xs: 'static', sm: 'sticky' },
+        top: 100,
+        ml: { xs: 0, sm: 1 },
+        mb: { xs: 2, sm: 0 },
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+        backdropFilter: 'blur(10px)'
+    },
+    filterHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        cursor: 'pointer',
+        p: 0.5,
+        borderRadius: '6px',
+        '&:hover': {
+            background: 'rgba(255, 215, 0, 0.05)'
         }
+    },
+    filterTitle: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1,
+        fontWeight: 600,
+        fontSize: { xs: '1rem', sm: '1.1rem' },
+        color: '#b7950b'
+    },
+    filterContent: {
+        mt: 2
     },
     filterBox: {
         maxHeight: '120px', 
@@ -69,94 +98,125 @@ const styles = {
     checkboxStyle: { 
         color: '#b7950b',
         '&.Mui-checked': { color: '#b7950b' },
-        padding: '4px'
+        padding: { xs: '4px', sm: '8px' }
     },
     labelStyle: {
         display: 'block',
         mb: 0.5,
         '& .MuiFormControlLabel-label': {
-            fontSize: '0.85rem',
+            fontSize: { xs: '0.85rem', sm: '0.875rem' },
             color: '#666'
+        }
+    },
+    filterActions: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        mt: 2,
+        pt: 2,
+        borderTop: '1px solid rgba(255, 215, 0, 0.1)'
+    },
+    clearButton: {
+        color: '#666',
+        fontSize: '0.875rem',
+        '&:hover': {
+            color: '#b7950b',
+            background: 'rgba(255, 215, 0, 0.05)'
         }
     }
 };
 
-const FiltersSection = ({ brands, selectedBrands, onBrandChange, inStockOnly, onStockChange }) => (
-    <Paper elevation={0} sx={{ p: 3, borderRadius: '20px', background: 'rgba(255, 255, 255, 0.9)', border: '1px solid rgba(255, 215, 0, 0.1)' }}>
-        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>Filters</Typography>
-        
-        <Box sx={{ mb: 3 }}>
-            <Typography variant="subtitle2" sx={{ mb: 1 }}>Brands</Typography>
-            <Box sx={styles.filterBox}>
-                {brands.map(brand => (
-                    <FormControlLabel
-                        key={brand}
-                        control={
-                            <Checkbox
-                                checked={selectedBrands.includes(brand)}
-                                onChange={(e) => onBrandChange(brand, e.target.checked)}
-                                sx={styles.checkboxStyle}
-                                size="small"
-                            />
-                        }
-                        label={brand}
-                        sx={styles.labelStyle}
-                    />
-                ))}
+const FiltersSection = ({ brands, selectedBrands, onBrandChange, inStockOnly, onStockChange, filterOpen, setFilterOpen, handleClearFilters }) => (
+    <Paper elevation={0} sx={styles.filterPaper}>
+        <Box sx={styles.filterHeader} onClick={() => setFilterOpen(!filterOpen)}>
+            <Box sx={styles.filterTitle}>
+                <FilterListIcon fontSize="small" />
+                <Typography>Filters</Typography>
             </Box>
+            <IconButton size="small">
+                {filterOpen ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+            </IconButton>
         </Box>
-
-        <Divider sx={{ my: 2 }} />
-
-        <FormControlLabel
-            control={
-                <Checkbox 
-                    checked={inStockOnly}
-                    onChange={onStockChange}
-                    sx={styles.checkboxStyle}
-                    size="small"
+        <Collapse in={filterOpen}>
+            <Box sx={styles.filterContent}>
+                <Box sx={{ mb: 3 }}>
+                    <Typography variant="subtitle2" sx={{ mb: 1, color: '#b7950b', fontWeight: 600, fontSize: { xs: '0.9rem', sm: '1rem' } }}>Brands</Typography>
+                    <Box sx={styles.filterBox}>
+                        {brands.map(brand => (
+                            <FormControlLabel
+                                key={brand}
+                                control={
+                                    <Checkbox
+                                        checked={selectedBrands.includes(brand)}
+                                        onChange={(e) => onBrandChange(brand, e.target.checked)}
+                                        sx={styles.checkboxStyle}
+                                        size="small"
+                                    />
+                                }
+                                label={brand}
+                                sx={styles.labelStyle}
+                            />
+                        ))}
+                    </Box>
+                </Box>
+                <FormControlLabel
+                    control={
+                        <Checkbox 
+                            checked={inStockOnly}
+                            onChange={onStockChange}
+                            sx={styles.checkboxStyle}
+                            size="small"
+                        />
+                    }
+                    label={<Typography sx={{ fontSize: { xs: '0.85rem', sm: '0.875rem' }, color: '#666' }}>In Stock Only</Typography>}
+                    sx={styles.labelStyle}
                 />
-            }
-            label={<Typography sx={{ fontSize: '0.85rem', color: '#666' }}>In Stock Only</Typography>}
-        />
+                {(selectedBrands.length > 0 || inStockOnly) && (
+                    <Box sx={styles.filterActions}>
+                        <Button onClick={handleClearFilters} sx={styles.clearButton}>
+                            Clear All Filters
+                        </Button>
+                    </Box>
+                )}
+            </Box>
+        </Collapse>
     </Paper>
 );
 
 const ProductCard = ({ product, onClick }) => (
-    <Card elevation={0} onClick={onClick} sx={{
+    <Card elevation={0} sx={{
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        borderRadius: '20px',
+        borderRadius: { xs: '12px', sm: '20px' },
         overflow: 'hidden',
         border: '1px solid rgba(255, 215, 0, 0.1)',
         background: 'rgba(255, 255, 255, 0.9)',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         cursor: 'pointer',
         '&:hover': {
-            transform: 'translateY(-8px)',
-            boxShadow: '0 12px 24px rgba(255, 215, 0, 0.12)',
-            background: '#fff'
+            transform: { xs: 'none', sm: 'translateY(-8px)' },
+            boxShadow: { xs: 'none', sm: '0 12px 24px rgba(255, 215, 0, 0.12)' },
+            background: { xs: 'rgba(255, 255, 255, 0.9)', sm: '#fff' }
         }
-    }}>
+    }} onClick={onClick}>
         <Box sx={{ position: 'relative', paddingTop: '100%' }}>
             <CardMedia
                 component="img"
                 image={product.imgname11}
                 alt={product.ItemName}
-                sx={{ position: 'absolute', top: 0, height: '100%', width: '100%', objectFit: 'contain', p: 2.5 }}
+                sx={{ position: 'absolute', top: 0, height: '100%', width: '100%', objectFit: 'contain', p: { xs: 1.5, sm: 2.5 } }}
             />
         </Box>
-        <CardContent sx={{ flexGrow: 1, p: 3 }}>
-            <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>{product.ItemName}</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        <CardContent sx={{ flexGrow: 1, p: { xs: 2, sm: 3 } }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, fontSize: { xs: '0.9rem', sm: '1rem' } }}>{product.ItemName}</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
                 {product.Brand} - {product.MODEL}
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, color: '#b7950b' }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: '#b7950b', fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
                     ₹{Number(product.SalePrice).toLocaleString('en-IN')}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
                     {product.QUANTITY > 0 ? 'In Stock' : 'Out of Stock'}
                 </Typography>
             </Box>
@@ -167,6 +227,8 @@ const ProductCard = ({ product, onClick }) => (
 const PriceRange = () => {
     const { range } = useParams();
     const navigate = useNavigate();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -174,6 +236,7 @@ const PriceRange = () => {
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [inStockOnly, setInStockOnly] = useState(false);
     const [brands, setBrands] = useState([]);
+    const [filterOpen, setFilterOpen] = useState(false);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -203,20 +266,23 @@ const PriceRange = () => {
         setFilteredProducts(filtered);
     }, [products, selectedBrands, inStockOnly]);
 
+    const handleClearFilters = () => {
+        setSelectedBrands([]);
+        setInStockOnly(false);
+    };
+
     if (loading) return <LuxuryLoader message="Loading Products" />;
     if (error) return <Alert severity="error" sx={{ m: 2 }}>Error: {error}</Alert>;
 
     return (
         <Box sx={styles.gradientBg}>
-            <Container maxWidth={false} sx={styles.container}>
-                <Box sx={styles.header}>
-                    <Typography sx={styles.resultsText}>
-                        Results <span>({filteredProducts.length} products found)</span>
-                    </Typography>
-                </Box>
+            <Container sx={styles.container}>
+                <Typography sx={{ ...styles.resultsText, mb: { xs: 2, sm: 4 } }}>
+                    Results <span>({filteredProducts.length} products found)</span>
+                </Typography>
 
-                <Grid container spacing={3} alignItems="flex-start">
-                    <Grid item xs={12} md={2.5} sx={{ pr: 0 }}>
+                <Grid container spacing={{ xs: 1, sm: 3 }} alignItems="flex-start">
+                    <Grid item xs={12} md={2.5} sx={{ pr: { xs: 0, sm: 2 } }}>
                         <FiltersSection 
                             brands={brands}
                             selectedBrands={selectedBrands}
@@ -225,12 +291,15 @@ const PriceRange = () => {
                             }
                             inStockOnly={inStockOnly}
                             onStockChange={(e) => setInStockOnly(e.target.checked)}
+                            filterOpen={filterOpen}
+                            setFilterOpen={setFilterOpen}
+                            handleClearFilters={handleClearFilters}
                         />
                     </Grid>
                     <Grid item xs={12} md={9.5}>
-                        <Grid container spacing={3}>
+                        <Grid container spacing={{ xs: 1, sm: 2 }}>
                             {filteredProducts.map((product) => (
-                                <Grid item xs={12} sm={6} md={4} lg={3} key={product.ItemCode}>
+                                <Grid item xs={6} sm={6} md={3} key={product.ItemCode}>
                                     <ProductCard 
                                         product={product}
                                         onClick={() => navigate(`/product/${product.ItemCode}`)}
@@ -241,15 +310,15 @@ const PriceRange = () => {
                                 <Grid item xs={12}>
                                     <Box sx={{ 
                                         textAlign: 'center', 
-                                        py: 8, 
+                                        py: { xs: 4, sm: 8 }, 
                                         color: '#666',
                                         background: 'rgba(255,255,255,0.5)',
-                                        borderRadius: 2
+                                        borderRadius: { xs: '12px', sm: '16px' }
                                     }}>
-                                        <Typography variant="h6">
+                                        <Typography variant="h6" sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
                                             No products found in this range
                                         </Typography>
-                                        <Typography variant="body2" sx={{ mt: 1 }}>
+                                        <Typography variant="body2" sx={{ mt: 1, fontSize: { xs: '0.85rem', sm: '0.875rem' } }}>
                                             Try adjusting your filters or search criteria
                                         </Typography>
                                     </Box>
