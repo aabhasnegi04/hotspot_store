@@ -1,9 +1,11 @@
 import React from 'react';
-import { Box, Grid, Card, Typography, CardMedia } from '@mui/material';
+import { Box, Card, Typography, CardMedia, useTheme, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const ForYourBudget = () => {
     const navigate = useNavigate();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleClick = (range) => {
         // Navigate to the price range page
@@ -44,32 +46,46 @@ const ForYourBudget = () => {
             width: '100vw',
             position: 'relative',
             left: '50%',
-            transform: 'translateX(-50%)'
+            transform: 'translateX(-50%)',
+            overflow: 'hidden'
         }}>
-            <Typography variant="h4" sx={{
-                mb: 3,
-                fontWeight: 600,
-                background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                pl: 2,
-            }}>
+            <Typography 
+                variant={isMobile ? "h5" : "h4"}
+                sx={{
+                    mb: { xs: 2, sm: 3 },
+                    fontWeight: 600,
+                    background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    pl: 2,
+                    fontSize: { xs: '1.5rem', sm: '2rem' }
+                }}>
                 For Your Budget
             </Typography>
 
             <Box sx={{ 
                 display: 'flex',
-                gap: 3,
-                width: '100%'
+                gap: { xs: '10px', sm: 3 },
+                width: '100%',
+                overflowX: { xs: 'auto', sm: 'visible' },
+                px: { xs: '10px', sm: 2 },
+                pb: { xs: 1, sm: 0 },
+                msOverflowStyle: 'none',
+                scrollbarWidth: 'none',
+                '&::-webkit-scrollbar': {
+                    display: 'none'
+                }
             }}>
                 {priceRanges.map((range, index) => (
                     <Card 
                         key={index}
                         onClick={() => handleClick(range.range)}
                         sx={{
-                            height: 200,
+                            height: { xs: 120, sm: 200 },
+                            minWidth: { xs: '180px', sm: 'auto' },
+                            flex: { xs: '0 0 auto', sm: 1 },
                             background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
-                            borderRadius: '0',
+                            borderRadius: { xs: '12px', sm: 0 },
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -77,7 +93,11 @@ const ForYourBudget = () => {
                             cursor: 'pointer',
                             position: 'relative',
                             overflow: 'hidden',
-                            flex: 1
+                            transition: 'all 0.3s ease',
+                            '&:hover': {
+                                transform: { xs: 'none', sm: 'translateY(-5px)' },
+                                boxShadow: { xs: 'none', sm: '0 8px 16px rgba(183, 149, 11, 0.1)' }
+                            }
                         }}
                     >
                         <CardMedia

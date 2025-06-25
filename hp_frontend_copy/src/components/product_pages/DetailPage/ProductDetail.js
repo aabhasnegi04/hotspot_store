@@ -178,6 +178,16 @@ const ProductDetail = () => {
         severity: 'success'
     });
     const imageRef = useRef(null);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
+
+    // Detect mobile view
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 600);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Scroll to top when component mounts
     useEffect(() => {
@@ -327,11 +337,13 @@ const ProductDetail = () => {
         backgroundColor: 'rgba(255, 215, 0, 0.02)',
         padding: { xs: '1%', sm: '2%' },
         transition: 'transform 0.3s ease',
-        cursor: 'zoom-in',
+        cursor: isMobile ? 'default' : 'zoom-in',
         position: 'relative',
         overflow: 'hidden',
         minHeight: 0,
-        minWidth: 0
+        minWidth: 0,
+        maxWidth: isMobile ? '100vw' : '100%',
+        maxHeight: isMobile ? '50vh' : '70vh',
     };
 
     const zoomedImageStyle = {
@@ -377,11 +389,11 @@ const ProductDetail = () => {
             background: 'linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)',
             minHeight: '100vh',
             pt: { xs: 1, sm: 2, md: 4 },
-            pb: { xs: 4, sm: 6, md: 8 },
+            pb: { xs: 1, sm: 2, md: 3 },
             position: 'relative',
             zIndex: 0
         }}>
-            <Container maxWidth="lg">
+            <Container maxWidth="lg" sx={{ overflow: 'visible' }}>
                 <Paper
                     elevation={0}
                     sx={{
@@ -391,21 +403,39 @@ const ProductDetail = () => {
                         backdropFilter: 'blur(20px)',
                         border: '1px solid rgba(255, 215, 0, 0.2)',
                         boxShadow: '0 4% 30% rgba(0, 0, 0, 0.05)',
-                        margin: { xs: '-2% -4% -4% -4%', sm: '-3% -10% -6% -10%', md: '-3% -17% -6% -17%' }
+                        margin: { xs: '-2% -4% -4% -4%', sm: '-3% -10% -6% -10%', md: '-3% -17% -6% -17%' },
+                        overflow: 'visible',
                     }}
                 >
-                    <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+                    <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} alignItems="flex-start" sx={{ overflow: 'visible' }}>
                         {/* Product Images Section */}
-                        <Grid item xs={12} md={6}>
-                            <Box sx={{ 
-                                display: 'flex', 
-                                flexDirection: { xs: 'column', sm: 'row' },
-                                gap: 0.5,
-                                position: 'sticky',
-                                top: '20px',
-                                height: 'fit-content',
-                                alignSelf: 'flex-start'
-                            }}>
+                        {/*
+                          DEBUG: The red border below shows the sticky area. If this does not stick,
+                          check for overflow: hidden/auto/scroll on any parent, including html/body or layout wrappers.
+                        */}
+                        <Grid
+                          item
+                          xs={12}
+                          md={6}
+                          sx={{
+                            display: 'block',
+                            position: { md: 'sticky' },
+                            top: { md: '32px' },
+                            alignSelf: { md: 'flex-start' },
+                            height: { md: 'fit-content' },
+                            maxHeight: { md: 'calc(100vh - 40px)' },
+                            zIndex: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: { xs: 'column', sm: 'row' },
+                              gap: 0.5,
+                              p: { xs: 0.5, sm: 0 },
+                              // No sticky, top, maxHeight, or overflow here
+                            }}
+                          >
                                 {/* Thumbnails */}
                                 <Box sx={{ 
                                     display: 'flex', 
@@ -446,18 +476,10 @@ const ProductDetail = () => {
                                 }}>
                                     <Box
                                         ref={imageRef}
-                                        sx={{
-                                            ...mainImageStyle,
-                                            position: 'relative',
-                                            overflow: 'hidden',
-                                            width: 'auto',
-                                            height: 'auto',
-                                            maxWidth: '100%',
-                                            maxHeight: '70vh',
-                                        }}
-                                        onMouseEnter={() => setIsZoomed(true)}
-                                        onMouseLeave={() => setIsZoomed(false)}
-                                        onMouseMove={handleMouseMove}
+                                        sx={mainImageStyle}
+                                        onMouseEnter={() => { if (!isMobile) setIsZoomed(true); }}
+                                        onMouseLeave={() => { if (!isMobile) setIsZoomed(false); }}
+                                        onMouseMove={e => { if (!isMobile) handleMouseMove(e); }}
                                     >
                                         <Box
                                             component="img"
@@ -467,13 +489,13 @@ const ProductDetail = () => {
                                                 width: 'auto',
                                                 height: 'auto',
                                                 maxWidth: '100%',
-                                                maxHeight: '70vh',
+                                                maxHeight: isMobile ? '50vh' : '70vh',
                                                 objectFit: 'contain',
                                                 display: 'block',
                                                 margin: '0 auto'
                                             }}
                                         />
-                                        {isZoomed && (
+                                        {isZoomed && !isMobile && (
                                             <Box
                                                 component="img"
                                                 src={product.images[selectedImage]}
@@ -599,7 +621,7 @@ const ProductDetail = () => {
                                 borderRadius: '9px',
                                 background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.08) 100%)',
                                 border: '1.5px solid rgba(255, 215, 0, 0.4)',
-                                maxWidth: '94%',
+                                width: '100%',
                                 boxShadow: '0 3px 15px rgba(255, 215, 0, 0.2)',
                                 position: 'relative',
                                 '&::before': {
@@ -796,12 +818,6 @@ const ProductDetail = () => {
                                     startIcon={<CartIcon />}
                                 >
                                     <span className="button-text">Add to Cart</span>
-                                    <div className="cart">
-                                        <svg viewBox="0 0 36 26">
-                                            <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
-                                            <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
-                                        </svg>
-                                    </div>
                                 </AnimatedButton>
                                 <Box sx={{ 
                                     display: 'flex', 
@@ -848,7 +864,7 @@ const ProductDetail = () => {
                                 borderRadius: '12px',
                                 backgroundColor: 'rgba(255, 215, 0, 0.05)',
                                 border: '1px solid rgba(255, 215, 0, 0.1)',
-                                maxWidth: '90%'
+                                width: '100%'
                             }}>
                                 <Typography variant="subtitle1" sx={{ mb: 1.5, fontWeight: 600, color: '#B7950B', fontSize: '1rem' }}>
                                     Key Features
@@ -869,7 +885,7 @@ const ProductDetail = () => {
                                 display: 'flex', 
                                 gap: { xs: 1, sm: 2 }, 
                                 mb: 3,
-                                flexDirection: { xs: 'column', sm: 'row' }
+                                flexDirection: 'row'
                             }}>
                                 <Paper 
                                     sx={{ 

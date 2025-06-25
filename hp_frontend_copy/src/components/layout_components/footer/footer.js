@@ -65,16 +65,16 @@ const Footer = () => {
       sx={{
         bgcolor: "#1a1a1a",
         color: "white",
-        pt: 8,
-        pb: 4,
+        pt: { xs: 4, sm: 8 },
+        pb: { xs: 2, sm: 4 },
         mt: 0,
       }}
     >
       <Container maxWidth={false} disableGutters sx={{ px: 0 }}>
         {/* Main Footer Content */}
-        <Grid container spacing={4}>
+        <Grid container spacing={{ xs: 2, sm: 4 }}>
           {/* Company Info */}
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4} sx={{ mb: { xs: 2, md: 0 } }}>
             <Typography
               variant="h6"
               sx={{
@@ -82,12 +82,13 @@ const Footer = () => {
                 fontWeight: 700,
                 mb: 2,
                 color: "#ffb800",
+                fontSize: { xs: '1.1rem', sm: '1.25rem' }
               }}
             >
               <img
                 src="/Hotspot Logo smart 1.png"
                 alt="HotSpot"
-                style={{ width: "150px", height: "50px" }}
+                style={{ width: "120px", height: "40px", maxWidth: '100%' }}
               />
             </Typography>
             <Typography
@@ -96,6 +97,7 @@ const Footer = () => {
                 mb: 3,
                 color: "#f5f5f5",
                 fontFamily: "'Outfit', sans-serif",
+                fontSize: { xs: '0.95rem', sm: '1rem' }
               }}
             >
               Your one-stop destination for the latest smartphones and
@@ -108,7 +110,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <IconButton sx={socialIconStyle}>
+                <IconButton sx={socialIconStyle} size="small">
                   <Facebook />
                 </IconButton>
               </Link>
@@ -117,7 +119,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <IconButton sx={socialIconStyle}>
+                <IconButton sx={socialIconStyle} size="small">
                   <Twitter />
                 </IconButton>
               </Link>
@@ -126,7 +128,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <IconButton sx={socialIconStyle}>
+                <IconButton sx={socialIconStyle} size="small">
                   <Instagram />
                 </IconButton>
               </Link>
@@ -135,7 +137,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <IconButton sx={socialIconStyle}>
+                <IconButton sx={socialIconStyle} size="small">
                   <LinkedIn />
                 </IconButton>
               </Link>
@@ -144,7 +146,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <IconButton sx={socialIconStyle}>
+                <IconButton sx={socialIconStyle} size="small">
                   <YouTube />
                 </IconButton>
               </Link>
@@ -152,7 +154,7 @@ const Footer = () => {
           </Grid>
 
           {/* Quick Links */}
-          <Grid item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={6} md={2} sx={{ mb: { xs: 2, md: 0 } }}>
             <Typography
               variant="h6"
               sx={{
@@ -160,6 +162,7 @@ const Footer = () => {
                 fontWeight: 600,
                 mb: 2,
                 color: "#ffb800",
+                fontSize: { xs: '1.1rem', sm: '1.15rem' }
               }}
             >
               Quick Links
@@ -184,6 +187,7 @@ const Footer = () => {
                     textAlign: "left",
                     padding: 0,
                     textDecoration: "none",
+                    fontSize: { xs: '0.98rem', sm: '1rem' },
                     "&:hover": {
                       color: "#ffb800",
                     },
@@ -199,7 +203,7 @@ const Footer = () => {
           </Grid>
 
           {/* Contact Info */}
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={3} sx={{ mb: { xs: 2, md: 0 } }}>
             <Typography
               variant="h6"
               sx={{
@@ -207,6 +211,7 @@ const Footer = () => {
                 fontWeight: 600,
                 mb: 2,
                 color: "#ffb800",
+                fontSize: { xs: '1.1rem', sm: '1.15rem' }
               }}
             >
               Contact Info
@@ -219,6 +224,7 @@ const Footer = () => {
                   sx={{
                     color: "#f5f5f5",
                     fontFamily: "'Outfit', sans-serif",
+                    fontSize: { xs: '0.95rem', sm: '1rem' }
                   }}
                 >
                   +91 7042343404
@@ -231,6 +237,7 @@ const Footer = () => {
                   sx={{
                     color: "#f5f5f5",
                     fontFamily: "'Outfit', sans-serif",
+                    fontSize: { xs: '0.95rem', sm: '1rem' }
                   }}
                 >
                   care@hotspotretail.in
@@ -243,6 +250,7 @@ const Footer = () => {
                   sx={{
                     color: "#f5f5f5",
                     fontFamily: "'Outfit', sans-serif",
+                    fontSize: { xs: '0.95rem', sm: '1rem' }
                   }}
                 >
                   F-14 2nd Floor, Okhla Industrial Area Phase 1,
@@ -254,7 +262,7 @@ const Footer = () => {
           </Grid>
 
           {/* Newsletter */}
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={3} sx={{ mb: { xs: 2, md: 0 } }}>
             <Typography
               variant="h6"
               sx={{
@@ -262,6 +270,7 @@ const Footer = () => {
                 fontWeight: 600,
                 mb: 2,
                 color: "#ffb800",
+                fontSize: { xs: '1.1rem', sm: '1.15rem' }
               }}
             >
               Newsletter
@@ -272,6 +281,7 @@ const Footer = () => {
                 mb: 2,
                 color: "#f5f5f5",
                 fontFamily: "'Outfit', sans-serif",
+                fontSize: { xs: '0.95rem', sm: '1rem' }
               }}
             >
               Subscribe to our newsletter for the latest updates and exclusive
@@ -283,6 +293,8 @@ const Footer = () => {
               sx={{
                 display: "flex",
                 gap: 1,
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: { xs: 'stretch', sm: 'center' },
               }}
             >
               <TextField
@@ -303,6 +315,7 @@ const Footer = () => {
                       borderColor: "#ffb800",
                     },
                   },
+                  fontSize: { xs: '0.95rem', sm: '1rem' },
                 }}
               />
               <Button
@@ -311,6 +324,10 @@ const Footer = () => {
                 sx={{
                   bgcolor: "#ffb800",
                   color: "#000",
+                  fontSize: { xs: '1rem', sm: '1.1rem' },
+                  px: { xs: 2, sm: 3 },
+                  py: { xs: 1, sm: 1.2 },
+                  borderRadius: { xs: '8px', sm: '12px' },
                   "&:hover": {
                     bgcolor: "#ffa000",
                   },
@@ -325,8 +342,8 @@ const Footer = () => {
         {/* Divider */}
         <Divider
           sx={{
-            mt: 6,
-            mb: 4,
+            mt: { xs: 3, sm: 6 },
+            mb: { xs: 2, sm: 4 },
             bgcolor: "rgba(255, 255, 255, 0.1)",
           }}
         />
@@ -334,11 +351,13 @@ const Footer = () => {
         {/* Bottom Footer */}
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            justifyContent: { xs: 'center', sm: 'space-between' },
+            alignItems: 'center',
+            flexWrap: 'wrap',
             gap: 2,
+            textAlign: { xs: 'center', sm: 'left' },
           }}
         >
           <Typography
@@ -346,25 +365,28 @@ const Footer = () => {
             sx={{
               color: "#f5f5f5",
               fontFamily: "'Outfit', sans-serif",
+              fontSize: { xs: '0.95rem', sm: '1rem' },
             }}
           >
             © 2025 HotSpot. All rights reserved.
           </Typography>
           <Stack
-            direction="row"
-            spacing={3}
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 1, sm: 3 }}
             sx={{
-              "& button": {
-                color: "#f5f5f5",
+              alignItems: { xs: 'center', sm: 'unset' },
+              mt: { xs: 1, sm: 0 },
+              '& button': {
+                color: '#f5f5f5',
                 fontFamily: "'Outfit', sans-serif",
-                fontSize: "0.875rem",
-                textDecoration: "none",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
+                fontSize: { xs: '0.98rem', sm: '0.875rem' },
+                textDecoration: 'none',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
                 padding: 0,
-                "&:hover": {
-                  color: "#ffb800",
+                '&:hover': {
+                  color: '#ffb800',
                 },
               },
             }}

@@ -13,7 +13,7 @@ const DescriptionTab = ({ product }) => {
         <Box sx={{
             borderBottom: 1,
             borderColor: 'rgba(255, 215, 0, 0.2)',
-            mb: 3,
+            mb: { xs: 1, sm: 2 },
             overflowX: 'auto'
         }}>
             <Tabs
@@ -46,7 +46,7 @@ const DescriptionTab = ({ product }) => {
 
             {/* Highlights Tab */}
             {selectedTab === 0 && (
-                <Box sx={{ py: { xs: 2, sm: 3 } }}>
+                <Box sx={{ py: { xs: 1, sm: 2, md: 3 }, pb: { xs: 0.5, sm: 1 } }}>
                     <Grid container spacing={{ xs: 1, sm: 2 }}>
                         {product.highlights.map((highlight, index) => (
                             <Grid item xs={12} sm={6} md={4} key={index}>
@@ -88,7 +88,7 @@ const DescriptionTab = ({ product }) => {
 
             {/* Specifications Tab */}
             {selectedTab === 1 && (
-                <Box sx={{ py: { xs: 2, sm: 3 } }}>
+                <Box sx={{ py: { xs: 1, sm: 2, md: 3 }, pb: { xs: 0.5, sm: 1 } }}>
                     <Grid container spacing={{ xs: 1, sm: 2 }}>
                         {Object.entries(product.specifications).map(([key, value]) => (
                             <Grid item xs={12} sm={6} key={key}>
@@ -135,7 +135,7 @@ const DescriptionTab = ({ product }) => {
 
             {/* Reviews Tab */}
             {selectedTab === 2 && (
-                <Box sx={{ py: { xs: 2, sm: 3 } }}>
+                <Box sx={{ py: { xs: 1, sm: 2, md: 3 }, pb: { xs: 0.5, sm: 1 } }}>
                     <Typography
                         variant="h6"
                         gutterBottom
@@ -153,7 +153,7 @@ const DescriptionTab = ({ product }) => {
 
             {/* Compare Phones Tab */}
             {selectedTab === 3 && (
-                <Box sx={{ py: { xs: 2, sm: 3 } }}>
+                <Box sx={{ py: { xs: 1, sm: 2, md: 3 }, pb: { xs: 0.5, sm: 1 } }}>
                     <PhoneCompare currentPhoneId={product.id} />
                 </Box>
             )}

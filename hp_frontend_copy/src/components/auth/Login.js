@@ -147,8 +147,12 @@ const Login = () => {
     };
 
     return (
-        <Container maxWidth="sm" sx={{ mt: 16, mb: 8 }}>
-            <Paper elevation={3} sx={paperStyle}>
+        <Container maxWidth="sm" sx={{ mt: { xs: 8, sm: 16 }, mb: { xs: 2, sm: 8 }, px: { xs: 0.5, sm: 0 } }}>
+            <Paper elevation={3} sx={{
+                ...paperStyle,
+                p: { xs: 2, sm: 4 },
+                borderRadius: { xs: '12px', sm: '20px' },
+            }}>
                 <Typography 
                     variant="h4" 
                     component="h1" 
@@ -157,7 +161,8 @@ const Login = () => {
                     sx={{
                         fontWeight: 700,
                         color: '#000000',
-                        mb: 4,
+                        mb: { xs: 2, sm: 4 },
+                        fontSize: { xs: '1.6rem', sm: '2.125rem' },
                         background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
@@ -166,7 +171,7 @@ const Login = () => {
                     Welcome Back
                 </Typography>
                 <form onSubmit={handleSubmit}>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={{ xs: 2, sm: 3 }}>
                         {errors.general && (
                             <Grid item xs={12}>
                                 <Typography color="error" align="center">
@@ -185,7 +190,7 @@ const Login = () => {
                                 error={!!errors.identifier}
                                 helperText={errors.identifier}
                                 variant="outlined"
-                                sx={inputStyle}
+                                sx={{ ...inputStyle, fontSize: { xs: '0.95rem', sm: '1rem' } }}
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
@@ -206,7 +211,7 @@ const Login = () => {
                                 error={!!errors.password}
                                 helperText={errors.password}
                                 variant="outlined"
-                                sx={inputStyle}
+                                sx={{ ...inputStyle, fontSize: { xs: '0.95rem', sm: '1rem' } }}
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
@@ -232,22 +237,23 @@ const Login = () => {
                                 fullWidth
                                 variant="contained"
                                 size="large"
-                                sx={buttonStyle}
+                                sx={{
+                                    ...buttonStyle,
+                                    fontSize: { xs: '1rem', sm: '1.1rem' },
+                                    py: { xs: 1, sm: 1.5 },
+                                }}
                             >
                                 Login
                             </Button>
                         </Grid>
-                        <Grid item xs={12} container justifyContent="space-between">
+                        <Grid item xs={12} container direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} gap={1}>
                             <Grid item>
                                 <Link 
                                     to="/forgot-password" 
                                     style={{
                                         color: '#FFD700',
                                         textDecoration: 'none',
-                                        '&:hover': {
-                                            color: '#FFA500',
-                                            textDecoration: 'underline',
-                                        }
+                                        fontSize: '0.98rem',
                                     }}
                                 >
                                     Forgot password?
@@ -259,10 +265,7 @@ const Login = () => {
                                     style={{
                                         color: '#FFD700',
                                         textDecoration: 'none',
-                                        '&:hover': {
-                                            color: '#FFA500',
-                                            textDecoration: 'underline',
-                                        }
+                                        fontSize: '0.98rem',
                                     }}
                                 >
                                     Don't have an account? Sign up

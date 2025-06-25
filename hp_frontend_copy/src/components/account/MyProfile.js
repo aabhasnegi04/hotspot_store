@@ -153,16 +153,17 @@ const MyProfile = () => {
 
     return (
         <Container maxWidth="md" sx={{ 
-            mt: { xs: -2, sm: -1, md: 0 },
-            mb: 8,
+            mt: { xs: 0, sm: -1, md: 0 },
+            mb: { xs: 4, sm: 6, md: 8 },
+            px: { xs: 1, sm: 2, md: 0 },
             position: 'relative',
             zIndex: 0
         }}>
             <Paper 
                 elevation={0}
                 sx={{
-                    p: { xs: 2, sm: 2.5, md: 3 },
-                    borderRadius: '20px',
+                    p: { xs: 1.5, sm: 2.5, md: 3 },
+                    borderRadius: { xs: '14px', sm: '20px' },
                     backgroundColor: '#fff'
                 }}
             >
@@ -170,18 +171,18 @@ const MyProfile = () => {
                 <Box sx={{ 
                     display: 'flex', 
                     flexDirection: { xs: 'column', sm: 'row' },
-                    alignItems: 'center',
-                    gap: 3,
-                    mb: 4 
+                    alignItems: { xs: 'flex-start', sm: 'center' },
+                    gap: { xs: 2, sm: 3 },
+                    mb: { xs: 2, sm: 4 }
                 }}>
-                    <Box sx={{ position: 'relative' }}>
+                    <Box sx={{ position: 'relative', alignSelf: { xs: 'center', sm: 'flex-start' } }}>
                         <Avatar
                             src={formData.profilePicture}
                             sx={{
-                                width: 120,
-                                height: 120,
+                                width: { xs: 80, sm: 120 },
+                                height: { xs: 80, sm: 120 },
                                 bgcolor: '#FFB800',
-                                fontSize: '3rem'
+                                fontSize: { xs: '2rem', sm: '3rem' }
                             }}
                         >
                             {formData.name?.[0]?.toUpperCase() || 'U'}
@@ -201,28 +202,30 @@ const MyProfile = () => {
                                     bottom: 0,
                                     right: 0,
                                     backgroundColor: '#FFB800',
-                                    '&:hover': { backgroundColor: '#FFA000' }
+                                    '&:hover': { backgroundColor: '#FFA000' },
+                                    width: { xs: 28, sm: 36 },
+                                    height: { xs: 28, sm: 36 }
                                 }}
                                 size="small"
                             >
-                                <PhotoCameraIcon sx={{ color: 'white' }} />
+                                <PhotoCameraIcon sx={{ color: 'white', fontSize: { xs: 18, sm: 22 } }} />
                             </IconButton>
                         </label>
                     </Box>
-                    <Box sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
-                        <Typography variant="h4" sx={{ fontWeight: 600, color: '#FFB800', mb: 1 }}>
+                    <Box sx={{ textAlign: { xs: 'center', sm: 'left' }, mt: { xs: 2, sm: 0 }, width: '100%' }}>
+                        <Typography variant="h4" sx={{ fontWeight: 600, color: '#FFB800', mb: { xs: 0.5, sm: 1 }, fontSize: { xs: '1.3rem', sm: '2rem' } }}>
                             {formData.name}
                         </Typography>
-                        <Typography variant="body1" color="text.secondary">
+                        <Typography variant="body1" color="text.secondary" sx={{ fontSize: { xs: '0.95rem', sm: '1.1rem' } }}>
                             {formData.email || 'Add your email'}
                         </Typography>
                     </Box>
                 </Box>
 
-                <Divider sx={{ mb: 4 }} />
+                <Divider sx={{ mb: { xs: 2, sm: 4 } }} />
 
                 {/* Profile Form */}
-                <Grid container spacing={3}>
+                <Grid container spacing={{ xs: 2, sm: 3 }}>
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
@@ -397,14 +400,15 @@ const MyProfile = () => {
                         />
                     </Grid>
 
-                    <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                    <Grid item xs={12} sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-end' }, mt: 2 }}>
                         <Button
                             variant="contained"
                             onClick={handleSave}
                             sx={{
                                 backgroundColor: '#FFB800',
                                 color: 'white',
-                                px: 4,
+                                px: { xs: 3, sm: 4 },
+                                fontSize: { xs: '1rem', sm: '1.1rem' },
                                 '&:hover': {
                                     backgroundColor: '#FFA000',
                                 }

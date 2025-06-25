@@ -135,8 +135,8 @@ const ForgotPassword = () => {
     };
 
     return (
-        <Container maxWidth="sm" sx={{ mt: 2, mb: 8 }}>
-            <Paper elevation={3} sx={{ p: 4, borderRadius: '20px', backgroundColor: '#fff' }}>
+        <Container maxWidth="sm" sx={{ mt: { xs: 4, sm: 8 }, mb: { xs: 2, sm: 8 }, px: { xs: 0.5, sm: 0 } }}>
+            <Paper elevation={3} sx={{ p: { xs: 2, sm: 4 }, borderRadius: { xs: '12px', sm: '20px' }, backgroundColor: '#fff' }}>
                 <Typography 
                     variant="h4" 
                     component="h1" 
@@ -145,7 +145,8 @@ const ForgotPassword = () => {
                     sx={{
                         fontWeight: 700,
                         color: '#000000',
-                        mb: 4,
+                        mb: { xs: 2, sm: 4 },
+                        fontSize: { xs: '1.6rem', sm: '2.125rem' },
                         background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
@@ -154,12 +155,12 @@ const ForgotPassword = () => {
                     Reset Password
                 </Typography>
                 
-                <Typography variant="body1" sx={{ mb: 4, textAlign: 'center' }}>
+                <Typography variant="body1" sx={{ mb: { xs: 2, sm: 4 }, textAlign: 'center', fontSize: { xs: '1rem', sm: '1.1rem' } }}>
                     Enter your email address and new password to reset your account.
                 </Typography>
 
                 <form onSubmit={handleSubmit}>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={{ xs: 2, sm: 3 }}>
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
@@ -180,7 +181,8 @@ const ForgotPassword = () => {
                                         borderRadius: '12px',
                                         '&:hover fieldset': { borderColor: '#FFD700' },
                                         '&.Mui-focused fieldset': { borderColor: '#FFD700' }
-                                    }
+                                    },
+                                    fontSize: { xs: '0.95rem', sm: '1rem' }
                                 }}
                             />
                         </Grid>
@@ -212,7 +214,8 @@ const ForgotPassword = () => {
                                         borderRadius: '12px',
                                         '&:hover fieldset': { borderColor: '#FFD700' },
                                         '&.Mui-focused fieldset': { borderColor: '#FFD700' }
-                                    }
+                                    },
+                                    fontSize: { xs: '0.95rem', sm: '1rem' }
                                 }}
                             />
                         </Grid>
@@ -243,7 +246,8 @@ const ForgotPassword = () => {
                                         borderRadius: '12px',
                                         '&:hover fieldset': { borderColor: '#FFD700' },
                                         '&.Mui-focused fieldset': { borderColor: '#FFD700' }
-                                    }
+                                    },
+                                    fontSize: { xs: '0.95rem', sm: '1rem' }
                                 }}
                             />
                         </Grid>
@@ -256,13 +260,13 @@ const ForgotPassword = () => {
                                 disabled={loading}
                                 sx={{
                                     mt: 2,
-                                    py: 1.5,
+                                    py: { xs: 1, sm: 1.5 },
                                     borderRadius: '12px',
                                     background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
                                     color: '#000000',
                                     fontWeight: 600,
                                     textTransform: 'none',
-                                    fontSize: '1rem',
+                                    fontSize: { xs: '1rem', sm: '1.1rem' },
                                     boxShadow: '0 3px 5px 2px rgba(255, 215, 0, .3)',
                                     '&:hover': {
                                         background: 'linear-gradient(45deg, #FFA500 30%, #FFD700 90%)',
@@ -280,10 +284,7 @@ const ForgotPassword = () => {
                                 style={{
                                     color: '#FFD700',
                                     textDecoration: 'none',
-                                    '&:hover': {
-                                        color: '#FFA500',
-                                        textDecoration: 'underline',
-                                    }
+                                    fontSize: '0.98rem',
                                 }}
                             >
                                 Back to Login

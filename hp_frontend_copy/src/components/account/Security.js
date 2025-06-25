@@ -153,21 +153,21 @@ const Security = () => {
     };
 
     return (
-        <Container maxWidth="md" sx={{ mt: { xs: 0, sm: 0, md: 0 }, mb: 8 }}>
-            <Paper elevation={0} sx={{ p: 4, borderRadius: '20px', backgroundColor: '#fff' }}>
+        <Container maxWidth="md" sx={{ mt: { xs: 0, sm: 0, md: 0 }, mb: { xs: 4, sm: 6, md: 8 }, px: { xs: 1, sm: 2, md: 0 } }}>
+            <Paper elevation={0} sx={{ p: { xs: 1.5, sm: 3, md: 4 }, borderRadius: { xs: '14px', sm: '20px' }, backgroundColor: '#fff' }}>
                 {/* Header */}
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-                    <SecurityIcon sx={{ fontSize: 40, color: '#FFB800', mr: 2 }} />
-                    <Typography variant="h4" sx={{ fontWeight: 600, color: '#FFB800' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 2, sm: 4 } }}>
+                    <SecurityIcon sx={{ fontSize: { xs: 28, sm: 40 }, color: '#FFB800', mr: { xs: 1.2, sm: 2 } }} />
+                    <Typography variant="h4" sx={{ fontWeight: 600, color: '#FFB800', fontSize: { xs: '1.3rem', sm: '2rem' } }}>
                         Security Settings
                     </Typography>
                 </Box>
 
                 {/* Password Change Section */}
-                <Typography variant="h6" sx={{ mb: 3, fontWeight: 500 }}>
+                <Typography variant="h6" sx={{ mb: { xs: 2, sm: 3 }, fontWeight: 500, fontSize: { xs: '1.05rem', sm: '1.15rem' } }}>
                     Change Password
                 </Typography>
-                <Grid container spacing={3} sx={{ mb: 4 }}>
+                <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 2, sm: 4 } }}>
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
@@ -179,7 +179,7 @@ const Security = () => {
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <EmailIcon sx={{ color: '#FFB800' }} />
+                                        <EmailIcon sx={{ color: '#FFB800', fontSize: { xs: 20, sm: 24 } }} />
                                     </InputAdornment>
                                 )
                             }}
@@ -187,7 +187,8 @@ const Security = () => {
                                 '& .MuiOutlinedInput-root': {
                                     '&:hover fieldset': { borderColor: '#FFB800' },
                                     '&.Mui-focused fieldset': { borderColor: '#FFB800' }
-                                }
+                                },
+                                fontSize: { xs: '0.95rem', sm: '1rem' }
                             }}
                         />
                     </Grid>
@@ -203,8 +204,8 @@ const Security = () => {
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
-                                        <IconButton onClick={() => handlePasswordVisibility('new')}>
-                                            {showPassword.new ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        <IconButton onClick={() => handlePasswordVisibility('new')} size="small">
+                                            {showPassword.new ? <VisibilityOffIcon sx={{ fontSize: { xs: 20, sm: 24 } }} /> : <VisibilityIcon sx={{ fontSize: { xs: 20, sm: 24 } }} />}
                                         </IconButton>
                                     </InputAdornment>
                                 )
@@ -213,7 +214,8 @@ const Security = () => {
                                 '& .MuiOutlinedInput-root': {
                                     '&:hover fieldset': { borderColor: '#FFB800' },
                                     '&.Mui-focused fieldset': { borderColor: '#FFB800' }
-                                }
+                                },
+                                fontSize: { xs: '0.95rem', sm: '1rem' }
                             }}
                         />
                     </Grid>
@@ -228,8 +230,8 @@ const Security = () => {
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
-                                        <IconButton onClick={() => handlePasswordVisibility('confirm')}>
-                                            {showPassword.confirm ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        <IconButton onClick={() => handlePasswordVisibility('confirm')} size="small">
+                                            {showPassword.confirm ? <VisibilityOffIcon sx={{ fontSize: { xs: 20, sm: 24 } }} /> : <VisibilityIcon sx={{ fontSize: { xs: 20, sm: 24 } }} />}
                                         </IconButton>
                                     </InputAdornment>
                                 )
@@ -238,7 +240,8 @@ const Security = () => {
                                 '& .MuiOutlinedInput-root': {
                                     '&:hover fieldset': { borderColor: '#FFB800' },
                                     '&.Mui-focused fieldset': { borderColor: '#FFB800' }
-                                }
+                                },
+                                fontSize: { xs: '0.95rem', sm: '1rem' }
                             }}
                         />
                     </Grid>
@@ -248,7 +251,10 @@ const Security = () => {
                             onClick={handlePasswordUpdate}
                             sx={{
                                 backgroundColor: '#FFB800',
-                                '&:hover': { backgroundColor: '#FFA000' }
+                                '&:hover': { backgroundColor: '#FFA000' },
+                                fontSize: { xs: '1rem', sm: '1.1rem' },
+                                px: { xs: 2.5, sm: 4 },
+                                py: { xs: 1, sm: 1.5 }
                             }}
                             disabled={loading}
                             startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
@@ -258,13 +264,13 @@ const Security = () => {
                     </Grid>
                 </Grid>
 
-                <Divider sx={{ my: 4 }} />
+                <Divider sx={{ my: { xs: 2, sm: 4 } }} />
 
                 {/* Additional Security Settings */}
-                <Typography variant="h6" sx={{ mb: 3, fontWeight: 500 }}>
+                <Typography variant="h6" sx={{ mb: { xs: 2, sm: 3 }, fontWeight: 500, fontSize: { xs: '1.05rem', sm: '1.15rem' } }}>
                     Security Options
                 </Typography>
-                <Grid container spacing={2}>
+                <Grid container spacing={{ xs: 1.5, sm: 2 }}>
                     <Grid item xs={12}>
                         <FormControlLabel
                             control={
@@ -281,7 +287,7 @@ const Security = () => {
                                     }}
                                 />
                             }
-                            label="Two-Factor Authentication"
+                            label={<Typography sx={{ fontSize: { xs: '0.95rem', sm: '1.05rem' } }}>Two-Factor Authentication</Typography>}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -300,7 +306,7 @@ const Security = () => {
                                     }}
                                 />
                             }
-                            label="Login Notifications"
+                            label={<Typography sx={{ fontSize: { xs: '0.95rem', sm: '1.05rem' } }}>Login Notifications</Typography>}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -319,7 +325,7 @@ const Security = () => {
                                     }}
                                 />
                             }
-                            label="Device Management"
+                            label={<Typography sx={{ fontSize: { xs: '0.95rem', sm: '1.05rem' } }}>Device Management</Typography>}
                         />
                     </Grid>
                 </Grid>
@@ -333,7 +339,7 @@ const Security = () => {
                 <Alert
                     onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
                     severity={snackbar.severity}
-                    sx={{ width: '100%' }}
+                    sx={{ width: '100%', fontSize: { xs: '0.95rem', sm: '1rem' } }}
                 >
                     {snackbar.message}
                 </Alert>

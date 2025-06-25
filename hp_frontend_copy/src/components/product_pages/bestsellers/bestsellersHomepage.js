@@ -267,7 +267,7 @@ const ProductCarousel = ({ title, products }) => {
     const scroll = (direction) => {
         const container = scrollContainerRef.current;
         if (container) {
-            const scrollAmount = 300;
+            const scrollAmount = window.innerWidth < 600 ? 180 : 300; // Smaller scroll on mobile
             container.scrollBy({
                 left: direction * scrollAmount,
                 behavior: 'smooth'
@@ -281,16 +281,16 @@ const ProductCarousel = ({ title, products }) => {
     };
 
     return (
-        <Box sx={{ mb: 4 }}>
+        <Box sx={{ mb: { xs: 2, sm: 4 } }}>
             <Typography
                 variant="h5"
                 sx={{
-                    mb: 4,
+                    mb: { xs: 2, sm: 4 },
                     px: 2,
                     fontWeight: 700,
                     color: '#333333',
                     fontFamily: "'Outfit', sans-serif",
-                    fontSize: '2rem',
+                    fontSize: { xs: '1.3rem', sm: '2rem' },
                     position: 'relative',
                     display: 'inline-block',
                     '&::after': {
@@ -323,6 +323,7 @@ const ProductCarousel = ({ title, products }) => {
                         backgroundColor: 'rgba(255, 255, 255, 0.9)',
                         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                         zIndex: 2,
+                        display: { xs: 'none', sm: 'flex' }, // Hide on mobile
                         '&:hover': {
                             backgroundColor: '#ffffff',
                         }
@@ -342,6 +343,7 @@ const ProductCarousel = ({ title, products }) => {
                         backgroundColor: 'rgba(255, 255, 255, 0.9)',
                         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                         zIndex: 2,
+                        display: { xs: 'none', sm: 'flex' }, // Hide on mobile
                         '&:hover': {
                             backgroundColor: '#ffffff',
                         }
@@ -355,7 +357,7 @@ const ProductCarousel = ({ title, products }) => {
                     ref={scrollContainerRef}
                     sx={{
                         display: 'flex',
-                        gap: 2,
+                        gap: { xs: 1, sm: 2 },
                         overflowX: 'auto',
                         scrollBehavior: 'smooth',
                         '&::-webkit-scrollbar': {
@@ -375,7 +377,8 @@ const ProductCarousel = ({ title, products }) => {
                             sx={{
                                 textDecoration: 'none',
                                 color: 'inherit',
-                                flex: '0 0 280px',
+                                flex: { xs: '0 0 80vw', sm: '0 0 280px' },
+                                maxWidth: { xs: '80vw', sm: '280px' },
                             }}
                         >
                             <Card
@@ -392,25 +395,26 @@ const ProductCarousel = ({ title, products }) => {
                             >
                                 <CardMedia
                                     component="img"
-                                    height="200"
+                                    height={window.innerWidth < 600 ? 120 : 200}
                                     image={product.imgname11}
                                     alt={product.ItemName}
                                     onError={handleImageError}
                                     sx={{
                                         objectFit: 'contain',
-                                        p: 2,
-                                        backgroundColor: '#fff'
+                                        p: { xs: 1, sm: 2 },
+                                        backgroundColor: '#fff',
+                                        height: { xs: 120, sm: 200 }
                                     }}
                                 />
-                                <CardContent sx={{ p: 2 }}>
+                                <CardContent sx={{ p: { xs: 1, sm: 2 } }}>
                                     <Typography
                                         gutterBottom
                                         variant="h6"
                                         sx={{
                                             fontFamily: "'Outfit', sans-serif",
-                                            fontSize: '1rem',
+                                            fontSize: { xs: '0.95rem', sm: '1rem' },
                                             fontWeight: 600,
-                                            height: '3rem',
+                                            height: { xs: '2.2rem', sm: '3rem' },
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis',
                                             display: '-webkit-box',
@@ -453,6 +457,8 @@ const ProductCarousel = ({ title, products }) => {
                                             color: '#000000',
                                             fontFamily: "'Outfit', sans-serif",
                                             fontWeight: 600,
+                                            fontSize: { xs: '0.85rem', sm: '1rem' },
+                                            py: { xs: 1, sm: 1.5 },
                                             '&:hover': {
                                                 backgroundColor: '#ffa000',
                                             }
@@ -469,6 +475,22 @@ const ProductCarousel = ({ title, products }) => {
         </Box>
     );
 };
+
+const EdgeToEdgeBanner = ({ children, sx }) => (
+    <Box
+        sx={{
+            width: '100vw',
+            position: 'relative',
+            left: '50%',
+            right: '50%',
+            marginLeft: '-50vw',
+            marginRight: '-50vw',
+            ...sx,
+        }}
+    >
+        {children}
+    </Box>
+);
 
 const BestsellersHomepage = () => {
     const [data, setData] = useState(null);
@@ -490,104 +512,221 @@ const BestsellersHomepage = () => {
     }, []);
 
     return (
-        <Container maxWidth="xl" sx={{ py: 2 }}>
-            {/* Hero Section */}
-            <Box sx={{ mb: 2, textAlign: 'center' }}>
-                <GradientTypography variant="h3" sx={{ mb: 2 }}>
-                    Hotspot Bestsellers
-                </GradientTypography>
-                <Typography variant="h6" color="text.secondary" sx={{ mb: 2 }}>
-                    Discover Our Most Popular Products
-                </Typography>
-            </Box>
-
-            {/* Main Ad Banner */}
-            <Box sx={{ mb: 3 }}>
-                <AdBanner>
+        <>
+            {/* Main Ad Banner - edge to edge */}
+            <EdgeToEdgeBanner sx={{ mb: { xs: 2, sm: 3 } }}>
+                <AdBanner sx={{ minHeight: { xs: 120, sm: 200, md: 300 }, borderRadius: 0 }}>
                     <AdPlaceholder>
-                        <ImageIcon sx={{ fontSize: 40, color: '#b7950b' }} />
-                        <Typography variant="h6">Main Ad Banner</Typography>
+                        <ImageIcon sx={{ fontSize: { xs: 28, sm: 40 }, color: '#b7950b' }} />
+                        <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>Main Ad Banner</Typography>
                         <Typography variant="body2">1920 x 400px</Typography>
                     </AdPlaceholder>
                 </AdBanner>
-            </Box>
+            </EdgeToEdgeBanner>
 
-            {/* Carousels Section */}
-            {loading ? (
-                <Box sx={{ textAlign: 'center', my: 4 }}>
-                    <Typography>Loading...</Typography>
+            <Container maxWidth="xl" sx={{ py: { xs: 1, sm: 2 } }}>
+                {/* Hero Section */}
+                <Box sx={{ mb: { xs: 1, sm: 2 }, textAlign: 'center' }}>
+                    <GradientTypography variant="h3" sx={{ mb: { xs: 1, sm: 2 }, fontSize: { xs: '1.7rem', sm: '2.5rem' } }}>
+                        Hotspot Bestsellers
+                    </GradientTypography>
+                    <Typography variant="h6" color="text.secondary" sx={{ mb: { xs: 1, sm: 2 }, fontSize: { xs: '1rem', sm: '1.25rem' } }}>
+                        Discover Our Most Popular Products
+                    </Typography>
                 </Box>
-            ) : error ? (
-                <Box sx={{ textAlign: 'center', my: 4 }}>
-                    <Typography color="error">{error}</Typography>
-                </Box>
-            ) : data ? (
-                <>
-                    {/* Top Selling Products Carousel */}
-                    <ProductCarousel 
-                        title="Top Selling Products" 
-                        products={Array.isArray(data.bestSellers) ? data.bestSellers : []} 
-                    />
 
-                    {/* Featured Categories Grid (moved here) */}
-                    <Grid container spacing={3} sx={{ mb: 6 }}>
-                        {[
-                            { title: 'Smartphones', icon: <SmartphoneIcon sx={{ fontSize: 40 }} />, color: '#2196f3' },
-                            { title: 'Wearables', icon: <WatchIcon sx={{ fontSize: 40 }} />, color: '#4caf50' },
-                            { title: 'Tablets', icon: <TabletIcon sx={{ fontSize: 40 }} />, color: '#ff9800' },
-                            { title: 'Accessories', icon: <HeadphonesIcon sx={{ fontSize: 40 }} />, color: '#9c27b0' }
-                        ].map((category, index) => (
-                            <Grid item xs={12} sm={6} md={3} key={index}>
-                                <StyledCard>
-                                    <Box sx={{
-                                        p: 3,
-                                        textAlign: 'center',
-                                        width: '100%'
-                                    }}>
-                                        <Box sx={{ 
-                                            color: category.color,
-                                            mb: 2
+                {/* Carousels Section */}
+                {loading ? (
+                    <Box sx={{ textAlign: 'center', my: { xs: 2, sm: 4 } }}>
+                        <Typography>Loading...</Typography>
+                    </Box>
+                ) : error ? (
+                    <Box sx={{ textAlign: 'center', my: { xs: 2, sm: 4 } }}>
+                        <Typography color="error">{error}</Typography>
+                    </Box>
+                ) : data ? (
+                    <>
+                        {/* Top Selling Products Carousel */}
+                        <ProductCarousel 
+                            title="Top Selling Products" 
+                            products={Array.isArray(data.bestSellers) ? data.bestSellers : []} 
+                        />
+
+                        {/* Featured Categories Grid (moved here) */}
+                        <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 3, sm: 6 } }}>
+                            {[
+                                { title: 'Smartphones', icon: <SmartphoneIcon sx={{ fontSize: 40 }} />, color: '#2196f3' },
+                                { title: 'Wearables', icon: <WatchIcon sx={{ fontSize: 40 }} />, color: '#4caf50' },
+                                { title: 'Tablets', icon: <TabletIcon sx={{ fontSize: 40 }} />, color: '#ff9800' },
+                                { title: 'Accessories', icon: <HeadphonesIcon sx={{ fontSize: 40 }} />, color: '#9c27b0' }
+                            ].map((category, index) => (
+                                <Grid item xs={12} sm={6} md={3} key={index}>
+                                    <StyledCard>
+                                        <Box sx={{
+                                            p: { xs: 2, sm: 3 },
+                                            textAlign: 'center',
+                                            width: '100%'
                                         }}>
-                                            {category.icon}
-                                        </Box>
-                                        <Typography variant="h6" sx={{ mb: 1 }}>
-                                            {category.title}
-                                        </Typography>
-                                        <Button 
-                                            variant="outlined" 
-                                            size="small"
-                                            sx={{ 
-                                                borderColor: category.color,
+                                            <Box sx={{ 
                                                 color: category.color,
-                                                '&:hover': {
+                                                mb: { xs: 1, sm: 2 }
+                                            }}>
+                                                {category.icon}
+                                            </Box>
+                                            <Typography variant="h6" sx={{ mb: 1, fontSize: { xs: '1rem', sm: '1.15rem' } }}>
+                                                {category.title}
+                                            </Typography>
+                                            <Button 
+                                                variant="outlined" 
+                                                size="small"
+                                                sx={{ 
                                                     borderColor: category.color,
-                                                    backgroundColor: `${category.color}10`
-                                                }
-                                            }}
-                                        >
-                                            View All
-                                        </Button>
-                    </Box>
-                                </StyledCard>
-                            </Grid>
-                        ))}
-                    </Grid>
+                                                    color: category.color,
+                                                    fontSize: { xs: '0.85rem', sm: '1rem' },
+                                                    '&:hover': {
+                                                        borderColor: category.color,
+                                                        backgroundColor: `${category.color}10`
+                                                    }
+                                                }}
+                                            >
+                                                View All
+                                            </Button>
+                                        </Box>
+                                    </StyledCard>
+                                </Grid>
+                            ))}
+                        </Grid>
 
-                    {/* Brand Carousels */}
-                    {Object.entries(data.brandBestSellers).map(([brand, products], idx, arr) => {
-                        if (!Array.isArray(products) || products.length === 0) return null;
-                        // Render Samsung
-                        if (brand.toLowerCase() === 'samsung') {
-                            return <React.Fragment key={brand}>
-                                <ProductCarousel 
-                                    title={`Top ${formatBrand(brand)} Products`}
-                                    products={products}
-                                />
-                                {/* Flash Sale Section inserted after Samsung */}
-            <Box sx={{ mb: 6 }}>
-                <BannerCard>
+                        {/* Brand Carousels */}
+                        {Object.entries(data.brandBestSellers).map(([brand, products], idx, arr) => {
+                            if (!Array.isArray(products) || products.length === 0) return null;
+                            // Render Samsung
+                            if (brand.toLowerCase() === 'samsung') {
+                                return <React.Fragment key={brand}>
+                                    <ProductCarousel 
+                                        title={`Top ${formatBrand(brand)} Products`}
+                                        products={products}
+                                    />
+                                    {/* Flash Sale Section inserted after Samsung - edge to edge */}
+                                    <EdgeToEdgeBanner sx={{ mb: { xs: 3, sm: 6 } }}>
+                                        <BannerCard sx={{ minHeight: { xs: 120, sm: 200, md: 300 }, borderRadius: 0 }}>
+                                            <Box sx={{
+                                                p: { xs: 2, sm: 4 },
+                                                height: '100%',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                textAlign: 'center',
+                                                background: 'linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,255,255,0.9) 100%)'
+                                            }}>
+                                                <FlashOnIcon sx={{ fontSize: { xs: 36, sm: 60 }, color: '#ffd700', mb: 2 }} />
+                                                <Typography variant="h4" sx={{ mb: 2, color: '#b7950b', fontWeight: 'bold', fontSize: { xs: '1.2rem', sm: '2rem' } }}>
+                                                    Flash Sale
+                                                </Typography>
+                                                <Typography variant="h6" sx={{ mb: 3, color: '#666', fontSize: { xs: '1rem', sm: '1.25rem' } }}>
+                                                    Limited Time Offers on Premium Devices
+                                                </Typography>
+                                                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                                    <TimerIcon sx={{ color: '#b7950b', mr: 1, fontSize: { xs: 20, sm: 28 } }} />
+                                                    <Typography variant="h6" sx={{ color: '#b7950b', fontSize: { xs: '1rem', sm: '1.25rem' } }}>
+                                                        Ends in 24:00:00
+                                                    </Typography>
+                                                </Box>
+                                                <Button 
+                                                    variant="contained"
+                                                    size="large"
+                                                    sx={{
+                                                        background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
+                                                        color: 'white',
+                                                        px: { xs: 2, sm: 4 },
+                                                        py: { xs: 1, sm: 1.5 },
+                                                        fontSize: { xs: '0.95rem', sm: '1.15rem' },
+                                                        '&:hover': {
+                                                            background: 'linear-gradient(45deg, #9c7c0a 30%, #e6c200 90%)'
+                                                        }
+                                                    }}
+                                                >
+                                                    Shop Now
+                                                </Button>
+                                            </Box>
+                                        </BannerCard>
+                                    </EdgeToEdgeBanner>
+                                </React.Fragment>;
+                            }
+                            // Render Apple
+                            if (brand.toLowerCase() === 'apple') {
+                                return <React.Fragment key={brand}>
+                                    <ProductCarousel 
+                                        title={`Top ${formatBrand(brand)} Products`}
+                                        products={products}
+                                    />
+                                    {/* Side-by-Side Ad Banners inserted after Apple - edge to edge */}
+                                    <EdgeToEdgeBanner sx={{ mb: { xs: 3, sm: 6 } }}>
+                                        <Grid container spacing={{ xs: 2, sm: 3 }}>
+                                            <Grid item xs={12} md={6}>
+                                                <AdBanner sx={{ minHeight: { xs: 100, sm: 200, md: 300 }, borderRadius: 0 }}>
+                                                    <AdPlaceholder>
+                                                        <ImageIcon sx={{ fontSize: { xs: 28, sm: 40 }, color: '#b7950b' }} />
+                                                        <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>Left Ad Banner</Typography>
+                                                        <Typography variant="body2">600 x 400px</Typography>
+                                                    </AdPlaceholder>
+                                                </AdBanner>
+                                            </Grid>
+                                            <Grid item xs={12} md={6}>
+                                                <AdBanner sx={{ minHeight: { xs: 100, sm: 200, md: 300 }, borderRadius: 0 }}>
+                                                    <AdPlaceholder>
+                                                        <ImageIcon sx={{ fontSize: { xs: 28, sm: 40 }, color: '#b7950b' }} />
+                                                        <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>Right Ad Banner</Typography>
+                                                        <Typography variant="body2">600 x 400px</Typography>
+                                                    </AdPlaceholder>
+                                                </AdBanner>
+                                            </Grid>
+                                        </Grid>
+                                    </EdgeToEdgeBanner>
+                                </React.Fragment>;
+                            }
+                            // Render Vivo
+                            if (brand.toLowerCase() === 'vivo') {
+                                return <React.Fragment key={brand}>
+                                    <ProductCarousel 
+                                        title={`Top ${formatBrand(brand)} Products`}
+                                        products={products}
+                                    />
+                                    {/* Triple Ad Banners inserted after Vivo - edge to edge */}
+                                    <EdgeToEdgeBanner sx={{ mb: { xs: 3, sm: 6 } }}>
+                                        <Grid container spacing={{ xs: 2, sm: 3 }}>
+                                            {[1, 2, 3].map((item) => (
+                                                <Grid item xs={12} md={4} key={item}>
+                                                    <AdBanner sx={{ minHeight: { xs: 80, sm: 150, md: 200 }, borderRadius: 0 }}>
+                                                        <AdPlaceholder>
+                                                            <ImageIcon sx={{ fontSize: { xs: 24, sm: 40 }, color: '#b7950b' }} />
+                                                            <Typography variant="h6" sx={{ fontSize: { xs: '0.95rem', sm: '1.15rem' } }}>Ad Banner {item}</Typography>
+                                                            <Typography variant="body2">400 x 300px</Typography>
+                                                        </AdPlaceholder>
+                                                    </AdBanner>
+                                                </Grid>
+                                            ))}
+                                        </Grid>
+                                    </EdgeToEdgeBanner>
+                                </React.Fragment>;
+                            }
+                            // Render other brands
+                            return <ProductCarousel 
+                                key={brand}
+                                title={`Top ${formatBrand(brand)} Products`}
+                                products={products}
+                            />;
+                        })}
+                    </>
+                ) : null}
+            </Container>
+
+            {/* New Arrivals Banner - edge to edge */}
+            <EdgeToEdgeBanner sx={{ mb: { xs: 3, sm: 6 } }}>
+                <BannerCard sx={{ minHeight: { xs: 120, sm: 200, md: 300 }, borderRadius: 0 }}>
                     <Box sx={{
-                        p: 4,
+                        p: { xs: 2, sm: 4 },
                         height: '100%',
                         display: 'flex',
                         flexDirection: 'column',
@@ -596,120 +735,11 @@ const BestsellersHomepage = () => {
                         textAlign: 'center',
                         background: 'linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,255,255,0.9) 100%)'
                     }}>
-                        <FlashOnIcon sx={{ fontSize: 60, color: '#ffd700', mb: 2 }} />
-                        <Typography variant="h4" sx={{ mb: 2, color: '#b7950b', fontWeight: 'bold' }}>
-                            Flash Sale
-                        </Typography>
-                        <Typography variant="h6" sx={{ mb: 3, color: '#666' }}>
-                            Limited Time Offers on Premium Devices
-                        </Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                            <TimerIcon sx={{ color: '#b7950b', mr: 1 }} />
-                            <Typography variant="h6" sx={{ color: '#b7950b' }}>
-                                Ends in 24:00:00
-                            </Typography>
-                        </Box>
-                        <Button 
-                            variant="contained"
-                            size="large"
-                            sx={{
-                                background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
-                                color: 'white',
-                                px: 4,
-                                py: 1.5,
-                                '&:hover': {
-                                    background: 'linear-gradient(45deg, #9c7c0a 30%, #e6c200 90%)'
-                                }
-                            }}
-                        >
-                            Shop Now
-                        </Button>
-                    </Box>
-                </BannerCard>
-            </Box>
-                            </React.Fragment>;
-                        }
-                        // Render Apple
-                        if (brand.toLowerCase() === 'apple') {
-                            return <React.Fragment key={brand}>
-                                <ProductCarousel 
-                                    title={`Top ${formatBrand(brand)} Products`}
-                                    products={products}
-                                />
-                                {/* Side-by-Side Ad Banners inserted after Apple */}
-            <Grid container spacing={3} sx={{ mb: 6 }}>
-                <Grid item xs={12} md={6}>
-                    <AdBanner>
-                        <AdPlaceholder>
-                            <ImageIcon sx={{ fontSize: 40, color: '#b7950b' }} />
-                            <Typography variant="h6">Left Ad Banner</Typography>
-                            <Typography variant="body2">600 x 400px</Typography>
-                        </AdPlaceholder>
-                    </AdBanner>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <AdBanner>
-                        <AdPlaceholder>
-                            <ImageIcon sx={{ fontSize: 40, color: '#b7950b' }} />
-                            <Typography variant="h6">Right Ad Banner</Typography>
-                            <Typography variant="body2">600 x 400px</Typography>
-                        </AdPlaceholder>
-                    </AdBanner>
-                </Grid>
-            </Grid>
-                            </React.Fragment>;
-                        }
-                        // Render Vivo
-                        if (brand.toLowerCase() === 'vivo') {
-                            return <React.Fragment key={brand}>
-                                <ProductCarousel 
-                                    title={`Top ${formatBrand(brand)} Products`}
-                                    products={products}
-                                />
-                                {/* Triple Ad Banners inserted after Vivo */}
-            <Grid container spacing={3} sx={{ mb: 6 }}>
-                {[1, 2, 3].map((item) => (
-                    <Grid item xs={12} md={4} key={item}>
-                        <AdBanner>
-                            <AdPlaceholder>
-                                <ImageIcon sx={{ fontSize: 40, color: '#b7950b' }} />
-                                <Typography variant="h6">Ad Banner {item}</Typography>
-                                <Typography variant="body2">400 x 300px</Typography>
-                            </AdPlaceholder>
-                        </AdBanner>
-                    </Grid>
-                ))}
-            </Grid>
-                            </React.Fragment>;
-                        }
-                        // Render other brands
-                        return <ProductCarousel 
-                            key={brand}
-                            title={`Top ${formatBrand(brand)} Products`}
-                            products={products}
-                        />;
-                    })}
-                </>
-            ) : null}
-
-            {/* New Arrivals Banner */}
-            <Box sx={{ mb: 6 }}>
-                <BannerCard>
-                    <Box sx={{
-                        p: 4,
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        textAlign: 'center',
-                        background: 'linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,255,255,0.9) 100%)'
-                    }}>
-                        <FlashOnIcon sx={{ fontSize: 60, color: '#ffd700', mb: 2 }} />
-                        <Typography variant="h4" sx={{ mb: 2, color: '#b7950b', fontWeight: 'bold' }}>
+                        <FlashOnIcon sx={{ fontSize: { xs: 36, sm: 60 }, color: '#ffd700', mb: 2 }} />
+                        <Typography variant="h4" sx={{ mb: 2, color: '#b7950b', fontWeight: 'bold', fontSize: { xs: '1.2rem', sm: '2rem' } }}>
                             New Arrivals
                         </Typography>
-                        <Typography variant="h6" sx={{ mb: 3, color: '#666' }}>
+                        <Typography variant="h6" sx={{ mb: 3, color: '#666', fontSize: { xs: '1rem', sm: '1.25rem' } }}>
                             Be the First to Experience Latest Technology
                         </Typography>
                         <Button 
@@ -718,8 +748,9 @@ const BestsellersHomepage = () => {
                             sx={{
                                 background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                                 color: 'white',
-                                px: 4,
-                                py: 1.5,
+                                px: { xs: 2, sm: 4 },
+                                py: { xs: 1, sm: 1.5 },
+                                fontSize: { xs: '0.95rem', sm: '1.15rem' },
                                 '&:hover': {
                                     background: 'linear-gradient(45deg, #9c7c0a 30%, #e6c200 90%)'
                                 }
@@ -729,19 +760,19 @@ const BestsellersHomepage = () => {
                         </Button>
                     </Box>
                 </BannerCard>
-            </Box>
+            </EdgeToEdgeBanner>
 
-            {/* Bottom Ad Banner */}
-            <Box sx={{ mt: 6 }}>
-                <AdBanner>
+            {/* Bottom Ad Banner - edge to edge */}
+            <EdgeToEdgeBanner sx={{ mt: { xs: 3, sm: 6 } }}>
+                <AdBanner sx={{ minHeight: { xs: 80, sm: 150, md: 250 }, borderRadius: 0 }}>
                     <AdPlaceholder>
-                        <ImageIcon sx={{ fontSize: 40, color: '#b7950b' }} />
-                        <Typography variant="h6">Bottom Ad Banner</Typography>
+                        <ImageIcon sx={{ fontSize: { xs: 28, sm: 40 }, color: '#b7950b' }} />
+                        <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>Bottom Ad Banner</Typography>
                         <Typography variant="body2">1920 x 250px</Typography>
                     </AdPlaceholder>
                 </AdBanner>
-            </Box>
-        </Container>
+            </EdgeToEdgeBanner>
+        </>
     );
 };
 

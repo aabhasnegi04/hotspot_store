@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Card, CardMedia, Typography } from '@mui/material';
+import { Box, Card, CardMedia, Typography } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 import { API_BASE_URL } from '../../../config';
 import LuxuryLoader from '../../common/LuxuryLoader';
@@ -84,23 +84,33 @@ const HotSmartphonesCarousel = ({ navigate }) => {
                 }}
                 indicators={false}
             >
-                {Array.from({ length: Math.ceil(hotProducts.length / 4) }, (_, index) => (
-                    <Box sx={{ display: 'flex', gap: 3 }} key={index}>
-                        {hotProducts.slice(index * 4, (index + 1) * 4).map((product) => (
+                {Array.from({ length: Math.ceil(hotProducts.length / (window.innerWidth <= 600 ? 2 : 4)) }, (_, index) => (
+                    <Box sx={{ 
+                        display: 'flex', 
+                        gap: { xs: 1, sm: 3 },
+                        px: { xs: 1, sm: 2 }
+                    }} key={index}>
+                        {hotProducts.slice(index * (window.innerWidth <= 600 ? 2 : 4), (index + 1) * (window.innerWidth <= 600 ? 2 : 4)).map((product) => (
                             <Card 
                                 key={product.itemcode}
                                 onClick={() => navigate(`/product/${product.itemcode}`)}
                                 sx={{
-                                    height: '400px',
+                                    height: { xs: '300px', sm: '400px' },
                                     background: 'rgba(255, 255, 255, 0.8)',
-                                    borderRadius: '0',
+                                    borderRadius: '12px',
                                     display: 'flex',
                                     flexDirection: 'column',
                                     border: '1px solid rgba(255, 215, 0, 0.1)',
                                     cursor: 'pointer',
                                     position: 'relative',
-                                    p: 2,
-                                    flex: 1
+                                    p: { xs: 1, sm: 2 },
+                                    flex: { xs: '0 0 48%', sm: '1' },
+                                    transition: 'all 0.3s ease',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                    '&:hover': {
+                                        transform: 'translateY(-5px)',
+                                        boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
+                                    }
                                 }}
                             >
                                 <CardMedia
@@ -108,15 +118,15 @@ const HotSmartphonesCarousel = ({ navigate }) => {
                                     image={product.image || 'https://via.placeholder.com/300'}
                                     alt={product.ItemName}
                                     sx={{
-                                        height: '200px',
+                                        height: { xs: '140px', sm: '200px' },
                                         objectFit: 'contain',
-                                        mb: 3
+                                        mb: { xs: 1, sm: 3 }
                                     }}
                                 />
                                 
                                 <Box sx={{ 
                                     flexGrow: 1,
-                                    mt: 2,
+                                    mt: { xs: 1, sm: 2 },
                                     display: 'flex',
                                     flexDirection: 'column',
                                     gap: 1,
@@ -127,14 +137,14 @@ const HotSmartphonesCarousel = ({ navigate }) => {
                                         variant="h6" 
                                         sx={{
                                             fontWeight: 600,
-                                            mb: 1.5,
+                                            mb: { xs: 0.5, sm: 1.5 },
                                             color: '#b7950b',
-                                            fontSize: '0.9rem',
-                                            height: '3.6em',
+                                            fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                                            height: { xs: '2.4em', sm: '3.6em' },
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis',
                                             display: '-webkit-box',
-                                            WebkitLineClamp: 3,
+                                            WebkitLineClamp: { xs: 2, sm: 3 },
                                             WebkitBoxOrient: 'vertical',
                                             width: '100%',
                                             textAlign: 'left',
@@ -155,7 +165,7 @@ const HotSmartphonesCarousel = ({ navigate }) => {
                                             sx={{
                                                 color: '#b7950b',
                                                 fontWeight: 800,
-                                                fontSize: '1.1rem'
+                                                fontSize: { xs: '0.9rem', sm: '1.1rem' }
                                             }}
                                         >
                                             {product.brand}
@@ -163,7 +173,7 @@ const HotSmartphonesCarousel = ({ navigate }) => {
                                         <Typography 
                                             sx={{
                                                 color: '#666',
-                                                fontSize: '1.1rem',
+                                                fontSize: { xs: '0.9rem', sm: '1.1rem' },
                                                 mx: 0.5
                                             }}
                                         >
@@ -173,7 +183,7 @@ const HotSmartphonesCarousel = ({ navigate }) => {
                                             sx={{
                                                 color: '#b7950b',
                                                 fontWeight: 700,
-                                                fontSize: '0.9rem'
+                                                fontSize: { xs: '0.8rem', sm: '0.9rem' }
                                             }}
                                         >
                                             {product.model || 'Latest Model'}
@@ -186,7 +196,7 @@ const HotSmartphonesCarousel = ({ navigate }) => {
                                             sx={{
                                                 color: '#b7950b',
                                                 fontWeight: 700,
-                                                fontSize: '1.2rem',
+                                                fontSize: { xs: '1rem', sm: '1.2rem' },
                                                 mb: 0.5
                                             }}
                                         >
@@ -197,27 +207,27 @@ const HotSmartphonesCarousel = ({ navigate }) => {
                                             display: 'flex', 
                                             alignItems: 'center', 
                                             gap: 1,
-                                            minHeight: '24px'
+                                            minHeight: { xs: '20px', sm: '24px' }
                                         }}>
                                             {product.currentMRP > product.salePrice ? (
                                                 <>
                                                     <Typography sx={{ 
                                                         textDecoration: 'line-through',
                                                         color: '#666',
-                                                        fontSize: '0.9rem'
+                                                        fontSize: { xs: '0.8rem', sm: '0.9rem' }
                                                     }}>
                                                         ₹{product.currentMRP?.toLocaleString('en-IN') || '0'}
                                                     </Typography>
                                                     <Typography sx={{ 
                                                         color: '#4CAF50',
                                                         fontWeight: 600,
-                                                        fontSize: '0.9rem'
+                                                        fontSize: { xs: '0.8rem', sm: '0.9rem' }
                                                     }}>
                                                         {Math.round(((product.currentMRP - product.salePrice) / product.currentMRP) * 100)}% OFF
                                                     </Typography>
                                                 </>
                                             ) : (
-                                                <Box sx={{ height: '24px' }} />
+                                                <Box sx={{ height: { xs: '20px', sm: '24px' } }} />
                                             )}
                                         </Box>
                                     </Box>

@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Box, Container, Typography, IconButton } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import CategoryCarousel from './CategoryCarousel';
 import LatestPhonesCarousel from './LatestPhonesCarousel';
 import FeaturedProducts from './FeaturedProducts';
@@ -20,6 +24,7 @@ import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
  * - Keyboard navigation (left/right/up/down arrow keys)
  * - Error handling for failed image loads
  * - Responsive design with hover effects
+ * - Support for video content
  */
 const AnimatedSection = ({ children, sx }) => {
     const [ref, isVisible] = useScrollAnimation(0.1);
@@ -50,41 +55,76 @@ const Hero = () => {
     const [isTransitioning, setIsTransitioning] = useState(false);  // Controls fade transition state
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);       // Controls auto-play state
     
-    // Array of image paths for the carousel
-    const images = [
-        "/Image/banner/galaxy fold & flip.jpg",
-        "/Image/banner/April Banner Redmi & Motorola.jpg",
-        "/Image/banner/April Banner Sam & Apple.jpg",
-        "/Image/banner/April Banner Xiaomi & oneplus.jpg",
+    // Video control states
+    const [isVideoPlaying, setIsVideoPlaying] = useState(true);     // Controls video play/pause
+    const [isVideoMuted, setIsVideoMuted] = useState(true);         // Start muted for autoplay compliance
+    const videoRef = useRef(null);                                  // Reference to video element
+    const videoHasBeenShown = useRef(false);                        // Track if video has been shown before
+
+    // Array of banner content paths for the carousel (video first, then images)
+    const bannerContent = [
+        {
+            type: 'video',
+            src: "/Image/banner/banner_25_06_25/Galaxy Z Fold7 Web.mp4",
+            alt: "Galaxy Z Fold7 Web"
+        },
+        {
+            type: 'image',
+            src: "/Image/banner/banner_25_06_25/Apple 16.jpg",
+            alt: "Apple 16"
+        },
+        {
+            type: 'image',
+            src: "/Image/banner/banner_25_06_25/Boat Acc.jpg",
+            alt: "Boat Accessories"
+        },
+        {
+            type: 'image',
+            src: "/Image/banner/banner_25_06_25/OnePlus 13s.jpg",
+            alt: "OnePlus 13s"
+        },
+        {
+            type: 'image',
+            src: "/Image/banner/banner_25_06_25/Samsung Z Fold7.jpg",
+            alt: "Samsung Z Fold7"
+        },
+        {
+            type: 'image',
+            src: "/Image/banner/banner_25_06_25/vivo V50.jpg",
+            alt: "Vivo V50"
+        }
     ];
+
+    // Ref for the carousel/banner container
+    const bannerRef = useRef(null);
 
     /**
      * Navigation Handlers
-     * handlePrevious: Navigate to previous image with fade transition
-     * handleNext: Navigate to next image with fade transition
-     * handleDotClick: Navigate to specific image by dot index
+     * handlePrevious: Navigate to previous content with fade transition
+     * handleNext: Navigate to next content with fade transition
+     * handleDotClick: Navigate to specific content by dot index
      */
     const handlePrevious = useCallback(() => {
         setIsTransitioning(true);
         setTimeout(() => {
             setCurrentImageIndex((prevIndex) => 
-                prevIndex === 0 ? images.length - 1 : prevIndex - 1
+                prevIndex === 0 ? bannerContent.length - 1 : prevIndex - 1
             );
             setImageError(false);
             setIsTransitioning(false);
         }, 500);
-    }, [images.length]);
+    }, [bannerContent.length]);
 
     const handleNext = useCallback(() => {
         setIsTransitioning(true);
         setTimeout(() => {
             setCurrentImageIndex((prevIndex) => 
-                prevIndex === images.length - 1 ? 0 : prevIndex + 1
+                prevIndex === bannerContent.length - 1 ? 0 : prevIndex + 1
             );
             setImageError(false);
             setIsTransitioning(false);
         }, 500);
-    }, [images.length]);
+    }, [bannerContent.length]);
 
     const handleDotClick = useCallback((index) => {
         if (index === currentImageIndex) return;  // Prevent unnecessary transitions
@@ -95,6 +135,87 @@ const Hero = () => {
             setIsTransitioning(false);
         }, 200);
     }, [currentImageIndex]);
+
+    // Video control handlers
+    const handleVideoPlayPause = useCallback(() => {
+        if (videoRef.current) {
+            if (isVideoPlaying) {
+                videoRef.current.pause();
+                setIsVideoPlaying(false);
+                setIsAutoPlaying(false); // Pause carousel when video is paused
+            } else {
+                videoRef.current.play();
+                setIsVideoPlaying(true);
+                setIsAutoPlaying(true); // Resume carousel when video is playing
+            }
+        }
+    }, [isVideoPlaying]);
+
+    const handleVideoMuteUnmute = useCallback(() => {
+        if (videoRef.current) {
+            videoRef.current.muted = !isVideoMuted;
+            setIsVideoMuted(!isVideoMuted);
+        }
+    }, [isVideoMuted]);
+
+    // Reset video controls when switching to non-video content or when video banner is shown for the first time
+    useEffect(() => {
+        const currentContent = bannerContent[currentImageIndex];
+        const isVideo = currentContent.type === 'video';
+        
+        if (isVideo) {
+            if (!videoHasBeenShown.current) {
+                setIsVideoMuted(true); // Only start muted the first time
+                videoHasBeenShown.current = true;
+            }
+            setIsVideoPlaying(true);
+            setIsAutoPlaying(true);
+        } else {
+            setIsVideoPlaying(true);
+            setIsVideoMuted(false);
+            setIsAutoPlaying(true);
+        }
+    }, [currentImageIndex, bannerContent]);
+
+    const handleNextRef = useRef(handleNext);
+    const currentImageIndexRef = useRef(currentImageIndex);
+    useEffect(() => {
+        handleNextRef.current = handleNext;
+        currentImageIndexRef.current = currentImageIndex;
+    }, [handleNext, currentImageIndex]);
+
+    // Video event listeners for auto-transition and state sync
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const handleVideoEnded = () => {
+            if (isAutoPlaying && bannerContent[currentImageIndexRef.current].type === 'video') {
+                handleNextRef.current();
+            }
+        };
+
+        const handleVideoPlay = () => {
+            setIsVideoPlaying(true);
+        };
+
+        const handleVideoPause = () => {
+            setIsVideoPlaying(false);
+        };
+
+        video.addEventListener('ended', handleVideoEnded);
+        video.addEventListener('play', handleVideoPlay);
+        video.addEventListener('pause', handleVideoPause);
+
+        // Sync initial state
+        setIsVideoPlaying(!video.paused);
+
+        return () => {
+            video.removeEventListener('ended', handleVideoEnded);
+            video.removeEventListener('play', handleVideoPlay);
+            video.removeEventListener('pause', handleVideoPause);
+        };
+    }, [isAutoPlaying, bannerContent]);
 
     /**
      * Keyboard Navigation
@@ -123,20 +244,24 @@ const Hero = () => {
 
     /**
      * Error Handler
-     * Logs and displays error state when image fails to load
+     * Logs and displays error state when content fails to load
      */
     const handleImageError = () => {
-        const failedImagePath = images[currentImageIndex];
-        console.error(`Failed to load image: ${failedImagePath}`);
-        console.log('Current image index:', currentImageIndex);
-        console.log('Available images:', images);
+        const failedContent = bannerContent[currentImageIndex];
+        console.error(`Failed to load content: ${failedContent.src}`);
+        console.log('Current content index:', currentImageIndex);
+        console.log('Available content:', bannerContent);
         setImageError(true);
     };
 
     // Auto-play functionality
     useEffect(() => {
         let timer;
-        if (isAutoPlaying) {
+        const currentContent = bannerContent[currentImageIndex];
+        const isVideo = currentContent.type === 'video';
+        
+        // Only set timer for images, not for videos (videos handle their own timing)
+        if (isAutoPlaying && !isVideo) {
             timer = setInterval(() => {
                 handleNext();
             }, 3000); // Changed from 3000 to 2000 for more frequent slides
@@ -146,7 +271,7 @@ const Hero = () => {
                 clearInterval(timer);
             }
         };
-    }, [isAutoPlaying, handleNext]);
+    }, [isAutoPlaying, handleNext, currentImageIndex, bannerContent]);
 
     // Pause auto-play on hover
     const handleMouseEnter = () => {
@@ -161,6 +286,26 @@ const Hero = () => {
     useEffect(() => {
         setIsAutoPlaying(true);
     }, []);
+
+    // Pause video when banner is out of view
+    useEffect(() => {
+        const currentContent = bannerContent[currentImageIndex];
+        if (currentContent.type !== 'video' || !videoRef.current || !bannerRef.current) return;
+
+        const observer = new window.IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting && !videoRef.current.paused) {
+                    videoRef.current.pause();
+                }
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(bannerRef.current);
+        return () => observer.disconnect();
+    }, [currentImageIndex, bannerContent]);
+
+    // Get current content
+    const currentContent = bannerContent[currentImageIndex];
 
     return (
         <>
@@ -186,6 +331,7 @@ const Hero = () => {
                         pointerEvents: 'none'
                     }
                 }}
+                ref={bannerRef}
             >
                 <Box
                     sx={{
@@ -217,24 +363,90 @@ const Hero = () => {
                             right: 0
                         }}
                     >
-                        {/* Single Image with Fade Transition */}
-                        <Box
-                            component="img"
-                            src={images[currentImageIndex]}
-                            alt={`Slide ${currentImageIndex + 1}`}
-                            onError={handleImageError}
-                            sx={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                objectPosition: 'center',
-                                display: 'block',
-                                opacity: isTransitioning ? 0 : 1,
-                                transition: 'opacity 0.5s ease-in-out',
-                                backgroundColor: '#f8f7f7',
-                                padding: 0,
-                            }}
-                        />
+                        {/* Single Image/Video with Fade Transition */}
+                        {currentContent.type === 'video' ? (
+                            <Box
+                                component="video"
+                                ref={videoRef}
+                                src={currentContent.src}
+                                onError={handleImageError}
+                                sx={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    objectPosition: 'center',
+                                    display: 'block',
+                                    opacity: isTransitioning ? 0 : 1,
+                                    transition: 'opacity 0.5s ease-in-out',
+                                    backgroundColor: '#f8f7f7',
+                                    padding: 0,
+                                }}
+                                autoPlay
+                                playsInline
+                                muted={isVideoMuted}
+                            />
+                        ) : (
+                            <Box
+                                component="img"
+                                src={currentContent.src}
+                                alt={`Slide ${currentImageIndex + 1}`}
+                                onError={handleImageError}
+                                sx={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    objectPosition: 'center',
+                                    display: 'block',
+                                    opacity: isTransitioning ? 0 : 1,
+                                    transition: 'opacity 0.5s ease-in-out',
+                                    backgroundColor: '#f8f7f7',
+                                    padding: 0,
+                                }}
+                            />
+                        )}
+
+                        {/* Video Controls - Only show when video is playing */}
+                        {currentContent.type === 'video' && (
+                            <Box
+                                sx={{
+                                    position: 'absolute',
+                                    top: 16,
+                                    right: 16,
+                                    display: 'flex',
+                                    gap: 1,
+                                    zIndex: 3,
+                                }}
+                            >
+                                <IconButton
+                                    onClick={handleVideoPlayPause}
+                                    sx={{
+                                        bgcolor: 'rgba(0, 0, 0, 0.6)',
+                                        color: 'white',
+                                        width: 40,
+                                        height: 40,
+                                        '&:hover': {
+                                            bgcolor: 'rgba(0, 0, 0, 0.8)',
+                                        },
+                                    }}
+                                >
+                                    {isVideoPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+                                </IconButton>
+                                <IconButton
+                                    onClick={handleVideoMuteUnmute}
+                                    sx={{
+                                        bgcolor: 'rgba(0, 0, 0, 0.6)',
+                                        color: 'white',
+                                        width: 40,
+                                        height: 40,
+                                        '&:hover': {
+                                            bgcolor: 'rgba(0, 0, 0, 0.8)',
+                                        },
+                                    }}
+                                >
+                                    {isVideoMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+                                </IconButton>
+                            </Box>
+                        )}
 
                         {/* Error message display */}
                         {imageError && (
@@ -252,9 +464,9 @@ const Hero = () => {
                                     fontSize: { xs: '0.875rem', sm: '1rem' }
                                 }}
                             >
-                                Failed to load image: {images[currentImageIndex]}
+                                Failed to load content: {currentContent.src}
                                 <br />
-                                Please check if the image exists in the public/banner folder
+                                Please check if the content exists in the public/Image/banner/banner_25_06_25 folder
                             </Typography>
                         )}
 
@@ -262,18 +474,19 @@ const Hero = () => {
                         <IconButton
                             onClick={handlePrevious}
                             sx={{
+                                display: { xs: 'none', md: 'flex' },
                                 position: 'absolute',
-                                left: { xs: 4, sm: 8, md: 16 },
+                                left: { md: 16 },
                                 top: '50%',
                                 transform: 'translateY(-50%)',
                                 bgcolor: 'rgba(255, 255, 255, 0.8)',
-                                width: { xs: 32, sm: 40, md: 48 },
-                                height: { xs: 32, sm: 40, md: 48 },
+                                width: { md: 48 },
+                                height: { md: 48 },
                                 '&:hover': {
                                     bgcolor: 'rgba(255, 255, 255, 0.9)',
                                 },
                                 '& .MuiSvgIcon-root': {
-                                    fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2rem' }
+                                    fontSize: { md: '2rem' }
                                 }
                             }}
                         >
@@ -282,8 +495,9 @@ const Hero = () => {
                         <IconButton
                             onClick={handleNext}
                             sx={{
+                                display: { xs: 'none', md: 'flex' },
                                 position: 'absolute',
-                                right: { xs: 4, sm: 8, md: 16 },
+                                right: { md: 16 },
                                 top: '50%',
                                 transform: 'translateY(-50%)',
                                 bgcolor: 'rgba(255, 255, 255, 0.8)',
@@ -316,7 +530,7 @@ const Hero = () => {
                                 zIndex: 2
                             }}
                         >
-                            {images.map((_, index) => (
+                            {bannerContent.map((_, index) => (
                                 <Box
                                     key={index}
                                     onClick={() => handleDotClick(index)}

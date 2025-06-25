@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Typography, IconButton } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, IconButton, useTheme, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -7,7 +7,18 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 const ChooseYourTypeAccessory = () => {
     const navigate = useNavigate();
     const [currentIndex, setCurrentIndex] = useState(0);
-    const itemsPerPage = 4;
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
+    // Adjust items per page based on screen size
+    const getItemsPerPage = () => {
+        if (isMobile) return 2;
+        if (isTablet) return 3;
+        return 4;
+    };
+
+    const itemsPerPage = getItemsPerPage();
 
     const accessoryTypes = [
         {
@@ -104,6 +115,11 @@ const ChooseYourTypeAccessory = () => {
         );
     };
 
+    // Reset currentIndex when screen size changes
+    useEffect(() => {
+        setCurrentIndex(0);
+    }, [itemsPerPage]);
+
     const visibleItems = accessoryTypes.slice(currentIndex, currentIndex + itemsPerPage);
 
     return (
@@ -112,7 +128,9 @@ const ChooseYourTypeAccessory = () => {
             position: 'relative',
             left: '50%',
             transform: 'translateX(-50%)',
-            mb: 6,
+            mb: { xs: 2, sm: 3, md: 4 },
+            mt: 0,
+            pt: 0,
             overflow: 'hidden'
         }}>
             <Box sx={{ 
@@ -121,14 +139,15 @@ const ChooseYourTypeAccessory = () => {
                 justifyContent: 'center',
                 gap: { xs: 1, sm: 2, md: 3 },
                 position: 'relative',
-                minHeight: '450px',
-                width: '100%'
+                mt: 2,
+                width: '100%',
+                px: { xs: 1, sm: 2, md: 3 }
             }}>
                 <IconButton 
                     onClick={handlePrev}
                     sx={{
                         position: 'absolute',
-                        left: { xs: 1, sm: 2 },
+                        left: { xs: 0, sm: 2 },
                         top: '50%',
                         transform: 'translateY(-50%)',
                         backgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -136,7 +155,12 @@ const ChooseYourTypeAccessory = () => {
                             backgroundColor: 'rgba(255, 255, 255, 0.9)',
                         },
                         zIndex: 1,
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                        width: { xs: '30px', sm: '40px' },
+                        height: { xs: '30px', sm: '40px' },
+                        '& .MuiSvgIcon-root': {
+                            fontSize: { xs: '1rem', sm: '1.5rem' }
+                        }
                     }}
                 >
                     <ArrowBackIosNewIcon />
@@ -159,13 +183,17 @@ const ChooseYourTypeAccessory = () => {
                             }}
                             sx={{
                                 flex: '1 1 0',
-                                maxWidth: { xs: '200px', sm: '250px', md: '355px' },
+                                maxWidth: { xs: '150px', sm: '200px', md: '355px' },
                                 aspectRatio: '1/1',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
+                                transition: 'transform 0.2s ease-in-out',
+                                '&:hover': {
+                                    transform: 'scale(1.02)'
+                                }
                             }}
                         >
                             <Box
@@ -178,20 +206,21 @@ const ChooseYourTypeAccessory = () => {
                                     objectFit: 'contain',
                                     borderRadius: 0,
                                     border: '1px solid rgba(0, 0, 0, 0.05)',
-                                    padding: '4px',
+                                    padding: { xs: '2px', sm: '4px' },
                                     backgroundColor: '#ffffff'
                                 }}
                             />
                             <Typography variant="subtitle1" sx={{
-                                mt: 1.2,
+                                mt: { xs: 0.2, sm: 0.3, md: 0.4 },
                                 color: '#b7950b',
                                 fontWeight: 600,
                                 textAlign: 'center',
-                                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                                fontSize: { xs: '0.75rem', sm: '0.9rem', md: '1.1rem' },
                                 whiteSpace: 'nowrap',
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
-                                width: '100%'
+                                width: '100%',
+                                px: 1
                             }}>
                                 {type.title}
                             </Typography>
@@ -203,7 +232,7 @@ const ChooseYourTypeAccessory = () => {
                     onClick={handleNext}
                     sx={{
                         position: 'absolute',
-                        right: { xs: 1, sm: 2 },
+                        right: { xs: 0, sm: 2 },
                         top: '50%',
                         transform: 'translateY(-50%)',
                         backgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -211,7 +240,12 @@ const ChooseYourTypeAccessory = () => {
                             backgroundColor: 'rgba(255, 255, 255, 0.9)',
                         },
                         zIndex: 1,
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                        width: { xs: '30px', sm: '40px' },
+                        height: { xs: '30px', sm: '40px' },
+                        '& .MuiSvgIcon-root': {
+                            fontSize: { xs: '1rem', sm: '1.5rem' }
+                        }
                     }}
                 >
                     <ArrowForwardIosIcon />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography} from '@mui/material';
+import { Box, Container, Typography, useTheme, useMediaQuery } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import LuxuryLoader from '../../common/LuxuryLoader';
@@ -17,6 +17,8 @@ import AccessoryBrands from './accessoryBrands';
 
 const AnimatedSection = ({ children }) => {
     const [ref, isVisible] = useScrollAnimation(0.2);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     
     return (
         <Box
@@ -27,7 +29,7 @@ const AnimatedSection = ({ children }) => {
                     : 'scale(0.9) translateY(40px)',
                 opacity: isVisible ? 1 : 0,
                 transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                mb: 3,
+                mb: isMobile ? 2 : 3,
                 willChange: 'transform, opacity'
             }}
         >
@@ -41,6 +43,8 @@ const AccessoriesHomepage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         fetchBestSellers();
@@ -67,7 +71,7 @@ const AccessoriesHomepage = () => {
             minHeight: '100vh',
             pt: 0,
             pb: { xs: 2, sm: 3, md: 4 },
-            width: '100vw',
+            width: '100%',
             overflowX: 'hidden',
         }}>
             <Container 
@@ -82,16 +86,16 @@ const AccessoriesHomepage = () => {
                 <AnimatedSection>
                     <Typography variant="h4" sx={{ 
                         fontWeight: 700, 
-                        mb: { xs: 1.5, sm: 2 },
+                        mb: { xs: 1, sm: 1.5, md: 2 },
                         textAlign: 'left',
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         fontFamily: "'Outfit', sans-serif",
-                        pl: '1.5%',
+                        pl: { xs: '4%', sm: '1.5%' },
                         position: 'relative',
-                        top: '8px',
-                        fontSize: { xs: '1.3rem', sm: '1.8rem', md: '2.2rem' }
+                        top: { xs: '4px', sm: '8px' },
+                        fontSize: { xs: '1.5rem', sm: '1.8rem', md: '2.2rem' }
                     }}>
                         Accessories
                     </Typography>
@@ -99,10 +103,8 @@ const AccessoriesHomepage = () => {
 
                 <AnimatedSection>
                     <Box sx={{
-                        width: '100vw',
-                        position: 'relative',
-                        left: '50%',
-                        transform: 'translateX(-50%)'
+                        width: '100%',
+                        position: 'relative'
                     }}>
                         <AccessoriesBigBanner bestSellers={bestSellers} navigate={navigate} />
                     </Box>
@@ -111,72 +113,84 @@ const AccessoriesHomepage = () => {
                 <AnimatedSection>
                     <Typography variant="h4" sx={{
                         textAlign: 'left',
-                        mb: { xs: 0.8, sm: 1.5 },
+                        mb: { xs: 0.3, sm: 0.5 },
                         fontWeight: 600,
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        pl: { xs: 0.5, sm: 1 },
-                        fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
+                        pl: { xs: '4%', sm: '1.5%' },
+                        fontSize: { xs: '1.3rem', sm: '1.5rem', md: '1.8rem' }
                     }}>
                         Choose your type of accessory
                     </Typography>
-                    <ChooseYourTypeAccessory />
+                    <Box sx={{ px: { xs: 1, sm: 0 } }}>
+                        <ChooseYourTypeAccessory />
+                    </Box>
                 </AnimatedSection>
 
                 <AnimatedSection>
                     <Typography variant="h4" sx={{
                         textAlign: 'left',
-                        mb: { xs: 0.8, sm: 1.5 },
+                        mb: { xs: 1, sm: 1.5 },
                         fontWeight: 600,
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        pl: { xs: 0.5, sm: 1 },
-                        fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
+                        pl: { xs: '4%', sm: '1.5%' },
+                        fontSize: { xs: '1.3rem', sm: '1.5rem', md: '1.8rem' }
                     }}>
                         Enhance Your Mobile Experience
                     </Typography>
-                    <AccessoriesAd2 />
+                    <Box sx={{ px: { xs: 1, sm: 0 } }}>
+                        <AccessoriesAd2 />
+                    </Box>
                 </AnimatedSection>
 
                 <AnimatedSection>
                     <Typography variant="h4" sx={{
-                        mb: { xs: 0.8, sm: 1.5, md: 2 },
+                        mb: { xs: 1, sm: 1.5, md: 2 },
                         fontWeight: 600,
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        pl: { xs: 0.5, sm: 1 },
-                        fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
+                        pl: { xs: '4%', sm: '1.5%' },
+                        fontSize: { xs: '1.3rem', sm: '1.5rem', md: '1.8rem' }
                     }}>
                         Most Popular Accessories
                     </Typography>
-                    <PopularAccessoriesAd />
+                    <Box sx={{ px: { xs: 1, sm: 0 } }}>
+                        <PopularAccessoriesAd />
+                    </Box>
                 </AnimatedSection>
 
                 <AnimatedSection>
                     <Typography variant="h4" sx={{
-                        mb: { xs: 0.8, sm: 1.5, md: 2 },
+                        mb: { xs: 1, sm: 1.5, md: 2 },
                         mt: { xs: 2, sm: 3, md: 4 },
                         fontWeight: 600,
                         background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        pl: { xs: 0.5, sm: 1 },
-                        fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.8rem' }
+                        pl: { xs: '4%', sm: '1.5%' },
+                        fontSize: { xs: '1.3rem', sm: '1.5rem', md: '1.8rem' }
                     }}>
                         Hot Accessories right now
                     </Typography>
-                    <HotAccessoriesCarousel bestSellers={bestSellers} navigate={navigate} />
+                    <Box sx={{ px: { xs: 1, sm: 0 } }}>
+                        <HotAccessoriesCarousel bestSellers={bestSellers} navigate={navigate} />
+                    </Box>
                 </AnimatedSection>
 
                 <AnimatedSection>
-                    <ForYourBudgetAccessories />
+                    <Box sx={{ px: { xs: 1, sm: 0 } }}>
+                        <ForYourBudgetAccessories />
+                    </Box>
                 </AnimatedSection>
 
                 <AnimatedSection>
-                    <AccessoryBrands />
+                    <Box sx={{ px: { xs: 1, sm: 0 } }}>
+                        <AccessoryBrands />
+                    </Box>
                 </AnimatedSection>
             </Container>
         </Box>

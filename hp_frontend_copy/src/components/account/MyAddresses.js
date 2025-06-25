@@ -350,16 +350,16 @@ const MyAddresses = () => {
     );
 
     return (
-        <Container maxWidth="lg" sx={{ mt: { xs: 0, sm: 0, md: 0 }, mb: 8, minHeight: 'calc(100vh - 270px)' }}>
+        <Container maxWidth="lg" sx={{ mt: { xs: 0, sm: 0, md: 0 }, mb: { xs: 4, sm: 6, md: 8 }, minHeight: 'calc(100vh - 270px)', px: { xs: 1, sm: 2, md: 0 } }}>
             <Paper 
                 elevation={0}
                 sx={{
-                    p: 4,
-                    borderRadius: '20px',
+                    p: { xs: 1.5, sm: 3, md: 4 },
+                    borderRadius: { xs: '14px', sm: '20px' },
                     backgroundColor: '#fff'
                 }}
             >
-                <Typography variant="h4" sx={{ mb: 4, fontWeight: 600, color: '#FFB800' }}>
+                <Typography variant="h4" sx={{ mb: { xs: 2, sm: 4 }, fontWeight: 600, color: '#FFB800', fontSize: { xs: '1.3rem', sm: '2rem' } }}>
                     My Addresses
                 </Typography>
 
@@ -375,7 +375,7 @@ const MyAddresses = () => {
                             startIcon={<AddIcon />}
                             onClick={() => setIsAddingNew(true)}
                             sx={{
-                                mb: 4,
+                                mb: { xs: 2, sm: 4 },
                                 color: '#FFB800',
                                 borderColor: '#FFB800',
                                 '&:hover': {
@@ -388,16 +388,46 @@ const MyAddresses = () => {
                         </Button>
 
                         {/* Address List */}
-                        <Grid container spacing={3}>
+                        <Grid container spacing={{ xs: 2, sm: 3 }}>
                             {addresses.length > 0 ? (
                                 addresses.map((address) => (
-                                    <Grid item xs={12} md={6} key={address.id}>
-                                        {renderAddressCard(address)}
+                                    <Grid item xs={12} sm={12} md={6} key={address.id}>
+                                        <Card sx={{ borderRadius: { xs: '10px', sm: '16px' }, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+                                            <CardContent>
+                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                                        {address.type === 'home' ? 
+                                                            <HomeIcon sx={{ color: '#FFB800', fontSize: { xs: 22, sm: 28 } }} /> : 
+                                                            <BusinessIcon sx={{ color: '#FFB800', fontSize: { xs: 22, sm: 28 } }} />
+                                                        }
+                                                        <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.15rem' } }}>{address.type.toUpperCase()}</Typography>
+                                                    </Box>
+                                                    <IconButton onClick={() => handleDeleteAddress(address.id)} size="small">
+                                                        <DeleteIcon sx={{ fontSize: { xs: 20, sm: 24 } }} />
+                                                    </IconButton>
+                                                </Box>
+                                                <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.95rem', sm: '1rem' } }}>{address.address}</Typography>
+                                                {address.addressLine2 && (
+                                                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.95rem', sm: '1rem' } }}>{address.addressLine2}</Typography>
+                                                )}
+                                                <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.95rem', sm: '1rem' } }}>
+                                                    {address.city}, {address.district}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.95rem', sm: '1rem' } }}>
+                                                    {address.region}, {address.state} - {address.pincode}
+                                                </Typography>
+                                                {address.landmark && (
+                                                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.95rem', sm: '1rem' } }}>
+                                                        Landmark: {address.landmark}
+                                                    </Typography>
+                                                )}
+                                            </CardContent>
+                                        </Card>
                                     </Grid>
                                 ))
                             ) : (
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" color="text.secondary" align="center">
+                                    <Typography variant="body1" color="text.secondary" align="center" sx={{ fontSize: { xs: '1rem', sm: '1.1rem' } }}>
                                         No addresses found. Add your first address!
                                     </Typography>
                                 </Grid>
@@ -416,12 +446,12 @@ const MyAddresses = () => {
                     maxWidth="sm"
                     fullWidth
                     scroll="paper"
-                    PaperProps={{ sx: { maxHeight: '90vh', minHeight: '55vh', overflowY: 'auto' } }}
+                    PaperProps={{ sx: { maxHeight: { xs: '95vh', sm: '90vh' }, minHeight: { xs: '60vh', sm: '55vh' }, overflowY: 'auto', borderRadius: { xs: '10px', sm: '16px' }, p: { xs: 1, sm: 2 } } }}
                 >
-                    <DialogTitle sx={{ color: '#FFB800' }}>Add New Address</DialogTitle>
+                    <DialogTitle sx={{ color: '#FFB800', fontSize: { xs: '1.1rem', sm: '1.3rem' } }}>Add New Address</DialogTitle>
                     <DialogContent
                     >
-                        <Grid container spacing={1.5} sx={{ mt: 1 }}>
+                        <Grid container spacing={{ xs: 1, sm: 1.5 }} sx={{ mt: 1 }}>
                             <Grid item xs={12}>
                                 <RadioGroup
                                     row
@@ -432,8 +462,9 @@ const MyAddresses = () => {
                                         <FormControlLabel 
                                             key={type}
                                             value={type}
-                                            control={<Radio sx={{ color: '#FFB800', '&.Mui-checked': { color: '#FFB800' } }} />} 
-                                            label={type.charAt(0).toUpperCase() + type.slice(1)}
+                                            control={<Radio sx={{ color: '#FFB800', '&.Mui-checked': { color: '#FFB800' }, p: { xs: 0.5, sm: 1 } }} />} 
+                                            label={<Typography sx={{ fontSize: { xs: '0.95rem', sm: '1.05rem' } }}>{type.charAt(0).toUpperCase() + type.slice(1)}</Typography>}
+                                            sx={{ mr: { xs: 1, sm: 2 } }}
                                         />
                                     ))}
                                 </RadioGroup>
@@ -476,7 +507,7 @@ const MyAddresses = () => {
                                 setIsAddingNew(false);
                                 resetForm();
                             }}
-                            sx={{ color: '#FFB800' }}
+                            sx={{ color: '#FFB800', fontSize: { xs: '0.95rem', sm: '1rem' }, px: { xs: 1.5, sm: 2 } }}
                         >
                             Cancel
                         </Button>
@@ -487,6 +518,8 @@ const MyAddresses = () => {
                             sx={{
                                 backgroundColor: '#FFB800',
                                 color: 'white',
+                                fontSize: { xs: '0.95rem', sm: '1rem' },
+                                px: { xs: 2, sm: 3 },
                                 '&:hover': {
                                     backgroundColor: '#FFA000',
                                 }
@@ -505,7 +538,7 @@ const MyAddresses = () => {
                     <Alert 
                         onClose={() => setShowSnackbar(false)} 
                         severity="success" 
-                        sx={{ width: '100%' }}
+                        sx={{ width: '100%', fontSize: { xs: '0.95rem', sm: '1rem' } }}
                     >
                         {snackbarMessage}
                     </Alert>

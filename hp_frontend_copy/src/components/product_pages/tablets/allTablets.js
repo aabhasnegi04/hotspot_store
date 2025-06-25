@@ -1,41 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { 
     Box, Container, Grid, Card, CardMedia, CardContent, Typography, 
-    Alert, FormControlLabel, Checkbox, Divider, Paper, FormGroup
+    Alert, FormControlLabel, Checkbox, Divider, Paper, FormGroup, useTheme, useMediaQuery
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import LuxuryLoader from '../../common/LuxuryLoader';
 import { API_BASE_URL } from '../../../config';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 
 const styles = {
     gradientBg: {
         background: 'linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)',
         minHeight: '100vh',
         mt: '-84px',
-        pt: '104px',
-        pb: 8,
+        pt: { xs: '84px', sm: '104px' },
+        pb: { xs: 4, sm: 8 },
         width: '100vw',
         overflowX: 'hidden'
     },
     container: {
         maxWidth: '1600px !important',
-        pl: { xs: 1, md: 2 },
-        pr: { xs: 2, md: 2 },
-        ml: -2,
+        pl: { xs: 1, sm: 2 },
+        pr: { xs: 1, sm: 2 },
+        ml: { xs: 0, sm: -2 },
         mr: 0
     },
     header: {
         display: 'flex',
         alignItems: 'center',
-        gap: 2,
-        mb: 4,
+        gap: { xs: 1, sm: 2 },
+        mb: { xs: 2, sm: 4 },
         mt: 0,
         pt: 0,
-        pl: { xs: 0, md: 1 }
+        pl: { xs: 0, sm: 1 }
     },
     resultsText: {
         fontWeight: 600,
-        fontSize: { xs: '1.1rem', md: '1.4rem' },
+        fontSize: { xs: '1rem', sm: '1.1rem', md: '1.4rem' },
         color: '#666',
         fontFamily: "'Outfit', sans-serif",
         textAlign: 'center',
@@ -43,23 +49,23 @@ const styles = {
         '& span': {
             color: '#b7950b',
             fontWeight: 700,
-            fontSize: { xs: '1.1rem', md: '1.4rem' }
+            fontSize: { xs: '1rem', sm: '1.1rem', md: '1.4rem' }
         }
     },
     productCard: {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        borderRadius: '20px',
+        borderRadius: { xs: '12px', sm: '20px' },
         overflow: 'hidden',
         border: '1px solid rgba(255, 215, 0, 0.1)',
         background: 'rgba(255, 255, 255, 0.9)',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         cursor: 'pointer',
         '&:hover': {
-            transform: 'translateY(-8px)',
-            boxShadow: '0 12px 24px rgba(255, 215, 0, 0.12)',
-            background: 'rgba(255, 255, 255, 1)'
+            transform: { xs: 'none', sm: 'translateY(-8px)' },
+            boxShadow: { xs: 'none', sm: '0 12px 24px rgba(255, 215, 0, 0.12)' },
+            background: { xs: 'rgba(255, 255, 255, 0.9)', sm: 'rgba(255, 255, 255, 1)' }
         }
     },
     imageBox: {
@@ -72,21 +78,21 @@ const styles = {
         height: '100%',
         width: '100%',
         objectFit: 'contain',
-        padding: '20px'
+        padding: { xs: '12px', sm: '20px' }
     },
     cardContent: {
         flexGrow: 1,
-        p: 3
+        p: { xs: 2, sm: 3 }
     },
     productName: {
         fontWeight: 600,
         mb: 1,
-        fontSize: '1rem'
+        fontSize: { xs: '0.9rem', sm: '1rem' }
     },
     brandModel: {
         color: 'text.secondary',
         mb: 2,
-        fontSize: '0.875rem'
+        fontSize: { xs: '0.8rem', sm: '0.875rem' }
     },
     priceBox: {
         display: 'flex',
@@ -97,35 +103,72 @@ const styles = {
         '& .price': {
             fontWeight: 700,
             color: '#b7950b',
-            fontSize: '1.25rem'
+            fontSize: { xs: '1.1rem', sm: '1.25rem' }
         },
         '& .mrp': {
             textDecoration: 'line-through',
             color: '#666',
-            fontSize: '0.875rem'
+            fontSize: { xs: '0.75rem', sm: '0.875rem' }
         }
     },
     stockSection: {
         textAlign: 'right',
         '& .status': {
             fontWeight: 600,
-            fontSize: '0.875rem'
+            fontSize: { xs: '0.75rem', sm: '0.875rem' }
         },
         '& .quantity': {
             color: '#666',
             display: 'block',
             mt: 0.5,
-            fontSize: '0.75rem'
+            fontSize: { xs: '0.7rem', sm: '0.75rem' }
         }
     },
     filterPaper: {
-        p: 3,
-        borderRadius: '16px',
+        p: { xs: 1, sm: 3 },
+        borderRadius: { xs: '8px', sm: '16px' },
         background: 'rgba(255, 255, 255, 0.9)',
         border: '1px solid rgba(255, 184, 0, 0.1)',
-        position: 'sticky',
+        position: { xs: 'static', sm: 'sticky' },
         top: 100,
-        ml: 1
+        ml: { xs: 0, sm: 1 }
+    },
+    filterHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        cursor: 'pointer',
+        p: 0.5,
+        borderRadius: '6px',
+        '&:hover': {
+            background: 'rgba(255, 215, 0, 0.05)'
+        }
+    },
+    filterTitle: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1,
+        fontWeight: 600,
+        fontSize: { xs: '1rem', sm: '1.1rem' },
+        color: '#b7950b'
+    },
+    filterContent: {
+        mt: 2
+    },
+    filterActions: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        mt: 2,
+        pt: 2,
+        borderTop: '1px solid rgba(255, 215, 0, 0.1)'
+    },
+    clearButton: {
+        color: '#666',
+        fontSize: '0.875rem',
+        '&:hover': {
+            color: '#b7950b',
+            background: 'rgba(255, 215, 0, 0.05)'
+        }
     }
 };
 
@@ -193,6 +236,9 @@ const AllTablets = () => {
     const [priceRange, setPriceRange] = useState([]);
     const [brands, setBrands] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const [filterOpen, setFilterOpen] = useState(false);
 
     // Extract unique brands from products
     useEffect(() => {
@@ -215,6 +261,12 @@ const AllTablets = () => {
         } else {
             setSelectedBrands([...selectedBrands, brand]);
         }
+    };
+
+    const handleClearFilters = () => {
+        setPriceRange([]);
+        setInStockOnly(false);
+        setSelectedBrands([]);
     };
 
     useEffect(() => {
@@ -253,76 +305,102 @@ const AllTablets = () => {
 
     return (
         <Box sx={styles.gradientBg}>
-            <Container sx={{ ...styles.container, pl: 3 }}>
-                <Typography sx={{ ...styles.resultsText, mb: 4 }}>
+            <Container sx={styles.container}>
+                <Typography sx={{ ...styles.resultsText, mb: { xs: 2, sm: 4 } }}>
                     All Tablets <span>({filteredProducts.length} products found)</span>
                 </Typography>
 
-                <Grid container spacing={3} alignItems="flex-start">
-                    <Grid item xs={12} md={2.5} sx={{ pr: 0 }}>
-                        <Paper sx={{ ...styles.filterPaper, mt: 0 }}>
-                            <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-                                Filters
-                            </Typography>
-                            <Divider sx={{ my: 2 }} />
-                            {/* Brand Filter */}
-                            <Box sx={{ mb: 4 }}>
-                                <Typography variant="subtitle2" sx={{ mb: 2 }}>Brand</Typography>
-                                <FormGroup>
-                                    {brands.map((brand, idx) => (
-                                        <FormControlLabel
-                                            key={brand + idx}
-                                            control={
-                                                <Checkbox
-                                                    checked={selectedBrands.includes(brand)}
-                                                    onChange={() => handleBrandChange(brand)}
-                                                    sx={{ color: '#b7950b', '&.Mui-checked': { color: '#b7950b' } }}
-                                                />
-                                            }
-                                            label={brand}
-                                            sx={{ display: 'block', mb: 1 }}
-                                        />
-                                    ))}
-                                </FormGroup>
+                <Grid container spacing={{ xs: 1, sm: 3 }} alignItems="flex-start">
+                    <Grid item xs={12} md={2.5} sx={{ pr: { xs: 0, sm: 2 }, mb: { xs: 2, sm: 0 } }}>
+                        <Paper sx={styles.filterPaper}>
+                            {/* Filter Header for mobile */}
+                            <Box 
+                                sx={styles.filterHeader}
+                                onClick={() => isMobile && setFilterOpen(!filterOpen)}
+                            >
+                                <Box sx={styles.filterTitle}>
+                                    <FilterListIcon fontSize="small" />
+                                    <Typography>Filters</Typography>
+                                </Box>
+                                {isMobile && (
+                                    <IconButton size="small">
+                                        {filterOpen ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+                                    </IconButton>
+                                )}
                             </Box>
-                            {/* Price Range Filter */}
-                            <Box sx={{ mb: 4 }}>
-                                <Typography variant="subtitle2" sx={{ mb: 2 }}>Price Range</Typography>
-                                {priceRanges.map((range, index) => (
+                            {/* Filter Content: always open on desktop, collapsible on mobile */}
+                            <Collapse in={!isMobile || filterOpen}>
+                                <Box sx={styles.filterContent}>
+                                    {/* Brand Filter */}
+                                    <Box sx={{ mb: 4 }}>
+                                        <Typography variant="subtitle2" sx={{ mb: 2 }}>Brand</Typography>
+                                        <FormGroup>
+                                            {brands.map((brand, idx) => (
+                                                <FormControlLabel
+                                                    key={brand + idx}
+                                                    control={
+                                                        <Checkbox
+                                                            checked={selectedBrands.includes(brand)}
+                                                            onChange={() => handleBrandChange(brand)}
+                                                            sx={{ color: '#b7950b', '&.Mui-checked': { color: '#b7950b' } }}
+                                                        />
+                                                    }
+                                                    label={brand}
+                                                    sx={{ display: 'block', mb: 1 }}
+                                                />
+                                            ))}
+                                        </FormGroup>
+                                    </Box>
+                                    {/* Price Range Filter */}
+                                    <Box sx={{ mb: 4 }}>
+                                        <Typography variant="subtitle2" sx={{ mb: 2 }}>Price Range</Typography>
+                                        {priceRanges.map((range, index) => (
+                                            <FormControlLabel
+                                                key={index}
+                                                control={
+                                                    <Checkbox 
+                                                        checked={priceRange.some(r => r[0] === range.range[0] && r[1] === range.range[1])}
+                                                        onChange={() => handlePriceChange(range.range)}
+                                                        sx={{ color: '#b7950b', '&.Mui-checked': { color: '#b7950b' } }}
+                                                    />
+                                                }
+                                                label={range.label}
+                                                sx={{ display: 'block', mb: 1 }}
+                                            />
+                                        ))}
+                                    </Box>
                                     <FormControlLabel
-                                        key={index}
                                         control={
                                             <Checkbox 
-                                                checked={priceRange.some(r => r[0] === range.range[0] && r[1] === range.range[1])}
-                                                onChange={() => handlePriceChange(range.range)}
-                                                sx={{ color: '#b7950b', '&.Mui-checked': { color: '#b7950b' } }}
+                                                checked={inStockOnly}
+                                                onChange={(e) => setInStockOnly(e.target.checked)}
+                                                sx={{ 
+                                                    color: '#b7950b',
+                                                    '&.Mui-checked': { color: '#b7950b' }
+                                                }}
                                             />
                                         }
-                                        label={range.label}
+                                        label="In Stock Only"
                                         sx={{ display: 'block', mb: 1 }}
                                     />
-                                ))}
-                            </Box>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox 
-                                        checked={inStockOnly}
-                                        onChange={(e) => setInStockOnly(e.target.checked)}
-                                        sx={{ 
-                                            color: '#b7950b',
-                                            '&.Mui-checked': { color: '#b7950b' }
-                                        }}
-                                    />
-                                }
-                                label="In Stock Only"
-                                sx={{ display: 'block', mb: 1 }}
-                            />
+                                    {(priceRange.length > 0 || inStockOnly || selectedBrands.length > 0) && (
+                                        <Box sx={styles.filterActions}>
+                                            <Button 
+                                                onClick={handleClearFilters}
+                                                sx={styles.clearButton}
+                                            >
+                                                Clear All Filters
+                                            </Button>
+                                        </Box>
+                                    )}
+                                </Box>
+                            </Collapse>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={9.5}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={{ xs: 1, sm: 2 }}>
                             {filteredProducts.map((product) => (
-                                <Grid item xs={12} sm={6} md={3} key={product.ItemCode}>
+                                <Grid item xs={6} sm={6} md={3} key={product.ItemCode}>
                                     <ProductCard 
                                         product={product}
                                         onClick={() => navigate(`/product/${product.ItemCode}`)}
@@ -333,15 +411,15 @@ const AllTablets = () => {
                                 <Grid item xs={12}>
                                     <Box sx={{ 
                                         textAlign: 'center', 
-                                        py: 8, 
+                                        py: { xs: 4, sm: 8 }, 
                                         color: '#666',
                                         background: 'rgba(255,255,255,0.5)',
-                                        borderRadius: '16px'
+                                        borderRadius: { xs: '12px', sm: '16px' }
                                     }}>
-                                        <Typography variant="h6">
+                                        <Typography variant="h6" sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
                                             No tablets found
                                         </Typography>
-                                        <Typography variant="body2" sx={{ mt: 1 }}>
+                                        <Typography variant="body2" sx={{ mt: 1, fontSize: { xs: '0.85rem', sm: '0.875rem' } }}>
                                             Try adjusting your filters
                                         </Typography>
                                     </Box>

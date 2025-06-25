@@ -248,12 +248,12 @@ const OfferSection = () => {
         variant="h3"
         sx={{
           color: '#181711',
-          fontSize: '22px',
+          fontSize: { xs: '18px', sm: '22px' },
           fontWeight: 700,
           letterSpacing: '-0.015em',
-          mt: 5,
-          mb: 3,
-          px: 2
+          mt: { xs: 3, sm: 5 },
+          mb: { xs: 2, sm: 3 },
+          px: { xs: 1, sm: 2 }
         }}
       >
         {title}
@@ -261,30 +261,31 @@ const OfferSection = () => {
       <Box sx={{ 
         display: 'flex',
         overflowX: 'auto',
-        gap: 3,
-        px: 2,
+        gap: { xs: 1.5, sm: 3 },
+        px: { xs: 1, sm: 2 },
         '&::-webkit-scrollbar': { display: 'none' },
         msOverflowStyle: 'none',
         scrollbarWidth: 'none'
       }}>
         {products.map((product, index) => (
-          <CategoryCard key={index} sx={{ minWidth: 240 }} className="category-card">
+          <CategoryCard key={index} sx={{ minWidth: { xs: 180, sm: 240 }, maxWidth: { xs: 200, sm: 240 } }} className="category-card">
             <Box
               sx={{
-                height: 240,
+                height: { xs: 120, sm: 180, md: 240 },
                 backgroundImage: `url(${product.image})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center'
               }}
             />
-            <CardContent sx={{ p: 4, pt: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <CardContent sx={{ p: { xs: 2, sm: 4 }, pt: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
               <Box>
                 <Typography
                   variant="h6"
                   sx={{
                     color: '#181711',
                     fontWeight: 500,
-                    mb: 0.5
+                    mb: 0.5,
+                    fontSize: { xs: '1rem', sm: '1.15rem' }
                   }}
                 >
                   {product.title}
@@ -292,13 +293,14 @@ const OfferSection = () => {
                 <Typography
                   variant="body2"
                   sx={{
-                    color: '#888263'
+                    color: '#888263',
+                    fontSize: { xs: '0.85rem', sm: '1rem' }
                   }}
                 >
                   {product.subtitle}
                 </Typography>
               </Box>
-              <ShopNowButton>
+              <ShopNowButton sx={{ fontSize: { xs: '0.85rem', sm: '14px' }, py: { xs: 1, sm: 1.5 } }}>
                 Shop Now
               </ShopNowButton>
             </CardContent>
@@ -312,16 +314,16 @@ const OfferSection = () => {
     <Box sx={{ 
       backgroundColor: 'white',
       minHeight: '100vh',
-      py: 4
+      py: { xs: 2, sm: 4 }
     }}>
-      <Container maxWidth="lg">
-        <HeroBanner>
-          <Box sx={{ p: 4 }}>
+      <Container maxWidth="lg" sx={{ px: { xs: 0.5, sm: 2 } }}>
+        <HeroBanner sx={{ borderRadius: { xs: '8px', sm: '12px' }, minHeight: { xs: 160, sm: 240, md: 320 } }}>
+          <Box sx={{ p: { xs: 2, sm: 4 } }}>
             <Typography
               variant="h2"
               sx={{
                 color: 'white',
-                fontSize: { xs: '24px', md: '28px' },
+                fontSize: { xs: '1.3rem', sm: '1.7rem', md: '28px' },
                 fontWeight: 700,
                 letterSpacing: '-0.015em'
               }}
@@ -335,12 +337,12 @@ const OfferSection = () => {
           variant="h3"
           sx={{
             color: '#181711',
-            fontSize: '22px',
+            fontSize: { xs: '18px', sm: '22px' },
             fontWeight: 700,
             letterSpacing: '-0.015em',
-            mt: 5,
-            mb: 3,
-            px: 2
+            mt: { xs: 3, sm: 5 },
+            mb: { xs: 2, sm: 3 },
+            px: { xs: 1, sm: 2 }
           }}
         >
           Featured Categories
@@ -349,29 +351,30 @@ const OfferSection = () => {
         <Box sx={{ 
           display: 'flex',
           overflowX: 'auto',
-          gap: 3,
-          px: 2,
+          gap: { xs: 1.5, sm: 3 },
+          px: { xs: 1, sm: 2 },
           '&::-webkit-scrollbar': { display: 'none' },
           msOverflowStyle: 'none',
           scrollbarWidth: 'none'
         }}>
           {categories.map((category, index) => (
-            <CategoryCard key={index} sx={{ minWidth: 240 }} className="category-card">
+            <CategoryCard key={index} sx={{ minWidth: { xs: 180, sm: 240 }, maxWidth: { xs: 200, sm: 240 } }} className="category-card">
               <Box
                 sx={{
-                  height: 240,
+                  height: { xs: 120, sm: 180, md: 240 },
                   backgroundImage: `url(${category.image})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center'
                 }}
               />
-              <CardContent>
+              <CardContent sx={{ p: { xs: 2, sm: 4 } }}>
                 <Typography
                   variant="h6"
                   sx={{
                     color: '#181711',
                     fontWeight: 500,
-                    mb: 0.5
+                    mb: 0.5,
+                    fontSize: { xs: '1rem', sm: '1.15rem' }
                   }}
                 >
                   {category.title}
@@ -379,7 +382,8 @@ const OfferSection = () => {
                 <Typography
                   variant="body2"
                   sx={{
-                    color: '#888263'
+                    color: '#888263',
+                    fontSize: { xs: '0.85rem', sm: '1rem' }
                   }}
                 >
                   {category.subtitle}
@@ -393,27 +397,28 @@ const OfferSection = () => {
           variant="h3"
           sx={{
             color: '#181711',
-            fontSize: '22px',
+            fontSize: { xs: '18px', sm: '22px' },
             fontWeight: 700,
             letterSpacing: '-0.015em',
-            mt: 5,
-            mb: 3,
-            px: 2
+            mt: { xs: 3, sm: 5 },
+            mb: { xs: 2, sm: 3 },
+            px: { xs: 1, sm: 2 }
           }}
         >
           Limited Time Offers
         </Typography>
 
-        <Grid container spacing={2} sx={{ px: 2, mb: 4 }}>
+        <Grid container spacing={2} sx={{ px: { xs: 1, sm: 2 }, mb: 4 }}>
           {Object.entries(timeLeft).map(([key, value]) => (
-            <Grid item xs={3} key={key}>
-              <TimerBox>
+            <Grid item xs={6} sm={3} key={key}>
+              <TimerBox sx={{ height: { xs: 40, sm: 56 }, p: { xs: 1, sm: 2 } }}>
                 <Typography
                   variant="h6"
                   sx={{
                     color: '#181711',
                     fontWeight: 700,
-                    letterSpacing: '-0.015em'
+                    letterSpacing: '-0.015em',
+                    fontSize: { xs: '1rem', sm: '1.25rem' }
                   }}
                 >
                   {value}
@@ -424,7 +429,8 @@ const OfferSection = () => {
                 sx={{
                   color: '#181711',
                   textAlign: 'center',
-                  mt: 1
+                  mt: 1,
+                  fontSize: { xs: '0.85rem', sm: '1rem' }
                 }}
               >
                 {key.charAt(0).toUpperCase() + key.slice(1)}

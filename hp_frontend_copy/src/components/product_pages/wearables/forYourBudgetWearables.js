@@ -1,9 +1,11 @@
 import React from 'react';
-import { Box, Grid, Card, Typography, CardMedia } from '@mui/material';
+import { Box, Card, Typography, CardMedia, useTheme, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const ForYourBudgetWearables = () => {
     const navigate = useNavigate();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleClick = (range) => {
         // Navigate to the price range page
@@ -45,107 +47,106 @@ const ForYourBudgetWearables = () => {
 
     return (
         <Box sx={{ 
+            mb: 6,
             width: '100vw',
             position: 'relative',
             left: '50%',
             transform: 'translateX(-50%)',
-            mb: 6,
             overflow: 'hidden'
         }}>
-            <Box sx={{
-                width: '100%',
-                px: { xs: 2, sm: 3 }
-            }}>
-                <Typography variant="h4" sx={{
-                    mb: 3,
+            <Typography 
+                variant={isMobile ? "h5" : "h4"}
+                sx={{
+                    mb: { xs: 2, sm: 3 },
                     fontWeight: 600,
                     background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                     WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent'
+                    WebkitTextFillColor: 'transparent',
+                    pl: 2,
+                    fontSize: { xs: '1.5rem', sm: '2rem' }
                 }}>
-                    For Your Budget
-                </Typography>
-            </Box>
+                For Your Budget
+            </Typography>
 
-            <Grid 
-                container 
-                spacing={0}
-                sx={{
-                    width: '100%',
-                    m: 0,
-                    p: 0
-                }}
-            >
+            <Box sx={{ 
+                display: 'flex',
+                gap: { xs: '10px', sm: 3 },
+                width: '100%',
+                overflowX: { xs: 'auto', sm: 'visible' },
+                px: { xs: '10px', sm: 2 },
+                pb: { xs: 1, sm: 0 },
+                msOverflowStyle: 'none',
+                scrollbarWidth: 'none',
+                '&::-webkit-scrollbar': {
+                    display: 'none'
+                }
+            }}>
                 {priceRanges.map((range, index) => (
-                    <Grid 
-                        item 
-                        xs={12} 
-                        sm={6} 
-                        md={2.4} 
+                    <Card 
                         key={index}
+                        onClick={() => handleClick(range.range)}
                         sx={{
-                            px: { 
-                                xs: 2, 
-                                md: index === 0 ? 2 : (index === priceRanges.length - 1 ? 2 : 1.5)
-                            },
-                            mb: { xs: 3, md: 0 }
+                            height: { xs: 120, sm: 180 },
+                            minWidth: { xs: '180px', sm: 'auto' },
+                            flex: { xs: '0 0 auto', sm: 1 },
+                            background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
+                            borderRadius: { xs: '12px', sm: 0 },
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            border: '1px solid rgba(183, 149, 11, 0.1)',
+                            cursor: 'pointer',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            transition: 'all 0.3s ease',
+                            '&:hover': {
+                                transform: { xs: 'none', sm: 'translateY(-5px)' },
+                                boxShadow: { xs: 'none', sm: '0 8px 16px rgba(183, 149, 11, 0.1)' }
+                            }
                         }}
                     >
-                        <Card 
-                            onClick={() => handleClick(range.range)}
-                            sx={{
-                                height: 180,
-                                background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
-                                borderRadius: 0,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                border: '1px solid rgba(183, 149, 11, 0.1)',
-                                cursor: 'pointer',
-                                position: 'relative',
-                                overflow: 'hidden'
-                            }}
-                        >
-                            <Box sx={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                background: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7))',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                p: 2
-                            }}>
-                                <CardMedia
-                                    component="img"
-                                    image={range.image}
-                                    alt={`Price range ${range.label}`}
-                                    sx={{
-                                        width: '100%',
-                                        height: '70%',
-                                        objectFit: 'contain',
-                                        mb: 2
-                                    }}
-                                />
-                                <Typography variant="h6" sx={{
+                        <Box sx={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            background: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7))',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            p: { xs: 1, sm: 2 }
+                        }}>
+                            <CardMedia
+                                component="img"
+                                image={range.image}
+                                alt={`Price range ${range.label}`}
+                                sx={{
+                                    width: '100%',
+                                    height: { xs: '60%', sm: '70%' },
+                                    objectFit: 'contain',
+                                    mb: { xs: 1, sm: 2 }
+                                }}
+                            />
+                            <Typography 
+                                variant="h6" 
+                                sx={{
                                     background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
                                     WebkitBackgroundClip: 'text',
                                     WebkitTextFillColor: 'transparent',
                                     fontWeight: 600,
-                                    fontSize: '1.1rem',
+                                    fontSize: { xs: '0.9rem', sm: '1.1rem' },
                                     textAlign: 'center'
-                                }}>
-                                    {range.label}
-                                </Typography>
-                            </Box>
-                        </Card>
-                    </Grid>
+                                }}
+                            >
+                                {range.label}
+                            </Typography>
+                        </Box>
+                    </Card>
                 ))}
-            </Grid>
+            </Box>
         </Box>
     );
 };

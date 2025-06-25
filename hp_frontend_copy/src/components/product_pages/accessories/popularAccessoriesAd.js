@@ -19,22 +19,17 @@ const PopularAccessoriesAd = () => {
             transform: 'translateX(-50%)',
             overflow: 'hidden'
         }}>
-            {/* First row - 2 large ads */}
-            <Grid container spacing={0} sx={{ mb: 3 }}>
-                {accessoryTypes.slice(0, 2).map((item, index) => (
-                    <Grid item xs={12} sm={6} key={index} sx={{
-                        pl: { 
-                            xs: 0,
-                            sm: index === 0 ? 0 : 1.5
-                        },
-                        pr: {
-                            xs: 0,
-                            sm: index === 0 ? 1.5 : 0
-                        },
-                        mb: { xs: 3, sm: 0 }
-                    }}>
+            <Grid container spacing={1}>
+                {accessoryTypes.map((item, index) => (
+                    <Grid 
+                        item 
+                        xs={6} 
+                        sm={index < 2 ? 6 : 6} 
+                        md={index < 2 ? 6 : 3} 
+                        key={index}
+                    >
                         <Card sx={{ 
-                            height: 300,
+                            height: { xs: 120, sm: 200, md: 250 },
                             background: 'rgba(255, 255, 255, 0.8)',
                             borderRadius: 0,
                             display: 'flex',
@@ -43,59 +38,27 @@ const PopularAccessoriesAd = () => {
                             justifyContent: 'center',
                             border: '1px solid rgba(255, 215, 0, 0.1)'
                         }}>
-                            <Typography variant="h5" sx={{
-                                background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                mb: 2
-                            }}>
+                            <Typography 
+                                variant={index < 2 ? 'h6' : 'subtitle1'} 
+                                sx={{
+                                    background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    mb: 1,
+                                    fontSize: index < 2 ? { xs: '1rem', sm: '1.2rem', md: '1.5rem' } : { xs: '0.9rem', sm: '1.1rem', md: '1.2rem' },
+                                    textAlign: 'center'
+                                }}
+                            >
                                 {item.title}
                             </Typography>
-                            <Typography variant="subtitle1" sx={{ color: '#666' }}>
-                                {item.description}
-                            </Typography>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
-
-            {/* Second row - 4 smaller ads */}
-            <Grid container spacing={0}>
-                {accessoryTypes.slice(2).map((item, index) => (
-                    <Grid item xs={12} sm={6} md={3} key={index} sx={{
-                        pl: { 
-                            xs: 0,
-                            md: index === 0 ? 0 : 1.5
-                        },
-                        pr: {
-                            xs: 0,
-                            md: index === 3 ? 0 : 1.5
-                        },
-                        mb: { 
-                            xs: index !== 5 ? 3 : 0,
-                            sm: index >= 4 ? 0 : 3,
-                            md: 0
-                        }
-                    }}>
-                        <Card sx={{ 
-                            height: 250,
-                            background: 'rgba(255, 255, 255, 0.8)',
-                            borderRadius: 0,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            border: '1px solid rgba(255, 215, 0, 0.1)'
-                        }}>
-                            <Typography variant="h6" sx={{
-                                background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                mb: 2
-                            }}>
-                                {item.title}
-                            </Typography>
-                            <Typography variant="subtitle2" sx={{ color: '#666' }}>
+                            <Typography 
+                                variant={index < 2 ? 'subtitle2' : 'body2'} 
+                                sx={{ 
+                                    color: '#666', 
+                                    fontSize: index < 2 ? { xs: '0.8rem', sm: '1rem' } : { xs: '0.7rem', sm: '0.9rem' },
+                                    textAlign: 'center' 
+                                }}
+                            >
                                 {item.description}
                             </Typography>
                         </Card>

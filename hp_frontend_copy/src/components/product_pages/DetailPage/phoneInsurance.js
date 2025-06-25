@@ -74,33 +74,54 @@ const insurancePlans = [
   },
 ];
 
+// Add a style tag for hiding scrollbar
+const hideScrollbarStyle = `
+  .insurance-scroll-container {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+  .insurance-scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Webkit */
+  }
+`;
+
 const PhoneInsurance = ({ brand }) => {
   const plansToShow = brand && brand.toLowerCase() === 'apple' ? appleCarePlans : insurancePlans;
   return (
-    <Paper elevation={2} sx={{
-      mb: 4,
-      p: { xs: 1.5, sm: 2, md: 2.5 },
-      borderRadius: 4,
-      background: 'linear-gradient(135deg, #fffbe6 0%, #fff9c4 100%)',
-      border: '1.5px solid #FFD700',
-      boxShadow: '0 4px 24px 0 rgba(255,215,0,0.06)',
-      fontFamily: "'Outfit', sans-serif"
-    }}>
-      <Typography variant="h6" sx={{ fontWeight: 700, color: '#b7950b', mb: 1.2, fontSize: '1rem', fontFamily: "'Outfit', sans-serif", background: 'none', borderRadius: 0, px: 0, py: 0, display: 'block' }}>
-        Keep it safe <span style={{ fontWeight: 400, color: '#666', marginLeft: 8, fontSize: '0.95rem' }}>Add extra protection to your products.</span>
-      </Typography>
-      <Grid container spacing={2} alignItems="stretch">
-        {plansToShow.map((plan, idx) => (
-          <Grid item xs={12} md={6} key={plan.company} sx={{ display: 'flex' }}>
-            <Box sx={{
+    <>
+      <style>{hideScrollbarStyle}</style>
+      <Paper elevation={2} sx={{
+        mb: 4,
+        p: { xs: 1.5, sm: 2, md: 2.5 },
+        borderRadius: 4,
+        background: 'linear-gradient(135deg, #fffbe6 0%, #fff9c4 100%)',
+        border: '1.5px solid #FFD700',
+        boxShadow: '0 4px 24px 0 rgba(255,215,0,0.06)',
+        fontFamily: "'Outfit', sans-serif"
+      }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, color: '#b7950b', mb: 1.2, fontSize: '1rem', fontFamily: "'Outfit', sans-serif", background: 'none', borderRadius: 0, px: 0, py: 0, display: 'block' }}>
+          Keep it safe <span style={{ fontWeight: 400, color: '#666', marginLeft: 8, fontSize: '0.95rem' }}>Add extra protection to your products.</span>
+        </Typography>
+        {/* Mobile: horizontal scroll, Desktop: grid */}
+        <Box
+          className="insurance-scroll-container"
+          sx={{
+            display: { xs: 'flex', md: 'none' },
+            overflowX: { xs: 'auto', md: 'unset' },
+            gap: 2,
+            mb: 1,
+            pb: 1,
+            // Hide scrollbar is handled by class
+          }}
+        >
+          {plansToShow.map((plan, idx) => (
+            <Box key={plan.company} sx={{
+              minWidth: 280,
+              maxWidth: 320,
+              flex: '0 0 auto',
               display: 'flex',
               flexDirection: 'column',
-              flex: 1,
-              minHeight: 320,
-              background: 'none',
-              border: 'none',
-              boxShadow: 'none',
-              p: 0
+              height: '100%',
             }}>
               <Box sx={{
                 p: 2,
@@ -154,10 +175,79 @@ const PhoneInsurance = ({ brand }) => {
                 </Button>
               </Box>
             </Box>
-          </Grid>
-        ))}
-      </Grid>
-    </Paper>
+          ))}
+        </Box>
+        {/* Desktop: grid layout */}
+        <Grid container spacing={2} alignItems="stretch" sx={{ display: { xs: 'none', md: 'flex' } }}>
+          {plansToShow.map((plan, idx) => (
+            <Grid item xs={12} md={6} key={plan.company} sx={{ display: 'flex' }}>
+              <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1,
+                minHeight: 320,
+                background: 'none',
+                border: 'none',
+                boxShadow: 'none',
+                p: 0
+              }}>
+                <Box sx={{
+                  p: 2,
+                  borderRadius: 3,
+                  background: 'rgba(255,255,255,0.7)',
+                  color: '#222',
+                  border: 'none',
+                  boxShadow: 'none',
+                  fontFamily: "'Outfit', sans-serif",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  flex: 1,
+                  height: '100%'
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.2 }}>
+                    <img 
+                      src={plan.logo} 
+                      alt={plan.company} 
+                      style={{ 
+                        width: plan.company.toLowerCase().includes('applecare') ? 54 : 40, 
+                        height: plan.company.toLowerCase().includes('applecare') ? 54 : 40, 
+                        borderRadius: 8, 
+                        marginRight: 12, 
+                        background: '#fff', 
+                        padding: 4, 
+                        border: '1px solid #FFD700' 
+                      }} 
+                    />
+                    <Box>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#b7950b', fontSize: '0.98rem', fontFamily: "'Outfit', sans-serif" }}>{plan.name}</Typography>
+                      <Typography variant="body2" sx={{ color: '#666', fontWeight: 400, mt: 0.3, fontSize: '0.92rem' }}>Starting at just <b>₹{plan.monthly}/month</b></Typography>
+                    </Box>
+                    <Button href={plan.learnMore} target="_blank" size="small" sx={{ ml: 'auto', color: '#b7950b', fontWeight: 600, textTransform: 'none', fontFamily: "'Outfit', sans-serif", fontSize: '0.92rem', p: 0.5 }}>Learn more</Button>
+                  </Box>
+                  <Divider sx={{ borderColor: 'rgba(183,149,11,0.10)', mb: 1.2 }} />
+                  <Grid container spacing={1.2} sx={{ mb: 1.2 }}>
+                    {plan.features.map((feature, i) => (
+                      <Grid item xs={6} key={i} sx={{ display: 'flex', alignItems: 'center', gap: 0.7 }}>
+                        {React.cloneElement(feature.icon, { sx: { ...feature.icon.props.sx, fontSize: 17 } })}
+                        <Typography variant="body2" sx={{ color: '#222', fontWeight: 500, fontFamily: "'Outfit', sans-serif", fontSize: '0.82rem' }}>{feature.label}</Typography>
+                      </Grid>
+                    ))}
+                  </Grid>
+                  <Box sx={{ background: 'rgba(255,215,0,0.08)', borderRadius: 2, p: 1.2, mb: 1.2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#b7950b', fontFamily: "'Outfit', sans-serif", fontSize: '0.93rem' }}>{plan.duration}</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#b7950b', fontFamily: "'Outfit', sans-serif", fontSize: '0.93rem' }}>₹{plan.price} <span style={{ color: '#666', fontWeight: 400 }}>| or ₹{plan.monthly}/month</span></Typography>
+                  </Box>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <Button variant="contained" fullWidth sx={{ background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)', color: '#000', fontWeight: 700, borderRadius: 2, fontSize: '0.98rem', py: 1, boxShadow: '0 4px 24px 0 rgba(255,215,0,0.10)', textTransform: 'none', mt: 1, fontFamily: "'Outfit', sans-serif", '&:hover': { background: 'linear-gradient(45deg, #FFA500 30%, #FFD700 90%)' } }}>
+                    Select Plan
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      </Paper>
+    </>
   );
 };
 

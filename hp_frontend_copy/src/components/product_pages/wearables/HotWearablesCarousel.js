@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, Card, CardMedia, Typography } from '@mui/material';
+import { Box, Grid, Card, CardMedia, Typography, useTheme, useMediaQuery } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,6 +17,8 @@ const styles = {
 
 const HotWearablesCarousel = ({ bestSellers }) => {
     const navigate = useNavigate();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     // Debug log to check the data structure
     console.log('Best Sellers Data:', bestSellers);
@@ -25,7 +27,6 @@ const HotWearablesCarousel = ({ bestSellers }) => {
         // Debug log to check the clicked product
         console.log('Clicked Product:', product);
         
-        // Check all possible property names for the item code
         const itemCode = product.ItemCode || product.itemCode || product.itemcode || product.id;
         if (itemCode) {
             console.log('Navigating to product:', itemCode);
@@ -50,157 +51,177 @@ const HotWearablesCarousel = ({ bestSellers }) => {
         }}>
             <Carousel
                 animation="slide"
-                navButtonsAlwaysVisible
+                navButtonsAlwaysVisible={!isMobile}
+                navButtonsProps={{
+                    style: {
+                        display: isMobile ? 'none' : 'flex'
+                    }
+                }}
                 autoPlay={true}
                 interval={3000}
                 sx={{
                     ...styles.carouselNav,
-                    '& .MuiPaper-root': {
-                        borderRadius: 0
+                    width: '100%',
+                    '& .MuiBox-root': {
+                        width: '100%'
+                    },
+                    '& .CarouselItem': {
+                        transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
                     }
                 }}
                 indicators={false}
             >
-                {/* Group products into chunks of 4 */}
-                {Array.from({ length: Math.ceil(bestSellers.length / 4) }, (_, index) => {
-                    const pageItems = bestSellers.slice(index * 4, (index + 1) * 4);
-                    return (
-                        <Grid 
-                            container 
-                            spacing={0} 
-                            key={`page-${index}`}
-                            sx={{
-                                width: '100%',
-                                m: 0,
-                                p: 0
-                            }}
-                        >
-                            {pageItems.map((product, productIndex) => (
-                                <Grid 
-                                    item 
-                                    xs={12} 
-                                    sm={6} 
-                                    md={3} 
-                                    key={`product-${product.ItemCode || product.itemCode || product.itemcode || product.id || `${index}-${productIndex}`}`}
+                {Array.from({ length: Math.ceil(bestSellers.length / (isMobile ? 2 : 4)) }, (_, index) => (
+                    <Box sx={{ 
+                        display: 'flex', 
+                        gap: { xs: 1, sm: 3 },
+                        px: { xs: 1, sm: 2 }
+                    }} key={index}>
+                        {bestSellers.slice(index * (isMobile ? 2 : 4), (index + 1) * (isMobile ? 2 : 4)).map((product) => (
+                            <Card 
+                                key={product.ItemCode || product.itemCode || product.itemcode || product.id}
+                                onClick={() => handleProductClick(product)}
+                                sx={{
+                                    height: { xs: '300px', sm: '320px' },
+                                    background: 'rgba(255, 255, 255, 0.8)',
+                                    borderRadius: { xs: '8px', sm: '12px' },
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    border: '1px solid rgba(255, 215, 0, 0.1)',
+                                    cursor: 'pointer',
+                                    position: 'relative',
+                                    p: { xs: 1, sm: 2 },
+                                    flex: { xs: '0 0 48%', sm: '1' },
+                                    transition: 'all 0.3s ease',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                    '&:hover': {
+                                        transform: 'translateY(-5px)',
+                                        boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
+                                    }
+                                }}
+                            >
+                                <CardMedia
+                                    component="img"
+                                    image={product.image || 'https://via.placeholder.com/300'}
+                                    alt={product.itemName}
                                     sx={{
-                                        px: { xs: 0, md: productIndex === 0 ? 0 : (productIndex === 3 ? 0 : 3) },
-                                        mb: { xs: 3, md: 0 }
+                                        height: { xs: '120px', sm: '140px' },
+                                        objectFit: 'contain',
+                                        mb: { xs: 1, sm: 1.5 },
+                                        background: 'rgba(255, 255, 255, 0.7)'
                                     }}
-                                >
-                                    <Card 
-                                        onClick={() => handleProductClick(product)}
-                                        sx={{
-                                            height: '320px',
-                                            background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
-                                            borderRadius: 0,
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            border: '1px solid rgba(255, 215, 0, 0.1)',
-                                            cursor: 'pointer',
-                                            position: 'relative',
-                                            p: 2
-                                        }}
-                                    >
-                                        <CardMedia
-                                            component="img"
-                                            image={product.image || 'https://via.placeholder.com/300'}
-                                            alt={product.itemName}
+                                />
+                                
+                                <Box sx={{ 
+                                    flexGrow: 1,
+                                    background: 'rgba(255,255,255,0.7)',
+                                    p: { xs: 1, sm: 2 },
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    gap: { xs: 0.5, sm: 0.75 }
+                                }}>
+                                    <Box>
+                                        <Typography 
+                                            variant="h6" 
                                             sx={{
-                                                height: '140px',
-                                                objectFit: 'contain',
-                                                mb: 1.5,
-                                                background: 'rgba(255, 255, 255, 0.7)'
+                                                fontWeight: 600,
+                                                background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
+                                                WebkitBackgroundClip: 'text',
+                                                WebkitTextFillColor: 'transparent',
+                                                fontSize: { xs: '0.75rem', sm: '1rem' },
+                                                lineHeight: { xs: 1.2, sm: 1.4 },
+                                                height: { xs: '2.4em', sm: '2.8em' },
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                display: '-webkit-box',
+                                                WebkitLineClamp: 2,
+                                                WebkitBoxOrient: 'vertical',
+                                                mb: { xs: 0.25, sm: 0.5 },
+                                                wordBreak: 'break-word',
+                                                maxWidth: '100%'
                                             }}
-                                        />
-                                        
-                                        <Box sx={{ 
-                                            flexGrow: 1,
-                                            background: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7))',
-                                            p: 2,
-                                            mt: -2
+                                        >
+                                            {product.itemName}
+                                        </Typography>
+
+                                        <Box sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 0.5
                                         }}>
                                             <Typography 
-                                                variant="h6" 
                                                 sx={{
-                                                    fontWeight: 600,
-                                                    mb: 1,
-                                                    background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
-                                                    WebkitBackgroundClip: 'text',
-                                                    WebkitTextFillColor: 'transparent',
-                                                    fontSize: '1rem',
-                                                    height: '2.4em',
-                                                    overflow: 'hidden',
-                                                    textOverflow: 'ellipsis',
-                                                    display: '-webkit-box',
-                                                    WebkitLineClamp: 2,
-                                                    WebkitBoxOrient: 'vertical',
-                                                }}
-                                            >
-                                                {product.itemName}
-                                            </Typography>
-
-                                            <Typography sx={{ 
-                                                mb: 1,
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: 1,
-                                                fontSize: '1rem',
-                                            }}>
-                                                <span style={{ 
                                                     color: '#b7950b',
                                                     fontWeight: 800,
-                                                    fontSize: '1.1rem'
-                                                }}>
-                                                    {product.brand}
-                                                </span> 
-                                                <span style={{
+                                                    fontSize: { xs: '0.8rem', sm: '1.1rem' }
+                                                }}
+                                            >
+                                                {product.brand}
+                                            </Typography>
+                                            <Typography 
+                                                sx={{
                                                     color: '#666',
-                                                    fontSize: '1.1rem'
-                                                }}>
-                                                    •
-                                                </span>
-                                                <span style={{ 
+                                                    fontSize: { xs: '0.8rem', sm: '1.1rem' },
+                                                    mx: 0.5
+                                                }}
+                                            >
+                                                •
+                                            </Typography>
+                                            <Typography 
+                                                sx={{
                                                     color: '#b7950b',
                                                     fontWeight: 700,
-                                                    fontSize: '1.1rem'
-                                                }}>
-                                                    {product.model || 'Smartwatch'}
-                                                </span>
+                                                    fontSize: { xs: '0.7rem', sm: '0.9rem' }
+                                                }}
+                                            >
+                                                {product.model || 'Smartwatch'}
                                             </Typography>
+                                        </Box>
+                                    </Box>
 
-                                            <Typography variant="h6" sx={{
+                                    <Box>
+                                        <Typography 
+                                            variant="h6" 
+                                            sx={{
                                                 color: '#b7950b',
                                                 fontWeight: 700,
-                                                fontSize: '1.2rem'
-                                            }}>
-                                                ₹{Number(product.salePrice).toLocaleString('en-IN')}
-                                            </Typography>
+                                                fontSize: { xs: '0.9rem', sm: '1.2rem' },
+                                                mb: 0.25
+                                            }}
+                                        >
+                                            ₹{Number(product.salePrice).toLocaleString('en-IN')}
+                                        </Typography>
 
-                                            {Number(product.currentMRP) > Number(product.salePrice) && (
-                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                                    <Typography sx={{ 
-                                                        textDecoration: 'line-through',
-                                                        color: '#666',
-                                                        fontSize: '0.9rem'
-                                                    }}>
-                                                        ₹{Number(product.currentMRP).toLocaleString('en-IN')}
-                                                    </Typography>
-                                                    <Typography sx={{ 
-                                                        color: '#4CAF50',
-                                                        fontWeight: 600,
-                                                        fontSize: '0.9rem'
-                                                    }}>
-                                                        {Math.round(((Number(product.currentMRP) - Number(product.salePrice)) / Number(product.currentMRP)) * 100)}% OFF
-                                                    </Typography>
-                                                </Box>
-                                            )}
-                                        </Box>
-                                    </Card>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    );
-                })}
+                                        {Number(product.currentMRP) > Number(product.salePrice) && (
+                                            <Box sx={{ 
+                                                display: 'flex', 
+                                                alignItems: 'center', 
+                                                gap: 1,
+                                                minHeight: { xs: '16px', sm: '24px' }
+                                            }}>
+                                                <Typography sx={{ 
+                                                    textDecoration: 'line-through',
+                                                    color: '#666',
+                                                    fontSize: { xs: '0.7rem', sm: '0.9rem' }
+                                                }}>
+                                                    ₹{Number(product.currentMRP).toLocaleString('en-IN')}
+                                                </Typography>
+                                                <Typography sx={{ 
+                                                    color: '#4CAF50',
+                                                    fontWeight: 600,
+                                                    fontSize: { xs: '0.7rem', sm: '0.9rem' }
+                                                }}>
+                                                    {Math.round(((Number(product.currentMRP) - Number(product.salePrice)) / Number(product.currentMRP)) * 100)}% OFF
+                                                </Typography>
+                                            </Box>
+                                        )}
+                                    </Box>
+                                </Box>
+                            </Card>
+                        ))}
+                    </Box>
+                ))}
             </Carousel>
         </Box>
     );

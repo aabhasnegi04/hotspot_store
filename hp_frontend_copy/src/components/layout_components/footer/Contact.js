@@ -17,6 +17,7 @@ import {
     LocationOn
 } from '@mui/icons-material';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../config';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -36,11 +37,11 @@ const Contact = () => {
     const handleChange = (e) => {
         setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/api/contact', formData);
+            const response = await axios.post(`${API_BASE_URL}/api/contact`, formData);
+            
             
             if (response.data.success) {
                 setSnackbar({
@@ -88,44 +89,46 @@ const Contact = () => {
     ];
 
     return (
-        <Container maxWidth="lg" sx={{ py: 8, mt: { xs: 5, sm: 6 } }}>
+        <Container maxWidth="lg" sx={{ py: { xs: 1, sm: 4 }, mt: 0, px: { xs: 0, sm: 0, md: 0 } }}>
             <Typography
                 variant="h2"
                 align="center"
                 sx={{
-                    mb: 6,
+                    mb: { xs: 3, sm: 6 },
                     fontFamily: "'Outfit', sans-serif",
                     fontWeight: 700,
-                    color: '#1a1a1a'
+                    color: '#1a1a1a',
+                    fontSize: { xs: '1.5rem', sm: '2.2rem' }
                 }}
             >
                 Contact Us
             </Typography>
 
-            <Grid container spacing={6}>
+            <Grid container spacing={{ xs: 2, sm: 6 }}>
                 {/* Contact Information */}
                 <Grid item xs={12} md={4}>
-                    <Paper elevation={3} sx={{ p: 4, height: '100%' }}>
+                    <Paper elevation={3} sx={{ p: { xs: 2, sm: 4 }, height: '100%', borderRadius: { xs: '10px', sm: '16px' } }}>
                         <Typography
                             variant="h5"
                             sx={{
-                                mb: 4,
+                                mb: { xs: 2, sm: 4 },
                                 fontFamily: "'Outfit', sans-serif",
                                 fontWeight: 600,
-                                color: '#ffb800'
+                                color: '#ffb800',
+                                fontSize: { xs: '1.1rem', sm: '1.4rem' }
                             }}
                         >
                             Get in Touch
                         </Typography>
-                        <Stack spacing={4}>
+                        <Stack spacing={{ xs: 2, sm: 4 }}>
                             {contactInfo.map(({ icon, title, content }) => (
                                 <Box key={title} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                                     {icon}
                                     <Box>
-                                        <Typography variant="subtitle1" fontWeight={600}>
+                                        <Typography variant="subtitle1" fontWeight={600} sx={{ fontSize: { xs: '1rem', sm: '1.1rem' } }}>
                                             {title}
                                         </Typography>
-                                        <Typography variant="body1" color="text.secondary">
+                                        <Typography variant="body1" color="text.secondary" sx={{ fontSize: { xs: '0.95rem', sm: '1rem' } }}>
                                             {content}
                                         </Typography>
                                     </Box>
@@ -137,27 +140,29 @@ const Contact = () => {
 
                 {/* Contact Form */}
                 <Grid item xs={12} md={8}>
-                    <Paper elevation={3} sx={{ p: 4 }}>
+                    <Paper elevation={3} sx={{ p: { xs: 2, sm: 4 }, borderRadius: { xs: '10px', sm: '16px' } }}>
                         <Typography
                             variant="h5"
                             sx={{
-                                mb: 4,
+                                mb: { xs: 2, sm: 4 },
                                 fontFamily: "'Outfit', sans-serif",
                                 fontWeight: 600,
-                                color: '#ffb800'
+                                color: '#ffb800',
+                                fontSize: { xs: '1.1rem', sm: '1.4rem' }
                             }}
                         >
                             Send us a Message
                         </Typography>
                         <form onSubmit={handleSubmit}>
-                            <Grid container spacing={3}>
+                            <Grid container spacing={{ xs: 2, sm: 3 }}>
                                 {formFields.map((field) => (
-                                    <Grid item xs={field.xs} sm={field.sm} key={field.name}>
+                                    <Grid item xs={12} sm={field.sm} key={field.name}>
                                         <TextField
                                             fullWidth
                                             {...field}
                                             value={formData[field.name]}
                                             onChange={handleChange}
+                                            sx={{ fontSize: { xs: '0.95rem', sm: '1rem' } }}
                                         />
                                     </Grid>
                                 ))}
@@ -169,6 +174,10 @@ const Contact = () => {
                                         sx={{
                                             bgcolor: '#ffb800',
                                             color: '#000',
+                                            fontSize: { xs: '1rem', sm: '1.1rem' },
+                                            px: { xs: 2, sm: 4 },
+                                            py: { xs: 1.2, sm: 1.5 },
+                                            borderRadius: { xs: '8px', sm: '12px' },
                                             '&:hover': {
                                                 bgcolor: '#ffa000'
                                             }
@@ -188,15 +197,11 @@ const Contact = () => {
                 <Box 
                     sx={{ 
                         position: 'fixed',
-                        right: '32px',
-                        top: '120px',
+                        right: { xs: '8px', sm: '32px' },
+                        top: { xs: '80px', sm: '120px' },
                         transform: 'none',
                         zIndex: 1000,
-                        width: '350px',
-                        '@media (max-width: 600px)': {
-                            right: '16px',
-                            width: 'calc(100% - 32px)'
-                        }
+                        width: { xs: 'calc(100% - 16px)', sm: '350px' }
                     }}
                 >
                     <Alert 
@@ -204,17 +209,17 @@ const Contact = () => {
                         variant="filled"
                         sx={{ 
                             boxShadow: 3,
-                            fontSize: '1rem',
+                            fontSize: { xs: '0.95rem', sm: '1rem' },
                             bgcolor: '#4CAF50',
                             '& .MuiAlert-message': {
-                                padding: '10px 0'
+                                padding: { xs: '8px 0', sm: '10px 0' }
                             },
                             '& .MuiAlert-icon': {
-                                fontSize: '24px'
+                                fontSize: { xs: '20px', sm: '24px' }
                             }
                         }}
                     >
-                        <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 500, fontSize: { xs: '1rem', sm: '1.1rem' } }}>
                             Thank you for contacting us. We will get back to you soon!
                         </Typography>
                     </Alert>
@@ -230,7 +235,7 @@ const Contact = () => {
             >
                 <Alert 
                     severity="error"
-                    sx={{ width: '100%' }}
+                    sx={{ width: '100%', fontSize: { xs: '0.95rem', sm: '1rem' } }}
                 >
                     {snackbar.message}
                 </Alert>

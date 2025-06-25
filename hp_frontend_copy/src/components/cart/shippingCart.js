@@ -43,9 +43,9 @@ const ShippingCart = ({ cartItems = [], orderSummary = {}, onBackToCart }) => {
     const [selectedAddressId, setSelectedAddressId] = useState('');
     const [loadingAddresses, setLoadingAddresses] = useState(true);
     const [userInfo, setUserInfo] = useState({ email: '', mobileNo: '' });
-    const [showAllAddresses, setShowAllAddresses] = useState(false);
     const [openAddressDialog, setOpenAddressDialog] = useState(false);
     const [tempSelectedAddressId, setTempSelectedAddressId] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('online'); // 'online' or 'cod'
 
     useEffect(() => {
         let userData = {};
@@ -90,24 +90,20 @@ const ShippingCart = ({ cartItems = [], orderSummary = {}, onBackToCart }) => {
         setLoadingAddresses(false);
     };
 
-    const handleAddressChange = (e) => {
-        setSelectedAddressId(e.target.value);
-    };
-
     // Find the newest address (highest SRNO)
     const newestAddress = addresses.reduce((max, addr) => (addr.SRNO > (max?.SRNO || 0) ? addr : max), addresses[0] || null);
     // Show the selected address (default to newest)
     const selectedAddress = addresses.find(addr => addr.SRNO === selectedAddressId) || newestAddress;
 
     return (
-        <Box sx={{ mt: 2, mb: 8 }}>
-            <Grid container spacing={3} justifyContent="center">
+        <Box sx={{ mt: 2, mb: 8, px: { xs: 0.5, sm: 1, md: 0 } }}>
+            <Grid container spacing={{ xs: 2, md: 3 }} justifyContent="center">
                 {/* Left Column: Main   Content (Shipping, Billing, Contact, Delivery) */}
                 <Grid item xs={12} md={8}>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={{ xs: 2, md: 2 }}>
                         {/* Top Row: Back to Cart (left) and Shipping Address (right) */}
                         <Grid item xs={12} md={6}>
-                            <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: { xs: 2, md: 0 } }}>
                                 <Button
                                     variant="outlined"
                                     sx={{
@@ -116,10 +112,11 @@ const ShippingCart = ({ cartItems = [], orderSummary = {}, onBackToCart }) => {
                                         borderColor: '#FFD700',
                                         textTransform: 'none',
                                         fontWeight: 600,
-                                        fontSize: '1.2rem',
-                                        py: 5,
-                                        px: 8,
+                                        fontSize: { xs: '1rem', sm: '1.2rem' },
+                                        py: { xs: 2, sm: 5 },
+                                        px: { xs: 2, sm: 8 },
                                         minWidth: 0,
+                                        width: { xs: '100%', sm: 'auto' },
                                         '&:hover': { borderColor: '#FFA500', color: '#FFA500' },
                                     }}
                                     onClick={onBackToCart}
@@ -130,7 +127,7 @@ const ShippingCart = ({ cartItems = [], orderSummary = {}, onBackToCart }) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <Paper elevation={1} sx={{ ...styles.paper, p: 2, height: '100%' }}>
+                            <Paper elevation={1} sx={{ ...styles.paper, p: { xs: 1.5, sm: 2 }, height: '100%' }}>
                                 {loadingAddresses ? (
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 80 }}>
                                         <CircularProgress size={28} />
@@ -280,11 +277,11 @@ const ShippingCart = ({ cartItems = [], orderSummary = {}, onBackToCart }) => {
                         </Grid>
                         {/* Contact Information */}
                         <Grid item xs={12}>
-                            <Paper elevation={1} sx={{ ...styles.paper, p: 2 }}>
+                            <Paper elevation={1} sx={{ ...styles.paper, p: { xs: 1.5, sm: 2 } }}>
                                 <Typography sx={styles.sectionTitle}>Contact Information</Typography>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} md={6}>
-                                        <TextField label="Email Id *" fullWidth size="small" value={userInfo.email} InputProps={{ readOnly: true }} />
+                                        <TextField label="Email Id *" fullWidth size="small" value={userInfo.email} InputProps={{ readOnly: true }} sx={{ mb: { xs: 1, md: 0 } }} />
                                     </Grid>
                                     <Grid item xs={12} md={6}>
                                         <TextField label="Mobile Number *" fullWidth size="small" value={userInfo.mobileNo} InputProps={{ readOnly: true, startAdornment: <span style={{ marginRight: 8 }}>+91</span> }} />
@@ -292,9 +289,36 @@ const ShippingCart = ({ cartItems = [], orderSummary = {}, onBackToCart }) => {
                                 </Grid>
                             </Paper>
                         </Grid>
-                        {/* Delivery Options */}
+                        {/* Payment Method Section (move above Delivery Options) */}
                         <Grid item xs={12}>
-                            <Paper elevation={1} sx={{ ...styles.paper, p: 2 }}>
+                            <Paper elevation={1} sx={{ ...styles.paper, p: { xs: 1.5, sm: 2 } }}>
+                                <Typography sx={styles.sectionTitle}>Payment Method</Typography>
+                                <RadioGroup
+                                    value={paymentMethod}
+                                    onChange={e => setPaymentMethod(e.target.value)}
+                                    row
+                                >
+                                    <FormControlLabel
+                                        value="online"
+                                        control={<Radio sx={{ color: '#FFD700' }} />}
+                                        label="Online Payment"
+                                    />
+                                    <FormControlLabel
+                                        value="cod"
+                                        control={<Radio sx={{ color: '#FFD700' }} />}
+                                        label="Cash on Delivery"
+                                    />
+                                </RadioGroup>
+                                {paymentMethod === 'cod' && (
+                                    <Alert severity="info" sx={{ mt: 1 }}>
+                                        You will pay in cash when your order is delivered.
+                                    </Alert>
+                                )}
+                            </Paper>
+                        </Grid>
+                        {/* Delivery Options (now below Payment Method) */}
+                        <Grid item xs={12}>
+                            <Paper elevation={1} sx={{ ...styles.paper, p: { xs: 1.5, sm: 2 } }}>
                                 <Typography sx={styles.sectionTitle}>Delivery Options</Typography>
                                 {cartItems.length === 0 ? (
                                     <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
@@ -302,19 +326,27 @@ const ShippingCart = ({ cartItems = [], orderSummary = {}, onBackToCart }) => {
                                     </Typography>
                                 ) : (
                                     cartItems.map((item, idx) => (
-                                        <Box key={item.ORDERID + '-' + item.ITEMCODE} sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: idx === 0 ? 2 : 4 }}>
+                                        <Box key={item.ORDERID + '-' + item.ITEMCODE} sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, gap: 2, mt: idx === 0 ? 2 : 4, p: { xs: 1, sm: 0 }, borderRadius: { xs: '10px', sm: 0 }, background: { xs: '#fff', sm: 'none' }, boxShadow: { xs: '0 1px 4px rgba(0,0,0,0.03)', sm: 'none' }, mb: { xs: 2, sm: 0 } }}>
                                             <img
                                                 src={item.image_url}
                                                 alt={item.product_name}
-                                                style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }}
+                                                style={{ width: '90px', height: '90px', objectFit: 'cover', borderRadius: '8px', alignSelf: 'center', marginBottom: 8 }}
                                             />
-                                            <Box>
-                                                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                                            <Box sx={{ width: '100%' }}>
+                                                <Typography variant="subtitle1" sx={{ fontWeight: 600, textAlign: { xs: 'center', sm: 'left' } }}>
                                                     {item.ItemName}
                                                 </Typography>
                                                 <FormControlLabel
                                                     control={<Radio checked sx={{ color: '#FFD700' }} />}
                                                     label={<Typography variant="body2">Standard Delivery in 2 days | Free</Typography>}
+                                                    sx={{
+                                                        width: '100%',
+                                                        ml: 0,
+                                                        '.MuiFormControlLabel-label': { width: '100%' },
+                                                        justifyContent: { xs: 'center', sm: 'flex-start' },
+                                                        display: 'flex',
+                                                        mt: { xs: 1, sm: 0 }
+                                                    }}
                                                 />
                                             </Box>
                                         </Box>
@@ -326,8 +358,8 @@ const ShippingCart = ({ cartItems = [], orderSummary = {}, onBackToCart }) => {
                 </Grid>
                 {/* Right Column: Order Summary */}
                 <Grid item xs={12} md={4}>
-                    <Paper elevation={3} sx={{ ...styles.paper, p: 3, position: 'sticky', top: 32 }}>
-                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
+                    <Paper elevation={3} sx={{ ...styles.paper, p: { xs: 2, sm: 3 }, position: { md: 'sticky' }, top: { md: 32 }, mt: { xs: 2, md: 0 }, mb: { xs: 2, md: 0 } }}>
+                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.15rem' } }}>
                             Order Summary ({orderSummary.itemCount || 0} item{orderSummary.itemCount === 1 ? '' : 's'})
                         </Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
@@ -339,14 +371,39 @@ const ShippingCart = ({ cartItems = [], orderSummary = {}, onBackToCart }) => {
                             <Typography variant="h6" sx={{ fontWeight: 700 }}>Total</Typography>
                             <Typography variant="h6" sx={{ fontWeight: 700 }}>₹{(orderSummary.subtotal || 0).toLocaleString('en-IN')}</Typography>
                         </Box>
-                        <PaymentButton
-                            amount={orderSummary.subtotal || 0}
-                            email={''} // TODO: Replace with actual user email
-                            contact={''} // TODO: Replace with actual user contact
-                        />
-                        <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: 'block' }}>
-                            Delivery charges, if applicable, will be calculated on the next page
-                        </Typography>
+                        {paymentMethod === 'online' ? (
+                            <PaymentButton
+                                amount={orderSummary.subtotal || 0}
+                                email={userInfo.email}
+                                contact={userInfo.mobileNo}
+                                paymentMethod={paymentMethod}
+                            />
+                        ) : (
+                            <Button
+                                variant="contained"
+                                fullWidth
+                                sx={{
+                                    mt: 2,
+                                    mb: 2,
+                                    py: 1.5,
+                                    borderRadius: '12px',
+                                    background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
+                                    color: '#000000',
+                                    fontWeight: 600,
+                                    textTransform: 'none',
+                                    fontSize: '1rem',
+                                    boxShadow: '0 3px 5px 2px rgba(255, 215, 0, .3)',
+                                    '&:hover': {
+                                        background: 'linear-gradient(45deg, #FFA500 30%, #FFD700 90%)',
+                                        boxShadow: '0 4px 8px 2px rgba(255, 215, 0, .4)',
+                                        transform: 'translateY(-1px)',
+                                    }
+                                }}
+                                onClick={() => alert('Order placed with Cash on Delivery! (Implement backend logic here)')}
+                            >
+                                Place Order
+                            </Button>
+                        )}
                     </Paper>
                 </Grid>
             </Grid>

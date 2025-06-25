@@ -47,8 +47,8 @@ const ProductBanner = ({ product, handleProductClick }) => {
     return (
         <Card onClick={() => handleProductClick(product.id)} sx={{
             ...styles.card,
-            height: { xs: 'auto', md: '500px' },
-            minHeight: { xs: '320px', md: '500px' },
+            height: { xs: '280px', sm: '450px', md: '500px' },
+            minHeight: { xs: '280px', sm: '450px', md: '500px' },
             p: 0
         }}>
             <Grid container sx={{
@@ -56,10 +56,10 @@ const ProductBanner = ({ product, handleProductClick }) => {
                 width: '100%',
                 maxWidth: 'none',
                 m: 0,
-                flexDirection: { xs: 'column-reverse', md: 'row' }
+                flexDirection: 'row'
             }}>
-                <Grid item xs={12} md={6} sx={{
-                    p: { xs: 1, md: 6 },
+                <Grid item xs={6} md={6} sx={{
+                    p: { xs: 2, sm: 3, md: 6 },
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
@@ -70,8 +70,8 @@ const ProductBanner = ({ product, handleProductClick }) => {
                         sx={{
                             ...styles.gradientText,
                             fontWeight: 700,
-                            mb: { xs: 0.5, md: 2 },
-                            fontSize: { xs: '1rem', md: '2rem' }
+                            mb: { xs: 1, md: 2 },
+                            fontSize: { xs: '0.9rem', sm: '1.4rem', md: '2rem' }
                         }}
                     >
                         {product.ItemName}
@@ -79,34 +79,34 @@ const ProductBanner = ({ product, handleProductClick }) => {
                     <Typography
                         variant={isMobile ? 'body2' : 'h6'}
                         sx={{
-                            mb: { xs: 0.5, md: 3 },
+                            mb: { xs: 1, md: 3 },
                             fontFamily: "'Outfit', sans-serif",
-                            fontSize: { xs: '0.9rem', md: '1.5rem' },
+                            fontSize: { xs: '0.8rem', sm: '1.2rem', md: '1.5rem' },
                             fontWeight: 600,
                             display: 'flex',
                             alignItems: 'center',
-                            gap: { xs: 0.5, md: 2 },
+                            gap: { xs: 1, md: 2 },
                             flexWrap: 'wrap'
                         }}
                     >
-                        <span style={{ color: '#b7950b', fontWeight: 800, fontSize: isMobile ? '0.95rem' : '1.8rem' }}>{product.brand}</span>
-                        <span style={{ color: '#666', fontSize: isMobile ? '0.95rem' : '1.8rem' }}>•</span>
+                        <span style={{ color: '#b7950b', fontWeight: 800, fontSize: isMobile ? '1rem' : '1.8rem' }}>{product.brand}</span>
+                        <span style={{ color: '#666', fontSize: isMobile ? '1rem' : '1.8rem' }}>•</span>
                         <span style={{ color: '#b7950b', fontWeight: 700, fontSize: isMobile ? '0.9rem' : '1.6rem' }}>{product.model || 'Latest Model'}</span>
                     </Typography>
-                    <Box sx={{ mb: { xs: 0.5, md: 4 } }}>
+                    <Box sx={{ mb: { xs: 1, md: 4 } }}>
                         <Typography
                             variant="body2"
                             sx={{
                                 color: '#666',
                                 mb: 0.5,
-                                fontSize: { xs: '0.85rem', md: '1.2rem' },
+                                fontSize: { xs: '0.7rem', sm: '1rem', md: '1.2rem' },
                                 fontFamily: "'Outfit', sans-serif"
                             }}
                         >
-                            Starting at
+                            Special Price
                         </Typography>
                         <Typography
-                            variant={isMobile ? 'subtitle1' : 'h3'}
+                            variant={isMobile ? 'h6' : 'h3'}
                             sx={{
                                 color: '#b7950b',
                                 fontWeight: 700,
@@ -115,24 +115,24 @@ const ProductBanner = ({ product, handleProductClick }) => {
                                 alignItems: 'baseline',
                                 gap: 1,
                                 flexWrap: 'wrap',
-                                fontSize: { xs: '1.1rem', md: '2.5rem' }
+                                fontSize: { xs: '1.2rem', sm: '2rem', md: '2.5rem' }
                             }}
                         >
                             ₹{typeof product.salePrice === 'number' ? product.salePrice.toLocaleString('en-IN') : ''}
                             <Typography
                                 component="span"
                                 sx={{
-                                    fontSize: { xs: '0.7rem', md: '1rem' },
+                                    fontSize: { xs: '0.6rem', sm: '0.8rem', md: '1rem' },
                                     color: '#4CAF50',
                                     fontWeight: 600,
-                                    ml: { xs: 0.5, md: 2 }
+                                    ml: { xs: 1, sm: 2 }
                                 }}
                             >
-                                inclusive of all offers
+                                limited time offer
                             </Typography>
                         </Typography>
                         {typeof product.currentMRP === 'number' && typeof product.salePrice === 'number' && product.currentMRP > product.salePrice && (
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.5, md: 2 } }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <Typography
                                     variant={isMobile ? 'body2' : 'h6'}
                                     sx={{
@@ -160,32 +160,31 @@ const ProductBanner = ({ product, handleProductClick }) => {
                         variant="body2"
                         sx={{
                             color: '#666',
-                            mb: { xs: 0.5, md: 3 },
-                            fontSize: { xs: '0.8rem', md: '1.1rem' },
+                            mb: { xs: 1, md: 3 },
+                            fontSize: { xs: '0.7rem', sm: '0.9rem', md: '1.1rem' },
                             lineHeight: 1.4
                         }}
                     >
-                        Experience the next level of mobile technology with our best-selling smartphone.
+                        Elevate your mobile experience with our premium accessories collection.
                     </Typography>
                 </Grid>
-                <Grid item xs={12} md={6} sx={{
+                <Grid item xs={6} md={6} sx={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'relative',
-                    top: { xs: 0, md: '-20px' },
-                    width: '100%',
-                    p: { xs: 0.5, md: 2 }
+                    height: '100%',
+                    p: { xs: 2, sm: 3, md: 4 }
                 }}>
                     <CardMedia
                         component="img"
                         image={product.image || 'https://via.placeholder.com/500'}
                         alt={product.ItemName}
                         sx={{
-                            width: { xs: '70%', md: '80%' },
-                            height: { xs: 'auto', md: '80%' },
+                            maxWidth: '100%',
+                            maxHeight: { xs: '140px', sm: '300px', md: '400px' },
                             objectFit: 'contain',
-                            transform: { xs: 'scale(0.9)', md: 'scale(1.1)' }
+                            mx: 'auto'
                         }}
                     />
                 </Grid>

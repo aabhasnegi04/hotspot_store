@@ -149,17 +149,20 @@ const PhoneCompare = ({ currentPhoneId }) => {
             width: '100%',
             maxWidth: '1400px',
             margin: '0 auto',
-            padding: { xs: 2, md: 4 }
+            padding: { xs: 1, sm: 2, md: 4 },
+            overflowX: { xs: 'auto', sm: 'unset' }
         }}>
             {/* Phone Selection Section */}
             <Paper 
                 elevation={3}
                 sx={{ 
-                    p: { xs: 2, md: 4 },
+                    p: { xs: 1, sm: 2, md: 4 },
                     mb: 4,
                     background: 'linear-gradient(145deg, rgba(255, 215, 0, 0.05) 0%, rgba(255, 215, 0, 0.02) 100%)',
                     borderRadius: 2,
                     transition: 'all 0.3s ease-in-out',
+                    overflowX: { xs: 'auto', sm: 'unset' },
+                    minWidth: 0,
                     '&:hover': {
                         boxShadow: '0 8px 24px rgba(183, 149, 11, 0.1)',
                     }
@@ -172,14 +175,15 @@ const PhoneCompare = ({ currentPhoneId }) => {
                         color: '#B7950B',
                         fontWeight: 700,
                         textAlign: 'center',
-                        letterSpacing: '0.5px'
+                        letterSpacing: '0.5px',
+                        fontSize: { xs: '1.1rem', sm: '1.5rem' }
                     }}
                 >
                     Select Phones to Compare
                 </Typography>
-                <Grid container spacing={3} alignItems="center">
+                <Grid container spacing={2} alignItems="center" wrap="nowrap" sx={{ overflowX: { xs: 'auto', sm: 'unset' }, flexWrap: { xs: 'nowrap', sm: 'wrap' } }}>
                     {selectedPhones.map((phoneId, index) => (
-                        <Grid item xs={12} sm={6} md={3} key={index}>
+                        <Grid item xs={10} sm={6} md={3} key={index} sx={{ minWidth: { xs: 220, sm: 'unset' } }}>
                             <Zoom in={true} style={{ transitionDelay: `${index * 100}ms` }}>
                                 <Box>
                                     <Autocomplete
@@ -219,12 +223,12 @@ const PhoneCompare = ({ currentPhoneId }) => {
                                                     '& .MuiInputLabel-root': {
                                                         color: '#B7950B',
                                                         fontWeight: 600,
-                                                        fontSize: '0.95rem',
+                                                        fontSize: { xs: '0.85rem', sm: '0.95rem' },
                                                     },
                                                     '& .MuiInputBase-input': {
                                                         fontWeight: 600,
                                                         color: '#222',
-                                                        fontSize: '1rem',
+                                                        fontSize: { xs: '0.95rem', sm: '1rem' },
                                                     },
                                                 }}
                                             />
@@ -244,18 +248,19 @@ const PhoneCompare = ({ currentPhoneId }) => {
                         </Grid>
                     ))}
                     {selectedPhones.length < 4 && (
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={10} sm={6} md={3} sx={{ minWidth: { xs: 220, sm: 'unset' } }}>
                             <Zoom in={true} style={{ transitionDelay: `${selectedPhones.length * 100}ms` }}>
                                 <Button
                                     variant="outlined"
                                     onClick={addPhoneToCompare}
                                     fullWidth
                                     sx={{
-                                        height: '56px',
+                                        height: { xs: '48px', sm: '56px' },
                                         borderColor: 'rgba(183, 149, 11, 0.5)',
                                         color: '#B7950B',
                                         borderRadius: 2,
                                         transition: 'all 0.3s ease',
+                                        fontSize: { xs: '0.95rem', sm: '1rem' },
                                         '&:hover': {
                                             borderColor: '#B7950B',
                                             backgroundColor: 'rgba(183, 149, 11, 0.08)',
@@ -292,112 +297,118 @@ const PhoneCompare = ({ currentPhoneId }) => {
                 </Fade>
             ) : comparisonData.length > 0 ? (
                 <Fade in={true}>
-                    <TableContainer 
-                        component={Paper} 
-                        elevation={3}
-                        sx={{ 
-                            background: 'linear-gradient(145deg, rgba(255, 215, 0, 0.02) 0%, rgba(255, 215, 0, 0.05) 100%)',
-                            borderRadius: 2,
-                            overflow: 'hidden',
-                            transition: 'all 0.3s ease-in-out',
-                            '&:hover': {
-                                boxShadow: '0 8px 24px rgba(183, 149, 11, 0.1)',
-                            }
-                        }}
-                    >
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell sx={{ 
-                                        backgroundColor: 'rgba(183, 149, 11, 0.1)',
-                                        fontWeight: 700,
-                                        color: '#B7950B',
-                                        fontSize: '1.1rem',
-                                        padding: '16px 24px'
-                                    }}>
-                                        Features
-                                    </TableCell>
-                                    {comparisonData.map((phone, index) => (
-                                        <TableCell 
-                                            key={phone.PhoneID}
-                                            sx={{ 
-                                                backgroundColor: 'rgba(183, 149, 11, 0.1)',
-                                                fontWeight: 600,
-                                                color: '#B7950B',
-                                                padding: '16px 24px',
-                                                borderRight: index !== comparisonData.length - 1 ? '1px solid #e0e0e0' : 'none',
-                                            }}
-                                        >
-                                            <Box sx={{ 
-                                                display: 'flex', 
-                                                flexDirection: 'column', 
-                                                alignItems: 'center',
-                                                gap: 1
-                                            }}>
-                                                <Typography 
-                                                    variant="subtitle1" 
-                                                    sx={{ 
-                                                        fontWeight: 700,
-                                                        fontSize: '1.1rem'
-                                                    }}
-                                                >
-                                                    {phone.Brand} {phone.Model}
-                                                </Typography>
-                                                <Button
-                                                    size="small"
-                                                    onClick={() => removePhoneFromCompare(index)}
-                                                    sx={{ 
-                                                        color: 'error.main',
-                                                        transition: 'all 0.2s ease',
-                                                        '&:hover': {
-                                                            backgroundColor: 'rgba(211, 47, 47, 0.08)',
-                                                            transform: 'scale(1.05)'
-                                                        }
-                                                    }}
-                                                >
-                                                    Remove
-                                                </Button>
-                                            </Box>
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {comparisonFields.map((field) => (
-                                    <TableRow 
-                                        key={field.key}
-                                        sx={{
-                                            '&:nth-of-type(odd)': {
-                                                backgroundColor: 'rgba(183, 149, 11, 0.02)',
-                                            },
-                                            '&:hover': {
-                                                backgroundColor: 'rgba(183, 149, 11, 0.04)',
-                                            }
-                                        }}
-                                    >
+                    <Box sx={{ width: '100%', overflowX: { xs: 'auto', sm: 'unset' } }}>
+                        <TableContainer 
+                            component={Paper} 
+                            elevation={3}
+                            sx={{ 
+                                background: 'linear-gradient(145deg, rgba(255, 215, 0, 0.02) 0%, rgba(255, 215, 0, 0.05) 100%)',
+                                borderRadius: 2,
+                                overflow: 'hidden',
+                                minWidth: { xs: 600, sm: 'unset' },
+                                transition: 'all 0.3s ease-in-out',
+                                '&:hover': {
+                                    boxShadow: '0 8px 24px rgba(183, 149, 11, 0.1)',
+                                }
+                            }}
+                        >
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
                                         <TableCell sx={{ 
-                                            fontWeight: 600,
-                                            color: '#666',
-                                            padding: '16px 24px'
+                                            backgroundColor: 'rgba(183, 149, 11, 0.1)',
+                                            fontWeight: 700,
+                                            color: '#B7950B',
+                                            fontSize: { xs: '0.95rem', sm: '1.1rem' },
+                                            padding: { xs: '10px 8px', sm: '16px 24px' }
                                         }}>
-                                            {field.label}
+                                            Features
                                         </TableCell>
                                         {comparisonData.map((phone, index) => (
                                             <TableCell 
-                                                key={`${phone.PhoneID}-${field.key}`}
+                                                key={phone.PhoneID}
                                                 sx={{ 
-                                                    padding: '16px 24px',
+                                                    backgroundColor: 'rgba(183, 149, 11, 0.1)',
+                                                    fontWeight: 600,
+                                                    color: '#B7950B',
+                                                    padding: { xs: '10px 8px', sm: '16px 24px' },
                                                     borderRight: index !== comparisonData.length - 1 ? '1px solid #e0e0e0' : 'none',
                                                 }}
                                             >
-                                                {field.format ? field.format(phone[field.key]) : phone[field.key]}
+                                                <Box sx={{ 
+                                                    display: 'flex', 
+                                                    flexDirection: 'column', 
+                                                    alignItems: 'center',
+                                                    gap: 1
+                                                }}>
+                                                    <Typography 
+                                                        variant="subtitle1" 
+                                                        sx={{ 
+                                                            fontWeight: 700,
+                                                            fontSize: { xs: '0.95rem', sm: '1.1rem' }
+                                                        }}
+                                                    >
+                                                        {phone.Brand} {phone.Model}
+                                                    </Typography>
+                                                    <Button
+                                                        size="small"
+                                                        onClick={() => removePhoneFromCompare(index)}
+                                                        sx={{ 
+                                                            color: 'error.main',
+                                                            transition: 'all 0.2s ease',
+                                                            fontSize: { xs: '0.85rem', sm: '1rem' },
+                                                            '&:hover': {
+                                                                backgroundColor: 'rgba(211, 47, 47, 0.08)',
+                                                                transform: 'scale(1.05)'
+                                                            }
+                                                        }}
+                                                    >
+                                                        Remove
+                                                    </Button>
+                                                </Box>
                                             </TableCell>
                                         ))}
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                                </TableHead>
+                                <TableBody>
+                                    {comparisonFields.map((field) => (
+                                        <TableRow 
+                                            key={field.key}
+                                            sx={{
+                                                '&:nth-of-type(odd)': {
+                                                    backgroundColor: 'rgba(183, 149, 11, 0.02)',
+                                                },
+                                                '&:hover': {
+                                                    backgroundColor: 'rgba(183, 149, 11, 0.04)',
+                                                }
+                                            }}
+                                        >
+                                            <TableCell sx={{ 
+                                                fontWeight: 600,
+                                                color: '#666',
+                                                padding: { xs: '10px 8px', sm: '16px 24px' },
+                                                fontSize: { xs: '0.95rem', sm: '1rem' }
+                                            }}>
+                                                {field.label}
+                                            </TableCell>
+                                            {comparisonData.map((phone, index) => (
+                                                <TableCell 
+                                                    key={`${phone.PhoneID}-${field.key}`}
+                                                    sx={{ 
+                                                        padding: { xs: '10px 8px', sm: '16px 24px' },
+                                                        borderRight: index !== comparisonData.length - 1 ? '1px solid #e0e0e0' : 'none',
+                                                        fontSize: { xs: '0.95rem', sm: '1rem' }
+                                                    }}
+                                                >
+                                                    {field.format ? field.format(phone[field.key]) : phone[field.key]}
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
                 </Fade>
             ) : selectedPhones.length >= 2 ? (
                 <Fade in={true}>

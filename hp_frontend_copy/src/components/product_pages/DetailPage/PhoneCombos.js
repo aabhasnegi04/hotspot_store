@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Paper, Typography, Checkbox, Button, Divider } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 // Combos by brand (remove the phone itself from these arrays)
 const combosByBrand = {
@@ -101,6 +103,9 @@ const PhoneCombos = ({ product }) => {
   }
 
   const [checked, setChecked] = useState(comboProducts.map(() => true));
+  const [expanded, setExpanded] = useState(false);
+  const visibleCount = expanded ? comboProducts.length : 2;
+  const showExpand = comboProducts.length > 2;
 
   if (!combo) return (
     <Paper elevation={2} sx={{ mb: 4, p: { xs: 2, sm: 3 }, borderRadius: 3, background: '#fffbe6', border: '1.5px solid #FFD700', color: '#181711', fontFamily: "'Outfit', sans-serif", boxShadow: '0 4px 24px 0 rgba(255,215,0,0.06)' }}>
@@ -138,51 +143,87 @@ const PhoneCombos = ({ product }) => {
         {combo.title}
       </Typography>
       <Divider sx={{ borderColor: '#FFE066', mb: 2 }} />
-      {comboProducts.map((product, idx) => (
-        <Box key={product.id + '-' + idx} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Checkbox
-            checked={checked[idx]}
-            onChange={() => handleCheck(idx)}
-            sx={{ color: '#FFD700', '&.Mui-checked': { color: '#FFD700' }, mr: 2 }}
-          />
-          <Box
-            component="img"
-            src={product.image}
-            alt={product.name}
-            sx={{ width: 44, height: 44, objectFit: 'contain', borderRadius: 2, background: '#fff', p: 0.5, mr: 2, border: '1.5px solid #FFE066' }}
-          />
-          <Box sx={{ flex: 1 }}>
-            <Typography sx={{ color: '#181711', fontWeight: 600, fontSize: '1rem' }}>{product.name}</Typography>
+      {comboProducts.slice(0, visibleCount).map((product, idx) => (
+        <Box
+          key={product.id + '-' + idx}
+          sx={{
+            display: { xs: 'flex', sm: 'flex' },
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'flex-start', sm: 'center' },
+            mb: 2,
+            gap: { xs: 1, sm: 0 },
+            p: { xs: 1, sm: 0 },
+            borderRadius: { xs: 2, sm: 0 },
+            background: { xs: '#fff', sm: 'none' },
+            boxShadow: { xs: '0 1px 4px 0 rgba(255,215,0,0.06)', sm: 'none' },
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', width: { xs: '100%', sm: 'auto' } }}>
+            <Checkbox
+              checked={checked[idx]}
+              onChange={() => handleCheck(idx)}
+              sx={{ color: '#FFD700', '&.Mui-checked': { color: '#FFD700' }, mr: { xs: 1, sm: 2 } }}
+            />
+            <Box
+              component="img"
+              src={product.image}
+              alt={product.name}
+              sx={{ width: 44, height: 44, objectFit: 'contain', borderRadius: 2, background: '#fff', p: 0.5, mr: { xs: 1, sm: 2 }, border: '1.5px solid #FFE066' }}
+            />
           </Box>
-          <Typography sx={{ color: '#181711', fontWeight: 500, minWidth: 100, textAlign: 'right' }}>
+          <Box sx={{ flex: 1, width: '100%', mt: { xs: 1, sm: 0 } }}>
+            <Typography sx={{ color: '#181711', fontWeight: 600, fontSize: { xs: '0.97rem', sm: '1rem' } }}>{product.name}</Typography>
+          </Box>
+          <Typography sx={{ color: '#181711', fontWeight: 500, minWidth: { xs: 0, sm: 100 }, textAlign: { xs: 'left', sm: 'right' }, mt: { xs: 0.5, sm: 0 }, fontSize: { xs: '0.98rem', sm: '1rem' } }}>
             ₹{product.price.toLocaleString('en-IN')}
           </Typography>
         </Box>
       ))}
+      {showExpand && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+          <Button
+            variant="text"
+            size="small"
+            endIcon={expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            sx={{ color: '#b7950b', fontWeight: 600, textTransform: 'none', fontSize: '0.98rem' }}
+            onClick={() => setExpanded((prev) => !prev)}
+          >
+            {expanded ? 'Expand less' : 'Expand more'}
+          </Button>
+        </Box>
+      )}
       <Divider sx={{ borderColor: '#FFE066', my: 2 }} />
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mb: 2 }}>
-        <Typography sx={{ color: '#FFD700', fontWeight: 700, fontSize: '1.1rem', mr: 2 }}>
+      <Box sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        justifyContent: { xs: 'center', sm: 'flex-end' },
+        alignItems: { xs: 'stretch', sm: 'center' },
+        mb: 2,
+        gap: { xs: 1, sm: 0 },
+      }}>
+        <Typography sx={{ color: '#FFD700', fontWeight: 700, fontSize: { xs: '1.05rem', sm: '1.1rem' }, mr: { xs: 0, sm: 2 }, textAlign: { xs: 'center', sm: 'right' } }}>
           Total: ₹{total.toLocaleString('en-IN')}
         </Typography>
+        <Button
+          variant="contained"
+          fullWidth={true}
+          sx={{
+            mt: { xs: 1, sm: 0 },
+            background: 'linear-gradient(90deg, #FFD700 0%, #FFE066 100%)',
+            color: '#181711',
+            fontWeight: 700,
+            borderRadius: 2,
+            fontSize: { xs: '1rem', sm: '1.05rem' },
+            py: 1.2,
+            textTransform: 'none',
+            boxShadow: '0 4px 24px 0 rgba(255,215,0,0.10)',
+            '&:hover': { background: 'linear-gradient(90deg, #FFE066 0%, #FFD700 100%)' }
+          }}
+          onClick={handleAddToCart}
+        >
+          Add {checked.filter(Boolean).length} Items to Cart
+        </Button>
       </Box>
-      <Button
-        variant="contained"
-        fullWidth
-        sx={{
-          background: 'linear-gradient(90deg, #FFD700 0%, #FFE066 100%)',
-          color: '#181711',
-          fontWeight: 700,
-          borderRadius: 2,
-          fontSize: '1.05rem',
-          py: 1.2,
-          textTransform: 'none',
-          boxShadow: '0 4px 24px 0 rgba(255,215,0,0.10)',
-          '&:hover': { background: 'linear-gradient(90deg, #FFE066 0%, #FFD700 100%)' }
-        }}
-        onClick={handleAddToCart}
-      >
-        Add {checked.filter(Boolean).length} Items to Cart
-      </Button>
     </Paper>
   );
 };

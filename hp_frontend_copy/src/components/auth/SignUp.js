@@ -25,8 +25,8 @@ import {
 
 const styles = {
     paper: {
-        p: 4,
-        borderRadius: '20px',
+        p: { xs: 2, sm: 4 },
+        borderRadius: { xs: '12px', sm: '20px' },
         background: 'linear-gradient(145deg, #ffffff 0%, #f8f8f8 100%)',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
         border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -40,13 +40,13 @@ const styles = {
         }
     },
     button: {
-        py: 1.5,
+        py: { xs: 1, sm: 1.5 },
         borderRadius: '12px',
         background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
         color: '#000000',
         fontWeight: 600,
         textTransform: 'none',
-        fontSize: '1rem',
+        fontSize: { xs: '1rem', sm: '1.1rem' },
         boxShadow: '0 3px 5px 2px rgba(255, 215, 0, .3)',
         '&:hover': {
             background: 'linear-gradient(45deg, #FFA500 30%, #FFD700 90%)',
@@ -58,6 +58,7 @@ const styles = {
         background: 'linear-gradient(45deg, #FFD700 30%, #FFA500 90%)',
         WebkitBackgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
+        fontSize: { xs: '1.6rem', sm: '2.125rem' },
     }
 };
 
@@ -177,19 +178,19 @@ const SignUp = () => {
     );
 
     return (
-        <Container maxWidth="sm" sx={{ mt: 0, mb: 0 }}>
+        <Container maxWidth="sm" sx={{ mt: { xs: 4, sm: 8 }, mb: { xs: 2, sm: 8 }, px: { xs: 0.5, sm: 0 } }}>
             <Paper elevation={3} sx={styles.paper}>
                 <Typography 
                     variant="h4" 
                     component="h1" 
                     gutterBottom 
                     align="center"
-                    sx={{ ...styles.title, mb: 4 }}
+                    sx={{ ...styles.title, mb: { xs: 2, sm: 4 } }}
                 >
                     Create Account
                 </Typography>
                 <form onSubmit={handleSubmit}>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={{ xs: 2, sm: 3 }}>
                         {errors.general && (
                             <Grid item xs={12}>
                                 <Typography color="error" align="center">
@@ -220,10 +221,7 @@ const SignUp = () => {
                                     style={{
                                         color: '#FFD700',
                                         textDecoration: 'none',
-                                        '&:hover': {
-                                            color: '#FFA500',
-                                            textDecoration: 'underline',
-                                        }
+                                        fontSize: '0.98rem',
                                     }}
                                 >
                                     Already have an account? Login

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Container, Typography, IconButton } from '@mui/material';
+import { Box, Container, Typography, IconButton, useTheme, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -7,6 +7,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 const AccessoryBrands = () => {
     const navigate = useNavigate();
     const [currentIndex, setCurrentIndex] = useState(0);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const brands = [
         {
@@ -138,121 +140,182 @@ const AccessoryBrands = () => {
 
     return (
         <Box sx={{ mb: 6, maxWidth: '100vw', width: '99vw', px: 0 }}>
-            <Typography variant="h4" sx={{
-                mb: 3,
-                fontWeight: 600,
-                background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                pl: 2,
-            }}>
+            <Typography 
+                variant={isMobile ? "h5" : "h4"}
+                sx={{
+                    mb: { xs: 2, sm: 3 },
+                    fontWeight: 600,
+                    background: 'linear-gradient(45deg, #b7950b 30%, #ffd700 90%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    pl: 2,
+                    fontSize: { xs: '1.5rem', sm: '2rem' }
+                }}
+            >
                 Pick Your Favorite Brand
             </Typography>
 
-            <Box
-                sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    position: 'relative',
-                    height: '210px',
-                    borderRadius: '20px',
-                    overflow: 'visible',
-                    px: 5
-                }}
-            >
-                <IconButton
-                    onClick={handlePrevious}
+            {isMobile ? (
+                <Box
                     sx={{
-                        position: 'absolute',
-                        left: 20,
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        bgcolor: 'rgba(255, 255, 255, 0.9)',
-                        '&:hover': { bgcolor: 'rgba(255, 255, 255, 1)' },
-                        zIndex: 2,
-                        boxShadow: '0 2px 8px rgba(183, 149, 11, 0.1)',
-                        color: '#b7950b'
+                        display: 'flex',
+                        gap: '10px',
+                        overflowX: 'auto',
+                        px: '10px',
+                        pb: 1,
+                        msOverflowStyle: 'none',
+                        scrollbarWidth: 'none',
+                        '&::-webkit-scrollbar': {
+                            display: 'none'
+                        }
                     }}
                 >
-                    <ChevronLeftIcon />
-                </IconButton>
-
-                <IconButton
-                    onClick={handleNext}
+                    {brands.map((brand) => (
+                        <Box
+                            key={brand.id}
+                            onClick={() => handleBrandClick(brand.path)}
+                            sx={{
+                                flex: '0 0 140px',
+                                height: '100px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                borderRadius: '12px',
+                                padding: '15px',
+                                transition: 'all 0.2s linear',
+                                border: '1px solid rgba(183, 149, 11, 0.1)',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                    transform: 'none',
+                                    boxShadow: 'none',
+                                    border: '1px solid rgba(183, 149, 11, 0.2)',
+                                    backgroundColor: '#ffffff'
+                                }
+                            }}
+                        >
+                            <Box
+                                component="img"
+                                src={brand.image}
+                                alt={brand.name}
+                                sx={{
+                                    width: 'auto',
+                                    maxWidth: '120px',
+                                    height: 'auto',
+                                    maxHeight: '45px',
+                                    objectFit: 'contain',
+                                    opacity: 1
+                                }}
+                            />
+                        </Box>
+                    ))}
+                </Box>
+            ) : (
+                <Box
                     sx={{
-                        position: 'absolute',
-                        right: 20,
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        bgcolor: 'rgba(255, 255, 255, 0.9)',
-                        '&:hover': { bgcolor: 'rgba(255, 255, 255, 1)' },
-                        zIndex: 2,
-                        boxShadow: '0 2px 8px rgba(183, 149, 11, 0.1)',
-                        color: '#b7950b'
+                        display: 'flex',
+                        alignItems: 'center',
+                        position: 'relative',
+                        height: '210px',
+                        borderRadius: '20px',
+                        overflow: 'visible',
+                        px: 5
                     }}
                 >
-                    <ChevronRightIcon />
-                </IconButton>
-
-                <Container maxWidth={false} sx={{ 
-                    position: 'relative',
-                    px: 0,
-                    overflow: 'hidden',
-                    maxWidth: '100vw',
-                    width: '100%'
-                }}>
-                    <Box
+                    <IconButton
+                        onClick={handlePrevious}
                         sx={{
-                            display: 'flex',
-                            gap: { xs: 3, md: 4 },
-                            transition: 'transform 0.3s ease',
-                            transform: `translateX(-${currentIndex * 280}px)`,
-                            py: 3,
-                            pl: 1
+                            position: 'absolute',
+                            left: 20,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            bgcolor: 'rgba(255, 255, 255, 0.9)',
+                            '&:hover': { bgcolor: 'rgba(255, 255, 255, 1)' },
+                            zIndex: 2,
+                            boxShadow: '0 2px 8px rgba(183, 149, 11, 0.1)',
+                            color: '#b7950b'
                         }}
                     >
-                        {brands.map((brand) => (
-                            <Box
-                                key={brand.id}
-                                onClick={() => handleBrandClick(brand.path)}
-                                sx={{
-                                    flex: '0 0 250px',
-                                    height: '170px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                                    borderRadius: '12px',
-                                    padding: '32px',
-                                    transition: 'all 0.2s linear',
-                                    border: '1px solid rgba(183, 149, 11, 0.1)',
-                                    cursor: 'pointer',
-                                    '&:hover': {
-                                        transform: 'translateY(-2px)',
-                                        boxShadow: '0 4px 12px rgba(183, 149, 11, 0.08)',
-                                        border: '1px solid rgba(183, 149, 11, 0.2)',
-                                        backgroundColor: '#ffffff'
-                                    }
-                                }}
-                            >
+                        <ChevronLeftIcon />
+                    </IconButton>
+
+                    <IconButton
+                        onClick={handleNext}
+                        sx={{
+                            position: 'absolute',
+                            right: 20,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            bgcolor: 'rgba(255, 255, 255, 0.9)',
+                            '&:hover': { bgcolor: 'rgba(255, 255, 255, 1)' },
+                            zIndex: 2,
+                            boxShadow: '0 2px 8px rgba(183, 149, 11, 0.1)',
+                            color: '#b7950b'
+                        }}
+                    >
+                        <ChevronRightIcon />
+                    </IconButton>
+
+                    <Container maxWidth={false} sx={{ 
+                        position: 'relative',
+                        px: 0,
+                        overflow: 'hidden',
+                        maxWidth: '100vw',
+                        width: '100%'
+                    }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                gap: { xs: 3, md: 4 },
+                                transition: 'transform 0.3s ease',
+                                transform: `translateX(-${currentIndex * 280}px)`,
+                                py: 3,
+                                pl: 1
+                            }}
+                        >
+                            {brands.map((brand) => (
                                 <Box
-                                    component="img"
-                                    src={brand.image}
-                                    alt={brand.name}
+                                    key={brand.id}
+                                    onClick={() => handleBrandClick(brand.path)}
                                     sx={{
-                                        width: 'auto',
-                                        maxWidth: '220px',
-                                        height: 'auto',
-                                        maxHeight: '140px',
-                                        objectFit: 'contain',
-                                        opacity: 1
+                                        flex: '0 0 250px',
+                                        height: '170px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                        borderRadius: '12px',
+                                        padding: '32px',
+                                        transition: 'all 0.2s linear',
+                                        border: '1px solid rgba(183, 149, 11, 0.1)',
+                                        cursor: 'pointer',
+                                        '&:hover': {
+                                            transform: 'translateY(-2px)',
+                                            boxShadow: '0 4px 12px rgba(183, 149, 11, 0.08)',
+                                            border: '1px solid rgba(183, 149, 11, 0.2)',
+                                            backgroundColor: '#ffffff'
+                                        }
                                     }}
-                                />
-                            </Box>
-                        ))}
-                    </Box>
-                </Container>
-            </Box>
+                                >
+                                    <Box
+                                        component="img"
+                                        src={brand.image}
+                                        alt={brand.name}
+                                        sx={{
+                                            width: 'auto',
+                                            maxWidth: '220px',
+                                            height: 'auto',
+                                            maxHeight: '140px',
+                                            objectFit: 'contain',
+                                            opacity: 1
+                                        }}
+                                    />
+                                </Box>
+                            ))}
+                        </Box>
+                    </Container>
+                </Box>
+            )}
         </Box>
     );
 };

@@ -95,6 +95,7 @@ const LatestPhonesCarousel = () => {
             <IconButton
                 onClick={() => scroll(-1)}
                 sx={{
+                    display: { xs: 'none', md: 'flex' },
                     position: 'absolute',
                     left: 0,
                     top: '50%',
@@ -114,6 +115,7 @@ const LatestPhonesCarousel = () => {
             <IconButton
                 onClick={() => scroll(1)}
                 sx={{
+                    display: { xs: 'none', md: 'flex' },
                     position: 'absolute',
                     right: 0,
                     top: '50%',
